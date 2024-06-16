@@ -1,0 +1,20 @@
+.searchline-container {
+  margin-top: 10px;
+}
+
+.searchline {
+  border: 2px;
+  height: 3px;
+  background-color: #d8b9f7; /* 연한 보라색 */
+  width: 80%;
+  margin: 0 auto; /* 가운데 정렬 */
+  margin-bottom: 10px; /* 텍스트와의 간격 */
+}
+
+.result-text {
+  font-size: 18px;
+}
+
+.result-cnt {
+  color: rebeccapurple;
+}
