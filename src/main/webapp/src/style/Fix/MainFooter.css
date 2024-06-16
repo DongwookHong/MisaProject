@@ -1,0 +1,29 @@
+.footer
+{
+  position: relative;
+  border-top: 1px solid #777;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+
+  /* margin-bottom: 20px; */
+  margin: 20px auto;
+}
+
+
+.info
+{
+  padding-top: 30px;
+  display: inline-block;
+  width: 250px;
+  font-size: 14px;
+}
+
+.copyright {
+    padding-top: 20px;
+    font-size: 10px;
+    line-height: 18px;
+    color: #666;
+    letter-spacing: -0.26px;
+    font-weight: 300;
+  }

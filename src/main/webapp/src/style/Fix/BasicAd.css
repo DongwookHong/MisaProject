@@ -1,0 +1,45 @@
+/* .ad-banner {
+    border-radius: 10px;
+    width: 95%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: absolute;
+    left: 2.5%;
+   
+   
+}
+
+.ad-banner img {
+    border-radius: 10px; 
+    width: 100%;
+    height: auto;
+    transition: opacity 1s ease-in-out;
+} */
+.carousel-containerAd {
+    padding-top: 10px;
+    border-radius: 10px;
+    width: 98%;
+    max-width: 100%; /* Set max-width to 100% for full-width display */
+    max-height: 150px; /* Adjust the height as necessary */
+    margin: 0 auto; /* Center the carousel */
+    overflow: hidden;
+}
+
+.carousel-item-containerAd {
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Set a fixed height for the carousel items */
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel img {
+    width: 100%; /* Make the image take up 100% of the container's width */
+    height: auto; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure the image covers the entire area without distorting the aspect ratio */
+}
