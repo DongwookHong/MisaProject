@@ -1,0 +1,12 @@
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (1, 1, '/localstorage11');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (2, 1, '/localstorage12');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (3, 1, '/localstorage13');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (4, 1, '/localstorage14');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (1, 1, '/localstorage21');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (2, 2, '/localstorage22');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (3, 2, '/localstorage23');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (1, 3, '/localstorage31');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (2, 3, '/localstorage32');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (3, 3, '/localstorage33');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (4, 3, '/localstorage34');
+INSERT INTO Misa.floor (floor_number, building_id, floorimg_path) VALUES (5, 3, '/localstorage35');

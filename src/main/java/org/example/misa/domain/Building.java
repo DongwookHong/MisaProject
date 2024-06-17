@@ -18,4 +18,7 @@ public class Building {
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Floor> floors = new HashSet<>();
 
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StoreMember> storeMembers = new HashSet<>();
+
 }
