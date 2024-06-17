@@ -15,18 +15,24 @@ public class StoreMember {
     private String storeName;
     @OneToOne(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private StoreLocation storeLocation;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "floorNumber", nullable = false)
+    @JoinColumn(name = "building_id", nullable = false)
+    private Building building;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "floor_Number", nullable = false)
     private Floor floor;
-    @Column(name = "business_hour", nullable = false)
+
+    @Column(name = "business_hour")
     private String businessHour;
-    @Column(name = "info", nullable = false, length = 1000)
+    @Column(name = "info", length = 1000)
     private String info;
-    @Column(name = "store_number", nullable = false)
+    @Column(name = "store_number")
     private String storeNumber;
-    @Column(name = "homepage_path", nullable = false)
+    @Column(name = "homepage_path")
     private String homePagePath;
-    @Column(name = "insta_path", nullable = false)
+    @Column(name = "insta_path")
     private String instaPath;
     @Column(name = "store_address", nullable = false)
     private String storeAddress;

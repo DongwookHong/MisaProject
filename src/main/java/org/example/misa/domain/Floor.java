@@ -10,6 +10,9 @@ public class Floor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long floorId;
+
+    @Column(name = "floor_number", nullable = false)
     private int floorNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
