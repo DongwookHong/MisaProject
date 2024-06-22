@@ -5,10 +5,10 @@ function SearchLine() {
   return (
     <>
       <div className="searchline-container">
-        <hr className="searchline" />
         <div className="searchresult">
           <span className="result-text">
             <span className="result-cnt">12</span> 개의 매장이 검색되었습니다.
+            <hr className="searchline" />
           </span>
         </div>
       </div>

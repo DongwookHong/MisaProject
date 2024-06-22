@@ -19,7 +19,27 @@ function DropdownMenu() {
     { value: 'cheung2', label: '2F' },
     { value: 'cheung3', label: '3F' },
   ];
-
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      borderColor: '#f0f0ff',
+      boxShadow: 'none',
+      borderRadius: '5px',
+      height: '40px',
+      minHeight: '40px',
+      width: '160px',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#bdafff' : 'white',
+      color: 'black',
+    }),
+  };
   return (
     <div className="dropdown-container">
       <div className="dropdown">
@@ -33,6 +53,7 @@ function DropdownMenu() {
           onChange={(selectedOption) => setDong(selectedOption.value)}
           classNamePrefix="react-select"
           placeholder="동을 선택하세요"
+          styles={customStyles}
         />
       </div>
 
@@ -47,6 +68,7 @@ function DropdownMenu() {
           onChange={(selectedOption) => setCheung(selectedOption.value)}
           classNamePrefix="react-select"
           placeholder="층을 선택하세요"
+          styles={customStyles}
         />
       </div>
     </div>

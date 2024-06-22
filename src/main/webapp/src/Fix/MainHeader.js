@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../style/Fix/MainHeader.css';
-import { FaArrowLeft } from 'react-icons/fa';
+// import { FaArrowLeft } from 'react-icons/fa';
 import MenuBar from './MenuBar';
+import Menu from '../asset/tool/menu.png';
 
 function MainHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -16,29 +17,25 @@ function MainHeader() {
     setMenuOpen(false);
   };
 
-  const handleBackClick = () => {
-    navigate(-1);
-  };
+  // const handleBackClick = () => {
+  //   navigate(-1);
+  // };
 
   return (
     <>
       <div className="main_header">
-        <FaArrowLeft className="back-button" onClick={handleBackClick} />
-        <div className="center-content">
+        <div className="logo-container">
           <Link to="/main" onClick={closeMenu}>
             <img
-              className="Rogo"
-              src={`${process.env.PUBLIC_URL}/img/logodown.png`}
+              className="logo"
+              src={`${process.env.PUBLIC_URL}/img/logo.png`}
               alt="MISA RODEO"
             />
           </Link>
         </div>
-        <img
-          className="menubtn"
-          src={`${process.env.PUBLIC_URL}/img/menu.png`}
-          alt="Menu"
-          onClick={toggleMenu}
-        />
+        <div className="menu-container">
+          <img className="menubtn" src={Menu} alt="Menu" onClick={toggleMenu} />
+        </div>
       </div>
       <MenuBar menuOpen={menuOpen} closeMenu={closeMenu} />
     </>
