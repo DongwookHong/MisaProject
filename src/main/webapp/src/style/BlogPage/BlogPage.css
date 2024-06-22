@@ -24,12 +24,13 @@
   flex-grow: 1;
   margin-top: -10px; /* Adjust this value to move the title section up */
   margin-bottom: 0px; /* Adjust this value to move title section up or down */
-  
 }
 
 .main-title {
   margin-top: 0; /* Adjust this value to move the main title up */
   background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+  font-weight: 999;
+  font-family: 'Freesentation-9Black';
 }
 
 .title-subsection {
@@ -68,41 +69,45 @@
 }
 
 .info-section {
-  text-align: center;
+  text-align: left; /* 왼쪽 정렬 */
+  padding-left: 20px; /* 원하는 만큼 여백 추가 */
 }
 
 .business-info {
-  display: block; /* Changed to block to handle new line */
-  margin: 20px 0; /* Increased margin */
   font-size: 18px; /* Increased font size */
+  margin: 10px 0; /* 각 정보 사이에 여백 추가 */
 }
 
 .icon {
   margin-right: 10px; /* Increased margin */
 }
 
-.label {
-  font-weight: bold;
-}
+/* .label {
+ */
 
 .info-text {
   font-size: 18px; /* Increased font size */
+  font-weight: bold;
   display: block; /* Ensures new line for the text */
-  margin-left: 20px; /* Indent to show hierarchy */
 }
 
 .homepage-link {
   text-decoration: none;
-  color: #000;
+  color: #5d4fbb;
   font-weight: bold;
   font-size: 18px; /* Increased font size */
+  text-decoration: underline;
 }
 
-.store_describe {
-  text-align: center;
+.store-describe {
+  text-align: left;
   margin: 20px 0;
   font-size: 16px;
   color: #666;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .carousel-container {

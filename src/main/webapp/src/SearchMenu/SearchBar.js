@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import '../style/SearchMenu/SearchBar.css';
 import Select from 'react-select';
+import Findimogi from '../asset/tool/searchbtn3.png';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,20 +22,45 @@ const SearchBar = () => {
     { value: 'cheung5', label: '2F' },
     { value: 'cheung6', label: '3F' },
   ];
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      borderColor: '#f0f0ff',
+      boxShadow: 'none',
+      borderRadius: '5px',
+      height: '40px',
+      minHeight: '40px',
+      width: '160px',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#bdafff' : 'white',
+      color: 'black',
+    }),
+  };
 
   return (
     <div className="searchbar-container">
-      <div className="search-header">매장 검색</div>
+      <div className="search-header">
+        <span className="emphasize">매장검색</span>
+      </div>
       <div className="search-container">
         <div className="search-input-container">
-          <i className="search-icon">🔍</i>
           <input
             type="text"
-            placeholder="원하는 매장을 검색하세요"
+            placeholder="매장을 입력해주세요"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
+          <div className="search-btn">
+            <img width="20" height="20" src={Findimogi}></img>
+          </div>
         </div>
       </div>
       <div className="select-container">
@@ -45,6 +71,7 @@ const SearchBar = () => {
           placeholder="구역선택"
           classNamePrefix="custom-select"
           className="select-box"
+          styles={customStyles}
         />
         <Select
           value={selectedCheung}
@@ -53,6 +80,7 @@ const SearchBar = () => {
           placeholder="층 선택"
           classNamePrefix="custom-select"
           className="select-box"
+          styles={customStyles}
         />
       </div>
     </div>

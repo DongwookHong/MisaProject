@@ -40,7 +40,12 @@ function SearchList() {
     <div className="searchlist-container">
       <div className="store-list">
         {stores.map((store, index) => (
-          <StoreCard key={index} store={store} />
+          <Link
+            key={index}
+            to={`/store${store.id}`}
+            className="store-card-link">
+            <StoreCard store={store} />
+          </Link>
         ))}
       </div>
     </div>
@@ -49,15 +54,13 @@ function SearchList() {
 
 const StoreCard = ({ store }) => {
   return (
-    <Link to={`/store${store.id}`}>
-      <div className="store-card">
-        <img src={store.image} alt={store.name} className="store-image" />
-        <div className="store-info">
-          <h3 className="store-name">{store.name}</h3>
-          <p className="store-address">{store.address}</p>
-        </div>
+    <div className="store-card">
+      <img src={store.image} alt={store.name} className="store-image" />
+      <div className="store-info">
+        <h3 className="store-name">{store.name}</h3>
+        <p className="store-address">{store.address}</p>
       </div>
-    </Link>
+    </div>
   );
 };
 
