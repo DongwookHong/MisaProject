@@ -5,6 +5,12 @@
 }
 
 @font-face {
+  font-family: 'Freesentation-3Light.ttf';
+  font-weight: normal;
+  src: url('./asset/font/Freesentation-3Light.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Pretendard-Regular';
   src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
     format('woff');
@@ -19,21 +25,26 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Freesentation-9Black';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2')
+    format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
 
 body {
-  /* font-family: 'gmarket_medi' !important; */
-  /* font-family: 'retendard-Regular' !important; */
-  font-family: 'NEXON Lv1 Gothic OTF' !important;
+  font-family: 'Freesentation-3Light.ttf', sans-serif !important;
 
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */
 /* body {
   margin: 0;
 

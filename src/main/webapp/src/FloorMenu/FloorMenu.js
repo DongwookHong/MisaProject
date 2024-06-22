@@ -1,13 +1,16 @@
-import React from 'react';
-import { AppProvider } from './AppContext';
-import BuildingSelector from './BuildingSelector';
-import FloorSelector from './FloorSelector';
-import TenantList from './TenantList';
-import FloorImage from './FloorImage';
+import React from "react";
+import { AppProvider } from "./AppContext";
+import BuildingSelector from "./BuildingSelector";
+import FloorSelector from "./FloorSelector";
+import TenantList from "./TenantList";
+import FloorImage from "./FloorImage";
+import MainHeader from "../Fix/MainHeader.js";
+import MainFooter from "../Fix/MainFooter.js";
 
 function FloorMenu() {
   return (
     <AppProvider>
+      <MainHeader></MainHeader>
       <div className="bg-white text-gray-900 min-h-screen flex items-center justify-center">
         <div className="dong-container">
           <div className="text-center mb-4">
@@ -25,6 +28,7 @@ function FloorMenu() {
           </div>
         </div>
       </div>
+      <MainFooter></MainFooter>
     </AppProvider>
   );
 }
