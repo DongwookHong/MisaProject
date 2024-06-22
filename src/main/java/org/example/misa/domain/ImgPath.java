@@ -6,8 +6,9 @@ import jakarta.persistence.*;
 @Table(name = "imgpath")
 public class ImgPath {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imgId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_name", nullable = false)
@@ -19,12 +20,12 @@ public class ImgPath {
     //Getter && Setter
 
 
-    public Long getImgId() {
-        return imgId;
+    public Long getId() {
+        return id;
     }
 
-    public void setImgId(Long imgId) {
-        this.imgId = imgId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public StoreMember getStoreMember() {
