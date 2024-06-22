@@ -2,6 +2,7 @@ package org.example.misa.controller;
 
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.AdminService;
+import org.example.misa.service.TmplAdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,8 @@ import java.util.Optional;
 
 @Controller
 public class MisaAdminController {
-    AdminService adminService; //관리자 페이지 접속 후 로그인 성공시 객체 생성
+
+    private final AdminService adminService; //관리자 페이지 접속 후 로그인 성공시 객체 생성
 
     public MisaAdminController(AdminService adminService) {
         this.adminService = adminService;
@@ -30,14 +32,13 @@ public class MisaAdminController {
 
     @PostMapping("/admin/create")
     public String createStoreMember(StoreMemberForm form) {
-        System.out.println("\nfile count: " + form.getFiles().size());
-        String storename = adminService.joinStoreMember(form);
+        Long id = adminService.join(form);
         return "admin/home";
     }
 
     @GetMapping("user/storelist")
     public String listStoreMember(Model model) {
-        List<StoreMember> stores = adminService.findAllStoreMember();
+        List<StoreMember> stores = adminService.findStoreMembers();
         model.addAttribute("stores", stores);
         return "user/storelist";
     }
@@ -49,10 +50,9 @@ public class MisaAdminController {
 
     @GetMapping("user/store")
     public String viewStoreMember(Model model, StoreMemberForm form) {
-        Optional<StoreMember> stores = adminService.findStoreMemberByStoreName(form.getStoreName());
-        if (stores.isPresent()) {
-            StoreMember storeMember = stores.get();
-            model.addAttribute("stores", storeMember);
+        StoreMember store = adminService.findStoreMember(form.getStoreName());
+        if (store != null) {
+            model.addAttribute("store", store);
             return "user/store";
         }
         else

@@ -1,28 +1,31 @@
 package org.example.misa.domain;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.lang.NonNull;
+import org.example.misa.controller.StoreMemberForm;
 
 import java.util.Set;
+
+@NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
+        @NamedAttributeNode("imgPaths")
+})
 
 @Entity
 @Table(name = "storemember")
 public class StoreMember {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "block_id", nullable = false)
+    private Block block;
+
+    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ImgPath> imgPaths;
+
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
     private String storeName;
-    @OneToOne(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
-    private StoreLocation storeLocation;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id", nullable = false)
-    private Building building;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "floor_Number", nullable = false)
-    private Floor floor;
 
     @Column(name = "business_hour")
     private String businessHour;
@@ -34,10 +37,38 @@ public class StoreMember {
     private String homePagePath;
     @Column(name = "insta_path")
     private String instaPath;
-    @Column(name = "store_address", nullable = false)
-    private String storeAddress;
-    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ImgPath> imgPaths;
+
+    //getter && setter
+
+
+    public StoreMember(String storeName, String businessHour, String info, String storeNumber, String homePagePath, String instaPath) {
+        this.storeName = storeName;
+        this.businessHour = businessHour;
+        this.info = info;
+        this.storeNumber = storeNumber;
+        this.homePagePath = homePagePath;
+        this.instaPath = instaPath;
+    }
+
+    public StoreMember() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
+    }
 
     public String getStoreName() {
         return storeName;
@@ -50,12 +81,12 @@ public class StoreMember {
         this.storeName = storeName;
     }
 
-    public StoreLocation getStoreLocation() {
-        return storeLocation;
+    public Block getStoreLocation() {
+        return block;
     }
 
-    public void setStoreLocation(StoreLocation storeLocation) {
-        this.storeLocation = storeLocation;
+    public void setStoreLocation(Block block) {
+        this.block = block;
     }
 
     public String getBusinessHour() {
@@ -98,14 +129,6 @@ public class StoreMember {
         this.instaPath = instaPath;
     }
 
-    public String getStoreAddress() {
-        return storeAddress;
-    }
-
-    public void setStoreAddress(String storeAddress) {
-        this.storeAddress = storeAddress;
-    }
-
     public Set<ImgPath> getImgPaths() {
         return imgPaths;
     }
@@ -114,49 +137,7 @@ public class StoreMember {
         this.imgPaths = imgPaths;
     }
 
+    public static StoreMember from(StoreMemberForm form) {
+        return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
+    }
 }
-
-//private StoreLocationInfo storeLocationInfo;
-
-//public void setStoreLocationInfo(StoreLocationInfo storeLocationInfo) {
-//    this.storeLocationInfo = storeLocationInfo;
-//}
-
-//public static class StoreLocationInfo {
-//    private int x;
-//    private int y;
-//    private int width;
-//    private int height;
-//
-//    public int getX() {
-//        return x;
-//    }
-//
-//    public void setX(int x) {
-//        this.x = x;
-//    }
-//
-//    public int getY() {
-//        return y;
-//    }
-//
-//    public void setY(int y) {
-//        this.y = y;
-//    }
-//
-//    public int getWidth() {
-//        return width;
-//    }
-//
-//    public void setWidth(int width) {
-//        this.width = width;
-//    }
-//
-//    public int getHeight() {
-//        return height;
-//    }
-//
-//    public void setHeight(int height) {
-//        this.height = height;
-//    }
-//}
