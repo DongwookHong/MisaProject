@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7d3edcf0.css",
+    "main.js": "/static/js/main.db3c6bfa.js",
+    "static/js/453.7ee4f7c5.chunk.js": "/static/js/453.7ee4f7c5.chunk.js",
+    "static/media/gmarket_medi.ttf": "/static/media/gmarket_medi.d4bac6b182bed73c9375.ttf",
+    "index.html": "/index.html",
+    "main.7d3edcf0.css.map": "/static/css/main.7d3edcf0.css.map",
+    "main.db3c6bfa.js.map": "/static/js/main.db3c6bfa.js.map",
+    "453.7ee4f7c5.chunk.js.map": "/static/js/453.7ee4f7c5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d3edcf0.css",
+    "static/js/main.db3c6bfa.js"
+  ]
+}

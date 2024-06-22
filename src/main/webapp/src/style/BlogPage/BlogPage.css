@@ -1,0 +1,144 @@
+.blog-card {
+  width: 90%;
+  margin: 0 auto;
+  background-color: white;
+  padding-top: 100px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+}
+
+.back-button {
+  align-self: flex-start;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.title-section {
+  text-align: center;
+  flex-grow: 1;
+  margin-top: -10px; /* Adjust this value to move the title section up */
+  margin-bottom: 0px; /* Adjust this value to move title section up or down */
+}
+
+.main-title {
+  margin-top: 0; /* Adjust this value to move the main title up */
+  background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+  font-weight: 999;
+  font-family: 'Freesentation-9Black';
+}
+
+.title-subsection {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+}
+
+.info_floor {
+  font-size: 14px;
+  color: #555;
+  margin: 0 auto; /* Center the text */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+}
+
+.share-button {
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: auto; /* Pushes the share button to the far right */
+  display: flex; /* Ensure it aligns properly */
+  align-items: center; /* Center it vertically */
+  position: relative; /* Ensure proper alignment with the absolute positioning of info_floor */
+}
+
+.light-line-full {
+  border: none;
+  height: 2px;
+  background-color: #ddd;
+  width: 100%; /* Ensure it takes full width */
+  margin-top: 5px; /* Ensure spacing */
+}
+
+.info-section {
+  text-align: left; /* 왼쪽 정렬 */
+  padding-left: 20px; /* 원하는 만큼 여백 추가 */
+}
+
+.business-info {
+  font-size: 18px; /* Increased font size */
+  margin: 10px 0; /* 각 정보 사이에 여백 추가 */
+}
+
+.icon {
+  margin-right: 10px; /* Increased margin */
+}
+
+/* .label {
+ */
+
+.info-text {
+  font-size: 18px; /* Increased font size */
+  font-weight: bold;
+  display: block; /* Ensures new line for the text */
+}
+
+.homepage-link {
+  text-decoration: none;
+  color: #5d4fbb;
+  font-weight: bold;
+  font-size: 18px; /* Increased font size */
+  text-decoration: underline;
+}
+
+.store-describe {
+  text-align: left;
+  margin: 20px 0;
+  font-size: 16px;
+  color: #666;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.carousel-container {
+  width: 80%;
+  margin: 0 auto; /* Center the carousel */
+}
+
+.carousel-item-container {
+  width: 100%;
+  height: 400px; /* Set a fixed height for uniformity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide any overflow content */
+  background-color: black; /* Add a background color to handle aspect ratio differences */
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensure the entire image fits within the container */
+}
+
+@media (max-width: 768px) {
+  .carousel-item-container {
+    height: 300px; /* Adjust height for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-item-container {
+    height: 200px; /* Further adjust height for very small screens */
+  }
+}

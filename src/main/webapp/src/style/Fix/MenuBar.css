@@ -1,0 +1,98 @@
+.wrap-menu {
+  background-color: #fff;
+  background-size: cover;
+  font-size: 20px;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  padding: 10px;
+  /* margin-top: -30px; */
+}
+
+.wrap-menu.open {
+  transform: translateX(0);
+}
+
+.wrap-menubar {
+  list-style: none; /* Remove default list styling */
+  margin: 0; /* Remove default margin */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 50px;
+  /* padding-top: 20px; */
+  list-style: none;
+  margin-top: -80px;
+  /* border-top: 3px solid #bdafff;
+  border-width: 80%; */
+  padding-bottom: 10px;
+}
+
+/* .space {
+  border-bottom: 5px solid #bdafff;
+  padding-bottom: ;
+} */
+
+.wrap-menubar h2 {
+  font-family: 'Freesentation-9Black', sans-serif; /* 폰트 설정 */
+  font-size: 40px; /* 폰트 크기 설정 */
+  font-weight: 900; /* 폰트 굵기 설정 */
+}
+
+.border-top {
+  /* border-top: 200px solid #bdafff; */
+  position: relative;
+}
+
+.border-top::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: -8px;
+  height: 8px; /* Adjust the thickness of the border */
+  background-color: #bdafff;
+}
+
+.menubar {
+  padding-bottom: 20px;
+}
+
+.menubar0 {
+  margin-top: -20px; /* Adjust this value to move "홈 가기" upwards */
+}
+
+.background-overlay {
+  position: fixed;
+  top: 90px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 90px);
+  background-color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 998;
+  pointer-events: none;
+}
+
+.background-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
