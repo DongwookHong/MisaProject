@@ -1,12 +1,12 @@
 /* eslint-disable */
 
-import React from 'react';
-import '../style/Fix/Advertise_qr.css';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import "../style/Fix/AdvertiseQR.css";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-function Advertise_qr() {
-  const bannerImage = ['/ban/ad1.png', '/ban/ad2.png'];
+function AdvertiseQR() {
+  const bannerImage = ["/ban/ad1.png", "/ban/ad2.png"];
   const [curIdx, setcurIdx] = useState(0);
 
   const nextImage = () => {
@@ -39,4 +39,4 @@ function Banner({ imageUrl }) {
   );
 }
 
-export default Advertise_qr;
+export default AdvertiseQR;

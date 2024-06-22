@@ -1,14 +1,14 @@
 .searchline-container {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .searchline {
-  border: 2px;
-  height: 3px;
+  border: 3px;
+  height: 5px;
   background-color: #d8b9f7; /* 연한 보라색 */
   width: 80%;
   margin: 0 auto; /* 가운데 정렬 */
-  margin-bottom: 10px; /* 텍스트와의 간격 */
+  margin-bottom: 20px; /* 텍스트와의 간격 */
 }
 
 .result-text {
@@ -17,4 +17,5 @@
 
 .result-cnt {
   color: rebeccapurple;
+  font-family: 'Freesentation-9Black', sans-serif !important;
 }

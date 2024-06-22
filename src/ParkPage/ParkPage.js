@@ -8,8 +8,8 @@ import MainFooter from '../Fix/MainFooter.js';
 function Parking() {
   return (
     <div>
-      {/* console.log('Naver Client ID:', process.env.REACT_APP_NAVER_CLIENT_ID); */}
       <MainHeader />
+      {/* <Banner /> */}
       <Ad />
       <NaverMap latitude={37.5637} longitude={127.19113} />
       <ParkingDetail />

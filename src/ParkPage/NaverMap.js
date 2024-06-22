@@ -4,7 +4,7 @@ import '../style/ParkPage/NaverMap.css';
 function NaverMap({ latitude, longitude }) {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_CLIENT_ID}`;
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xxx`;
     script.async = true;
     document.head.appendChild(script);
 
@@ -12,7 +12,7 @@ function NaverMap({ latitude, longitude }) {
       const mapOptions = {
         center: new window.naver.maps.LatLng(latitude, longitude),
         zoom: 15,
-        zoomControl: true,
+        zoomControl: true, // 줌 컨트롤러 활성화
         zoomControlOptions: {
           position: window.naver.maps.Position.RIGHT_CENTER,
         },
