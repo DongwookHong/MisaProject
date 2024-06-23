@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import './ShareModal.css';
+import '../style/BlogPage/ShareModal.css';
 const KakaoShare = () => {
   useEffect(() => {
     const script = document.createElement('script');

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/MapGuide/LocSearch.css';
 import MenuBar from '../Fix/MenuBar'; // MenuBar 컴포넌트 가져오기
-import PurpleLoc from '../asset/tool/locpin.png';
+import IconLoc from '../asset/tool/locpin.png';
 import SearchBtn from '../asset/tool/searchbtn3.png';
+import Menu from '../asset/tool/menu.png';
 
 function LocSearch() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,8 +28,8 @@ function LocSearch() {
         <div className="header-content">
           <div className="search-menu">
             <img
-              className="current-loc"
-              src={PurpleLoc}
+              className="logo-item"
+              src={IconLoc}
               alt="Logolocation"
               width="20"
               height="20"
@@ -39,12 +40,7 @@ function LocSearch() {
             <span className="current-location">힐스테이트 A동 1층</span>
           </div>
           <div className="menu-icon" onClick={handleMenuClick}>
-            <img
-              src="/icon/menubar.png"
-              alt="menu-bar"
-              width="30"
-              height="30"
-            />
+            <img src={Menu} alt="menu-bar" width="30" height="30" />
           </div>
         </div>
         <div className="search-bar">
@@ -55,7 +51,7 @@ function LocSearch() {
           />
           <img
             className="search-icon"
-            src="/icon/readglass.png"
+            src={SearchBtn}
             alt="search-bar"
             width="32"
             height="32"

@@ -11,7 +11,7 @@ import { Modal, Button } from 'react-bootstrap';
 import MainFooter from '../Fix/MainFooter.js';
 import MainHeader from '../Fix/MainHeader.js';
 import externalLinkIcon from '../asset/tool/external-link.png';
-import Slide from './Slide.js';
+import Slide from './BlogPhotoSlide.js';
 import ShareModal from './ShareModal.js';
 // import ShareModal2 from './ShareModal_demo.js';
 
@@ -97,80 +97,5 @@ function Blog() {
     </>
   );
 }
-
-// function ShareModal({ show, handleClose }) {
-//   const currentUrl = window.location.href;
-
-//   const shareToTwitter = () => {
-//     const shareText = encodeURIComponent('Check out this amazing place!');
-//     const twitterUrl = `https://twitter.com/intent/tweet?url=${currentUrl}&text=${shareText}`;
-//     window.open(twitterUrl, '_blank');
-//   };
-
-//   const shareToFacebook = () => {
-//     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-//     window.open(facebookUrl, '_blank');
-//   };
-
-//   const shareToInstagram = () => {
-//     const instagramUrl = `https://www.instagram.com/`;
-//     navigator.clipboard.writeText(currentUrl).then(() => {
-//       alert('Link copied to clipboard! Share it on Instagram.');
-//     });
-//     window.open(instagramUrl, '_blank');
-//   };
-
-//   const handleCopyLink = () => {
-//     navigator.clipboard
-//       .writeText(currentUrl)
-//       .then(() => {
-//         alert('Link copied to clipboard!');
-//       })
-//       .catch((error) => {
-//         console.error('Error copying link:', error);
-//       });
-//   };
-
-//   return (
-//     <Modal show={show} onHide={handleClose}>
-//       <Modal.Header closeButton>
-//         <Modal.Title>Share</Modal.Title>
-//       </Modal.Header>
-//       <Modal.Body>
-//         <div className="share-options">
-//           <Button
-//             variant="outline-primary"
-//             className="share-button"
-//             onClick={shareToTwitter}>
-//             <FaTwitter /> Twitter
-//           </Button>
-//           <Button
-//             variant="outline-primary"
-//             className="share-button"
-//             onClick={shareToFacebook}>
-//             <FaFacebook /> Facebook
-//           </Button>
-//           <Button
-//             variant="outline-danger"
-//             className="share-button"
-//             onClick={shareToInstagram}>
-//             <FaInstagram /> Instagram
-//           </Button>
-//           <Button
-//             variant="outline-secondary"
-//             className="share-button"
-//             onClick={handleCopyLink}>
-//             <FaLink /> Copy Link
-//           </Button>
-//         </div>
-//       </Modal.Body>
-//       <Modal.Footer>
-//         <Button variant="secondary" onClick={handleClose}>
-//           Close
-//         </Button>
-//       </Modal.Footer>
-//     </Modal>
-//   );
-// }
 
 export default Blog;

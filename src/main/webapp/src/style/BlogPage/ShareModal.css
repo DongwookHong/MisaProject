@@ -30,6 +30,11 @@ button.sns-icon {
   background-color: white; /* 원하는 배경색으로 변경 */
 }
 
+.link-to-icon {
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+}
+
 .custom-close-button {
   background: none;
   border: none;
