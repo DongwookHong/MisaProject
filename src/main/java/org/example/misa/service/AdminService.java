@@ -28,8 +28,8 @@ public class AdminService {
 
     public Long join(StoreMemberForm form) {
         Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName());
-        validateDuplicateBlockName(form.getBlockName(), floor);
-        Block block = new Block(floor, form.getBlockName());
+        validateDuplicateBlockId(form.getBlockId(), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
+        Block block = new Block(floor, form.getBlockId(), "store");
 
         try {
             blockRepository.save(block);
@@ -62,8 +62,8 @@ public class AdminService {
         return floor;
     }
 
-    private void validateDuplicateBlockName(String blockName, Floor floor) {
-        Block block = blockRepository.findByBlockNameAndFloorId(blockName, floor.getId());
+    private void validateDuplicateBlockId(String blockId, Floor floor) {
+        Block block = blockRepository.findByBlockIdAndFloorId(blockId, floor.getId());
 
         if (block != null) {
             throw new IllegalStateException("이미 등록된 구역 이름입니다.");

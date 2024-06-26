@@ -20,6 +20,9 @@ public class Floor {
     private String buildingName;
 
     @Column(nullable = false)
+    private String buildingDong;
+
+    @Column(nullable = false)
     private String floor;
 
     @Column(name = "floor_img_path", nullable = false)
@@ -49,6 +52,14 @@ public class Floor {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public String getBuildingDong() {
+        return buildingDong;
+    }
+
+    public void setBuildingDong(String buildingDong) {
+        this.buildingDong = buildingDong;
     }
 
     public String getFloor() {

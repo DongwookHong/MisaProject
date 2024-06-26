@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BlockRepository extends JpaRepository<Block, Long> {
-    public Block findByBlockNameAndFloorId(String blockName, Long floorId);
+    public Block findByBlockIdAndFloorId(String blockId, Long floorId);
 }

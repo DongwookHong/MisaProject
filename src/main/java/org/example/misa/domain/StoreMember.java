@@ -26,7 +26,6 @@ public class StoreMember {
 
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
     private String storeName;
-
     @Column(name = "business_hour")
     private String businessHour;
     @Column(name = "info", length = 1000)
@@ -54,20 +53,13 @@ public class StoreMember {
 
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Block getBlock() {
         return block;
     }
 
     public void setBlock(Block block) {
         this.block = block;
+        block.setStoreMember(this);
     }
 
     public String getStoreName() {
@@ -79,14 +71,6 @@ public class StoreMember {
             throw new IllegalArgumentException("storeName cannot be null");
         }
         this.storeName = storeName;
-    }
-
-    public Block getStoreLocation() {
-        return block;
-    }
-
-    public void setStoreLocation(Block block) {
-        this.block = block;
     }
 
     public String getBusinessHour() {
@@ -139,5 +123,9 @@ public class StoreMember {
 
     public static StoreMember from(StoreMemberForm form) {
         return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
+    }
+
+    public Long getId() {
+        return id;
     }
 }

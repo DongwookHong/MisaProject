@@ -31,10 +31,6 @@ public class MisaUserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/")
-//    public String home() {
-//        return "home";
-//    }
     @GetMapping("/api/store")// 상점의 모든 정보
     public String store(@RequestParam(value = "name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
@@ -75,7 +71,7 @@ public class MisaUserController {
         return "qrpage";
     }
 
-    @GetMapping("/api/findspot") // 상점 이름, 상점 위치, 블럭, 층 이미지
+    @GetMapping("/api/findspot") //상점 이름, 상점 위치, 블럭, 층 이미지
     public String findSpot(@RequestParam(value = "name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "";

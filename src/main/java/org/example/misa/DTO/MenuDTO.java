@@ -9,24 +9,27 @@ import java.util.Set;
 
 //건물, 층, 상점 이름, 상점 사진
 public class MenuDTO {
-    @JsonProperty("BuildingName")
+    @JsonProperty("buildingName")
     private String buildingName;
-    @JsonProperty("Floor")
-    private String floor;
-    @JsonProperty("StoreName")
+    @JsonProperty("buildingDong")
+    private String buildingDong;
+    @JsonProperty("floorNumber")
+    private String floorNumber;
+    @JsonProperty("storeName")
     private String storeName;
-    @JsonProperty("StoreImgPath")
-    private String storeImgPath;
+    @JsonProperty("storeImage")
+    private String storeImage;
 
-    public MenuDTO(String buildingName, String floor, String storeName, String storeImgPath) {
+    public MenuDTO(String buildingName, String buildingDong, String floorNumber, String storeName, String storeImage) {
         this.buildingName = buildingName;
-        this.floor = floor;
+        this.buildingDong = buildingDong;
+        this.floorNumber = floorNumber;
         this.storeName = storeName;
-        this.storeImgPath = storeImgPath;
+        this.storeImage = storeImage;
     }
 
-    public static MenuDTO of(String buildingName, String floor, String storeName, String storeImgPath) {
-        return new MenuDTO(buildingName, floor, storeName, storeImgPath);
+    public static MenuDTO of(String buildingName, String buildingDong, String floorNumber, String storeName, String storeImage) {
+        return new MenuDTO(buildingName, buildingDong, floorNumber, storeName, storeImage);
     }
 
     public static MenuDTO from(StoreMember storeMember) {
@@ -36,6 +39,7 @@ public class MenuDTO {
              imgPath = storeImages.iterator().next().getImgPath();
         }
         return new MenuDTO(storeMember.getBlock().getFloor().getBuildingName(),
+                storeMember.getBlock().getFloor().getBuildingDong(),
                 storeMember.getBlock().getFloor().getFloor(),
                 storeMember.getStoreName(),
                 imgPath);

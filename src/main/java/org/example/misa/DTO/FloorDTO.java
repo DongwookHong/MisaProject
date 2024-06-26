@@ -5,25 +5,29 @@ import org.example.misa.domain.StoreMember;
 
 //건물, 층, 상점 이름
 public class FloorDTO {
-    @JsonProperty("BuildingName")
+    @JsonProperty("buildingName")
     private String buildingName;
-    @JsonProperty("Floor")
-    private String floor;
-    @JsonProperty("StoreName")
+    @JsonProperty("buildingDong")
+    private String buildingDong;
+    @JsonProperty("floorNumber")
+    private String floorNumber;
+    @JsonProperty("storeName")
     private String storeName;
 
-    public FloorDTO(String buildingName, String floor, String storeName) {
+    public FloorDTO(String buildingName, String buildingDong, String floorNumber, String storeName) {
         this.buildingName = buildingName;
-        this.floor = floor;
+        this.buildingDong = buildingDong;
+        this.floorNumber = floorNumber;
         this.storeName = storeName;
     }
 
-    public static FloorDTO of(String buildingName, String floor, String storeName) {
-        return new FloorDTO(buildingName, floor, storeName);
+    public static FloorDTO of(String buildingName, String buildingDong, String floorNumber, String storeName) {
+        return new FloorDTO(buildingName, buildingDong, floorNumber, storeName);
     }
 
     public static FloorDTO from(StoreMember storeMember) {
         return new FloorDTO(storeMember.getBlock().getFloor().getBuildingName(),
+                storeMember.getBlock().getFloor().getBuildingDong(),
                 storeMember.getBlock().getFloor().getFloor(),
                 storeMember.getStoreName());
     }

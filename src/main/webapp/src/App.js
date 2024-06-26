@@ -19,13 +19,13 @@ function App() {
         <Routes>
           <Route path="/" element={<QrPage />} />
           <Route path="/main" element={<Main />} />
-          <Route path="/store0" element={<Blog />} />
-          <Route path="/menu" element={<SearchMenu />} />
+          <Route path="/store0" element={<Blog />} />// 상점의 모든 정보 + 상점 사진
+          <Route path="/menu" element={<SearchMenu />} /> //건물, 층, 상점 이름, 상점 사진
           <Route path="/parkinfo" element={<Park />} />
           <Route path="/floorspecific" element={<MainComponent />} />
           <Route path="/qrpage" element={<QrPage />} />
-          <Route path="/findspot" element={<FindSpot />} />
-          <Route path="/floor0" element={<FloorMenu />} />
+          <Route path="/findspot" element={<FindSpot />} />// 상점 이름, 상점 위치, 블럭, 층 이미지
+          <Route path="/floor0" element={<FloorMenu />} />//건물, 층, 상점 이름
           {/* <Route path="/store/:id" element={<StoreDetail />} /> */}
         </Routes>
       </Router>

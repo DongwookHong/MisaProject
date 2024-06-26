@@ -12,7 +12,7 @@ public class StoreMemberForm {
     private String homePagePath;
     private String instaPath;
     private String storeAddress;
-    private String blockName;
+    private String blockId;
     private String floor;
     private String buildingName;
     private List<MultipartFile> files;
@@ -73,12 +73,12 @@ public class StoreMemberForm {
         this.storeAddress = storeAddress;
     }
 
-    public String getBlockName() {
-        return blockName;
+    public String getBlockId() {
+        return blockId;
     }
 
-    public void setBlockName(String blockName) {
-        this.blockName = blockName;
+    public void setBlockId(String blockId) {
+        this.blockId = blockId;
     }
 
     public String getFloor() {

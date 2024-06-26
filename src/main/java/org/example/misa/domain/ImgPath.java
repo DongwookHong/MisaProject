@@ -42,5 +42,6 @@ public class ImgPath {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+        this.storeMember.getImgPaths().add(this);
     }
 }

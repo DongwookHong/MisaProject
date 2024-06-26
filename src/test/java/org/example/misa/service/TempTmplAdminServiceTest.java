@@ -51,7 +51,7 @@ class TempTmplAdminServiceTest {
         List<MultipartFile> files = new ArrayList<>();
         files.add(image);
 
-        //blockName exists
+        //blockId exists
 
 //        Block block = new Block(floor, "svg_misa");
 //        blockRepository.save(block);
@@ -70,7 +70,7 @@ class TempTmplAdminServiceTest {
         form.setFloor("1");
         form.setBuildingName("A");
         form.setStoreName("misa");
-        form.setBlockName("svg_misa");
+        form.setBlockId("svg_misa");
 
         form.setFiles(files);
         //when
@@ -95,7 +95,7 @@ class TempTmplAdminServiceTest {
             while (iterator.hasNext()) {
                 System.out.println("상점사진: " + iterator.next().getImgPath());
             }
-            System.out.println("상점블럭: " + storeMember.getBlock().getBlockName());
+            System.out.println("상점블럭: " + storeMember.getBlock().getBlockId());
             System.out.println("상점층수: " + storeMember.getBlock().getFloor().getFloor());
             System.out.println("상점건물: " + storeMember.getBlock().getFloor().getBuildingName());
         }
