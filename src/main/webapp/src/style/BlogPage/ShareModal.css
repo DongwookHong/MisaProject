@@ -1,0 +1,50 @@
+.share-options {
+  display: flex;
+  justify-content: center; /* 아이콘들을 왼쪽 정렬 */
+  gap: 20px; /* 아이콘 간격을 적당히 설정합니다 */
+  align-items: center; /* 아이콘들을 수직으로 중앙 정렬 */
+}
+/* 
+.sns-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  position: none;
+} */
+
+.sns-icon {
+  padding: 0;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 버튼 디폴트 효과 때문에 적은 것 */
+button.sns-icon {
+  border: none;
+  background-color: white;
+}
+.sns-icon:hover {
+  background-color: white; /* 원하는 배경색으로 변경 */
+}
+
+.link-to-icon {
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+}
+
+.custom-close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
