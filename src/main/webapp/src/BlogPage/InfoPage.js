@@ -3,13 +3,13 @@ import { LuShare } from 'react-icons/lu';
 
 function InfoPage({
   store_name,
-  floor_string,
-  floor_string_specific,
+  building_name,
+  building_dong,
   floor_number,
   business_hour,
   store_number,
   insta_path,
-  info,
+  store_info,
   handleShare,
 }) {
   return (
@@ -21,7 +21,7 @@ function InfoPage({
           </div>
           <div className="title-subsection">
             <h6 className="info_floor">
-              {floor_string} {floor_string_specific} {floor_number}F
+              {building_name} {building_dong} {floor_number}F
             </h6>
             <div className="share-button" onClick={handleShare}>
               <LuShare />
@@ -50,7 +50,7 @@ function InfoPage({
           <hr className="light-line-full" />
         </div>
         <div className="store-describe" style={{ whiteSpace: 'pre-line' }}>
-          {info}{' '}
+          {store_info}{' '}
         </div>
         <hr className="light-line-full" />
       </div>

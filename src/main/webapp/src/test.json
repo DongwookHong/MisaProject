@@ -1,7 +1,7 @@
 [
   {
     "id": 101001,
-    "buildig_name": "힐스테이트",
+    "building_name": "힐스테이트",
     "building_dong": "A동",
     "floor_number": 1,
     "store_name": "91 미사",
@@ -15,7 +15,7 @@
 
   {
     "id": 101002,
-    "buildig_name": "힐스테이트",
+    "building_name": "힐스테이트",
     "building_dong": "A동",
     "floor_number": 1,
     "store_name": "쥬씨",

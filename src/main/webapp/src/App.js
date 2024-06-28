@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Blog from './BlogPage/BlogPage';
 import SearchMenu from './SearchMenu/SearchMenu.js';
 import Park from './ParkPage/ParkPage.js';
-import QrPage from './MapGuide/QrPage.js';
+import QrPage from './QRpage/QrPage.js';
 import FindSpot from './FindSpot/FindSpot.js';
 import FloorMenu from './FloorMenu/FloorMenu.js';
 import MainComponent from './FloorSpecific/MainComponent.js';
@@ -27,7 +27,7 @@ function App() {
           <Route path="/parkinfo" element={<Park />} />
           <Route path="/floorspecific" element={<MainComponent />} />
           <Route path="/qrpage" element={<QrPage />} />
-          <Route path="/findspot" element={<FindSpot />} />
+          <Route path="/findspot/:id" element={<FindSpot />} />
           <Route path="/floor0" element={<FloorMenu />} />
           {/* <Route path="/store/:id" element={<StoreDetail />} /> */}
         </Routes>

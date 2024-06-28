@@ -1,13 +1,13 @@
 import React from 'react';
 import LocSearch from './LocSearch';
-// import AdvertiseQR from "../Fix/AdvertiseQR";
-import AdvertiseQR from '../Fix/Advertise_demo';
+import AdvertiseQR from '../Fix/AdvertiseQR';
 
 import DropDown from './Dropdown';
 import MapLocation from './MapLocation';
 import Guide from './Guide';
 import Guide_demo from './Guide_demo';
 import PinMove from './PinMove';
+import MainFooter from '../Fix/MainFooter';
 
 function QrPage() {
   return (
@@ -15,8 +15,10 @@ function QrPage() {
       <LocSearch />
       <AdvertiseQR />
       <DropDown />
-      {/* <MapLocation /> /<Guide_demo /> */}
+      {/* <MapLocation /> */}
+      {/* <Guide_demo /> */}
       <PinMove />
+      <MainFooter />
     </div>
   );
 }

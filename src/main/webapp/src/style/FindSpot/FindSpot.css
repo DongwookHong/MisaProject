@@ -1,4 +1,4 @@
-.Changefont {
+.findspot-container {
   padding-top: 30px;
   font-weight: bold; /* 텍스트를 두껍게 설정 */
   font-size: 15px; /* 텍스트 크기를 40px로 설정 */
@@ -79,4 +79,5 @@
   color: #5d4fbb;
   padding-left: 10px;
   font-weight: 1400;
+  font-size: 18px;
 }

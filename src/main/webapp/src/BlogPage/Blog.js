@@ -6,7 +6,7 @@ import MainHeader from '../Fix/MainHeader.js';
 import ShareModal from './ShareModal.js';
 import Slide from './BlogPhotoSlide.js';
 import InfoPage from './InfoPage';
-import jsonData from './test.json'; // JSON 파일 가져오기
+import jsonData from '../test.json'; // JSON 파일 가져오기
 
 function Blog() {
   const { id } = useParams(); // URL 파라미터에서 상점 ID를 가져옴
@@ -52,13 +52,13 @@ function Blog() {
       <div className="blog-card">
         <InfoPage
           store_name={store.store_name}
-          floor_string={store.floor_string}
-          floor_string_specific={store.floor_string_specific}
+          building_name={store.building_name}
+          building_dong={store.building_dong}
           floor_number={store.floor_number}
           business_hour={store.business_hour}
           store_number={store.store_number}
           insta_path={store.insta_path}
-          info={store.info}
+          store_info={store.store_info}
           handleShare={handleShare}
         />
         <Slide />

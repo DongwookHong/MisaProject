@@ -1,19 +1,34 @@
-import React, { useState } from 'react';
-import '../style/MapGuide/Guide_demo.css';
+import React, { useState, useEffect } from 'react';
+import '../style/QRpage/Guide_demo.css';
 import locpin from '../asset/tool/locpin.png';
+import testJson from '../test.json'; // JSON 파일을 import
+import test2Json from '../test2.json'; // JSON 파일을 import
 
 function Guide_demo({ onIconClick }) {
   const [activeSection, setActiveSection] = useState('facility');
+  const [facilityItems, setFacilityItems] = useState([]);
+  const [storeItems, setStoreItems] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  const facilityItems = ['화장실', '엘레베이터', '에스컬레이터'];
-  const storeItems = ['91MISA', 'Ninety One', '쥬씨', '용용선생'];
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    setFacilityItems(
+      test2Json
+        .filter((item) => item.type === 'facility')
+        .map((item) => item.facilityName)
+    );
+    setStoreItems(testJson.map((item) => item.store_name));
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleIconClick = (itemName) => {
+    console.log(itemName);
   };
 
   return (
@@ -52,7 +67,7 @@ function FacilityContent({ items, onIconClick }) {
       {items.map((item, index) => (
         <div className="facility-item" key={index}>
           {item}
-          <span className="logospace" onClick={() => onIconClick('misa')}>
+          <span className="logospace" onClick={() => onIconClick(item)}>
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>
         </div>

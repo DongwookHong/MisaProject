@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../style/MapGuide/Guide.css';
+import '../style/QRpage/Guide.css';
 import LocationIcon from '../asset/tool/locpin.png';
 import { drawLocpin } from '../utils/cordi';
 

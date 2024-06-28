@@ -1,16 +1,26 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+
 import '../style/FindSpot/FindSpot.css';
 import MainHeader from '../Fix/MainHeader.js';
 import MainFooter from '../Fix/MainFooter.js';
 import Banner from '../Fix/MenuOpen.js';
-import Ad from '../Fix/Advertise_demo.js';
+import Ad from '../Fix/Advertise.js';
 import Blog from '../asset/logo/blog_transparent.png';
 import { drawLocpin } from '../utils/cordi.js';
+import jsonData from '../test.json';
+import CurToDest from './CurToDest.js';
 
 function FindSpot() {
   const canvasRef = useRef(null);
   const svgContainerRef = useRef(null);
+  const { id } = useParams(); // URL 파라미터에서 상점 ID를 가져옴
+  const [store, setStore] = useState(null);
+
+  useEffect(() => {
+    const storeData = jsonData.find((item) => item.id.toString() === id);
+    setStore(storeData);
+  }, [id]);
 
   useEffect(() => {
     const svgPath = `${process.env.PUBLIC_URL}/mapcollect/B.svg`;
@@ -65,32 +75,18 @@ function FindSpot() {
         console.error('Error fetching or parsing the SVG file:', error);
       });
   }, []);
+  if (!store) {
+    return <div>잘못된 페이지 접근입니다.</div>; // 데이터가 로드되지 않은 경우 로딩 메시지 표시
+  }
 
   return (
     <div>
       <MainHeader />
       {/* <Banner /> */}
       <Ad />
-      <div className="Changefont">
-        <p>
-          현재 계신곳은{' '}
-          <span className="current-loc">{'  '} 힐스테이트 A동 1층</span>
-          입니다.
-        </p>
-        <p>
-          <span className="find-name">91 미사 </span> 는{' '}
-          <span className="find-loc">힐스테이트 B동 1층</span>에 있습니다.
-        </p>
+      <div className="curtodest-wrapper">
+        {store && <CurToDest currentStore={store} />}
       </div>
-
-      {/* <div className="image-container">
-        <div className="find-image">
-          <img
-            src={`${process.env.PUBLIC_URL}/mapcollect/B.svg`}
-            alt="Hillstate"
-          />
-        </div>
-      </div> */}
       <div
         className="ImageContainer"
         style={{ width: '100%', height: 'auto', position: 'relative' }}>
@@ -101,10 +97,10 @@ function FindSpot() {
           style={{ width: '100%', height: 'auto' }}></canvas>
       </div>
       <div className="BlogLink">
-        <Link to="/store0" className="HomepageLink">
+        <Link to={`/storeinfo/${store.id}`} className="HomepageLink">
           <img src={Blog} alt="Blog" className="HomepageIcon" />
           <span className="BlogText">
-            <span className="find-name">91 미사</span> 바로가기
+            <span className="find-name">{store.store_name}</span> 바로가기
           </span>
         </Link>
       </div>
