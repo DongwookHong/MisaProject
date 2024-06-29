@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "block")
 public class Block {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "area", nullable = false)
+    private Long area;
 
     @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
     private StoreMember storeMember;
@@ -21,16 +23,13 @@ public class Block {
     private Floor floor;
 
     @Column(nullable = false)
-    private String blockId;
-
-    @Column(nullable = false)
     private String type;
 
     //constructor
 
-    public Block(Floor floor, String blockId, String type) {
+    public Block(Floor floor, Long area, String type) {
         this.setFloor(floor);
-        this.blockId = blockId;
+        this.area = area;
         this.type = type;
     }
 
@@ -40,12 +39,21 @@ public class Block {
 
     //getter && setter
 
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getArea() {
+        return area;
+    }
+
+    public void setArea(Long area) {
+        this.area = area;
     }
 
     public StoreMember getStoreMember() {
@@ -76,13 +84,6 @@ public class Block {
         this.floor.getBlocks().add(this);
     }
 
-    public String getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(String blockId) {
-        this.blockId = blockId;
-    }
 
     public String getType() {
         return type;

@@ -27,7 +27,7 @@ public class FindSpotDTO {
 
     //만약 findspot도 편의시설을 포함한다면 수정 필요 (storemember 뿐만 아니라 facility도 추가, blocktype 확인)
     public static FindSpotDTO from(StoreMember storeMember) {
-        return new FindSpotDTO(storeMember.getBlock().getBlockId(),
+        return new FindSpotDTO(storeMember.getBlock().getArea().toString(),
                 storeMember.getBlock().getFloor().getFloor(),
                 storeMember.getBlock().getFloor().getFloorImgPath(),
                 storeMember.getStoreName());

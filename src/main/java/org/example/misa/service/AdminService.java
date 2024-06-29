@@ -28,27 +28,28 @@ public class AdminService {
 
     public Long join(StoreMemberForm form) {
         Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName());
-        validateDuplicateBlockId(form.getBlockId(), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
-        Block block = new Block(floor, form.getBlockId(), "store");
-
+        validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
+        Block block = new Block(floor, Long.parseLong(form.getBlockId()), "store");
+        System.out.println("form:" + form.getBlockId() + ", " + form.getFloor());
+        System.out.println("Block:" + block.getArea() + ", " + block.getFloor().getId());
         try {
-            blockRepository.save(block);
+            block = blockRepository.save(block);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to add block", e);
         }
 
         StoreMember storeMember = StoreMember.from(form);
-        validateDuplicateStoreMember(storeMember);
+//        validateDuplicateStoreMember(storeMember);
         storeMember.setBlock(block);
         saveImgPaths(form, storeMember);
 
         try {
-            storeMemberRepository.save(storeMember);
+            storeMember = storeMemberRepository.save(storeMember);
         } catch (Exception e) {
             imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
             throw new IllegalStateException("Could not save storeMember", e);
         }
-
+        System.out.println("storeMember:" + storeMember.getId());
         return storeMember.getId();
     }
 
@@ -62,17 +63,18 @@ public class AdminService {
         return floor;
     }
 
-    private void validateDuplicateBlockId(String blockId, Floor floor) {
-        Block block = blockRepository.findByBlockIdAndFloorId(blockId, floor.getId());
+    private void validateDuplicateBlockId(Long area, Floor floor) {
+        Block block = blockRepository.findByAreaAndFloorId(area, floor.getId());
 
         if (block != null) {
             throw new IllegalStateException("이미 등록된 구역 이름입니다.");
         }
+
     }
 
     private void validateDuplicateStoreMember(StoreMember storeMember) {
-        StoreMember store = storeMemberRepository.findByStoreName(storeMember.getStoreName());
-        if (store != null) {
+        storeMember = storeMemberRepository.findByStoreName(storeMember.getStoreName());
+        if (storeMember != null) {
             throw new IllegalStateException("이미 존재하는 상점입니다.");
         }
     }

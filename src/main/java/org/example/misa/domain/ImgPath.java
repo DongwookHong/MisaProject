@@ -11,7 +11,7 @@ public class ImgPath {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_name", nullable = false)
+    @JoinColumn(name = "store_id", nullable = false)
     private StoreMember storeMember;
 
     @Column(name = "img_path", nullable = false)

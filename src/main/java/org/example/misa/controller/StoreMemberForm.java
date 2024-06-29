@@ -15,6 +15,7 @@ public class StoreMemberForm {
     private String blockId;
     private String floor;
     private String buildingName;
+    private String buildingDong;
     private List<MultipartFile> files;
 
     public String getStoreName() {
@@ -95,6 +96,14 @@ public class StoreMemberForm {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public String getBuildingDong() {
+        return buildingDong;
+    }
+
+    public void setBuildingDong(String buildingDong) {
+        this.buildingDong = buildingDong;
     }
 
     public List<MultipartFile> getFiles() {

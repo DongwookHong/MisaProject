@@ -74,7 +74,7 @@ public class StoreDTO {
         return new StoreDTO(storeMember.getBlock().getFloor().getBuildingName(),
                 storeMember.getBlock().getFloor().getBuildingDong(),
                 storeMember.getBlock().getFloor().getFloor(),
-                storeMember.getBlock().getBlockId(),
+                storeMember.getBlock().getArea().toString(),
                 storeMember.getStoreName(),
                 storeMember.getInfo(),
                 storeMember.getBusinessHour(),

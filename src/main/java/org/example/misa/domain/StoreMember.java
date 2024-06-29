@@ -3,6 +3,7 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 import org.example.misa.controller.StoreMemberForm;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
@@ -22,7 +23,7 @@ public class StoreMember {
     private Block block;
 
     @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ImgPath> imgPaths;
+    private Set<ImgPath> imgPaths = new HashSet<>();
 
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
     private String storeName;
