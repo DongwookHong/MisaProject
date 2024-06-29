@@ -39,23 +39,28 @@
   object-fit: cover;
 }
 
-.store-info {
+.store-section {
   padding: 10px;
 }
 
 .store-name {
   font-size: 15px;
-  justify-content: flex-start;
   font-weight: 800;
   margin-bottom: 5px;
+  display: block; /* 명시적으로 block으로 설정 */
+  text-align: left;
+  margin-left: 0.5vb;
 }
 
 .store-address {
   font-size: 14px;
   color: #666;
   margin-bottom: -3px;
+  margin-top: 0;
+  display: block; /* 명시적으로 block으로 설정 */
+  text-align: left;
+  margin-left: 0.5vb;
 }
-
 /* Ensure the last card in an odd-numbered set is left-aligned */
 .store-list::after {
   content: '';
