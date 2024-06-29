@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import '../style/MapGuide/Dropdown.css';
+import '../style/QRpage/Dropdown.css';
 
 function DropdownMenu() {
   const [dong, setDong] = useState('');

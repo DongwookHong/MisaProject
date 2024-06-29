@@ -76,9 +76,10 @@
 }
 
 .MapImage {
-  margin-top: 100px;
-  width: 100%;
+  margin-top: 30px;
+  width: 90%;
   height: auto;
+  margin-left: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,7 +87,7 @@
 }
 
 .responsive-canvas {
-  width: 100%;
+  width: 60%;
   height: auto;
 }
 
@@ -120,17 +121,8 @@
   }
 
   .MapImage {
-    margin-top: 90px;
+    margin-top: 30px;
   }
-}
-.MapImage {
-  margin-top: 100px;
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
 }
 
 .responsive-canvas {

@@ -1,27 +1,29 @@
-// SearchBar.js
-import React, { useState } from 'react';
-import '../style/SearchMenu/SearchBar.css';
+import React, { useState, useEffect } from 'react';
+import '../style/StoreList/SearchBar.css';
 import Select from 'react-select';
 import Findimogi from '../asset/tool/searchbtn3.png';
+import jsonData from '../test.json';
 
-const SearchBar = () => {
+const ListSearchBar = ({ setFilteredStores }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDong, setSelectedDong] = useState(null);
   const [selectedCheung, setSelectedCheung] = useState(null);
 
-  const dongOptions = [
-    { value: 'dong1', label: '힐스테이트 A' },
-    { value: 'dong2', label: '힐스테이트 B' },
-    { value: 'dong3', label: '롯데캐슬' },
-  ];
+  const dongOptions = Array.from(
+    new Set(
+      jsonData.map((store) => `${store.building_name} ${store.building_dong}`)
+    )
+  ).map((dong) => ({ value: dong, label: dong }));
 
-  const cheungOptions = [
-    { value: 'cheung2', label: 'B2' },
-    { value: 'cheung3', label: 'B1' },
-    { value: 'cheung4', label: '1F' },
-    { value: 'cheung5', label: '2F' },
-    { value: 'cheung6', label: '3F' },
-  ];
+  const cheungOptions = Array.from(
+    new Set(jsonData.map((store) => store.floor_number))
+  )
+    .map((cheung) => ({
+      value: cheung,
+      label: cheung === 0 ? 'B1층' : `${cheung}층`,
+    }))
+    .sort((a, b) => (a.value === 0 ? -1 : a.value - b.value));
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -44,6 +46,38 @@ const SearchBar = () => {
     }),
   };
 
+  const handleSearch = () => {
+    const results = jsonData.filter((store) => {
+      const matchesSearchTerm = store.store_name.includes(searchTerm);
+      const matchesDong = selectedDong
+        ? `${store.building_name} ${store.building_dong}` === selectedDong.value
+        : true;
+      const matchesCheung = selectedCheung
+        ? store.floor_number === selectedCheung.value
+        : true;
+      return matchesSearchTerm && matchesDong && matchesCheung;
+    });
+    setFilteredStores(results);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDong && selectedCheung) {
+      const results = jsonData.filter((store) => {
+        const matchesDong =
+          `${store.building_name} ${store.building_dong}` ===
+          selectedDong.value;
+        const matchesCheung = store.floor_number === selectedCheung.value;
+        return matchesDong && matchesCheung;
+      });
+      setFilteredStores(results);
+    }
+  }, [selectedDong, selectedCheung, setFilteredStores]);
   return (
     <div className="searchbar-container">
       <div className="search-header">
@@ -56,10 +90,11 @@ const SearchBar = () => {
             placeholder="매장을 입력해주세요"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="search-input"
           />
-          <div className="search-btn">
-            <img width="20" height="20" src={Findimogi}></img>
+          <div className="search-btn" onClick={handleSearch}>
+            <img width="20" height="20" src={Findimogi} alt="search" />
           </div>
         </div>
       </div>
@@ -87,4 +122,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default ListSearchBar;

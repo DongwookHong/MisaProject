@@ -1,5 +1,5 @@
 import React from 'react';
-import '../style/MapGuide/MapLocation.css';
+import '../style/QRpage/MapLocation.css';
 
 function MapComponent() {
   return (

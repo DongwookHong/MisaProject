@@ -1,0 +1,24 @@
+[
+  {
+    "type": "facility",
+    "id": 101001,
+    "building_name": "힐스테이트",
+    "building_dong": "A동",
+    "floor_number": 1,
+    "floorImage": "url",
+    "store_name": "",
+    "facilityName": "화장실",
+    "facilityIdent": 0
+  },
+  {
+    "type": "facility",
+    "id": 101001,
+    "building_name": "힐스테이트",
+    "building_dong": "A동",
+    "floor_number": 1,
+    "floorImage": "url",
+    "store_name": "",
+    "facilityName": "엘레베이터",
+    "facilityIdent": 1
+  }
+]
