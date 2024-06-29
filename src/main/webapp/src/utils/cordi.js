@@ -56,7 +56,7 @@ export const drawLocpin = (svgElement, ctx) => {
     });
 
     // Add locpin image for path elements
-    const pathIds = ['2201', 're']; // Example path ID
+    const pathIds = ['2201', 'reabc']; // Example path ID
     pathIds.forEach((id) => {
       const targetElement = svgElement.querySelector(escapeCssSelector(id));
       if (targetElement) {

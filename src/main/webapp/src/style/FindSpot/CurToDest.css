@@ -1,0 +1,31 @@
+.curtodest-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 5vh;
+}
+
+.curtodest-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width: 80%;
+}
+
+.store-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 15px;
+}
+
+.store-name {
+  font-weight: bold;
+}
+
+.store-location {
+  font-style: italic;
+}

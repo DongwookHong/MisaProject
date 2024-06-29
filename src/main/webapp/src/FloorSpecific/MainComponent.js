@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import GuideFloor from "./GuideFloor";
-import FloorSpecific from "./FloorSpecific";
-import Guide from "../MapGuide/Guide_demo";
-import MainFooter from "../Fix/MainFooter";
+import React, { useState, useRef } from 'react';
+import GuideFloor from './GuideFloor';
+import FloorSpecific from './FloorSpecific';
+import Guide from '../QRpage/Guide_demo';
+import MainFooter from '../Fix/MainFooter';
 
 function MainComponent() {
   const [shouldDrawDot, setShouldDrawDot] = useState(false);
