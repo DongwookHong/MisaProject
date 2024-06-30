@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,16 +31,14 @@ public class AdminService {
         Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName());
         validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
         Block block = new Block(floor, Long.parseLong(form.getBlockId()), "store");
-        System.out.println("form:" + form.getBlockId() + ", " + form.getFloor());
-        System.out.println("Block:" + block.getArea() + ", " + block.getFloor().getId());
         try {
             block = blockRepository.save(block);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to add block", e);
         }
 
-        StoreMember storeMember = StoreMember.from(form);
-//        validateDuplicateStoreMember(storeMember);
+        StoreMember storeMember = StoreMember.create(form);
+        validateDuplicateStoreMember(storeMember);
         storeMember.setBlock(block);
         saveImgPaths(form, storeMember);
 
@@ -49,7 +48,6 @@ public class AdminService {
             imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
             throw new IllegalStateException("Could not save storeMember", e);
         }
-        System.out.println("storeMember:" + storeMember.getId());
         return storeMember.getId();
     }
 
@@ -83,19 +81,16 @@ public class AdminService {
         storeMember.setImgPaths(makeImgPaths(imgService.upload(form.getFiles()), storeMember));
     }
 
-    public List<String> convertToImagePaths(Set<ImgPath> imgPaths) {
+    public List<String> convertToImagePaths(List<ImgPath> imgPaths) {
         return imgPaths.stream()
                 .map(ImgPath::getImgPath)  // StoreImage 객체의 imagePath 필드를 추출
                 .collect(Collectors.toList()); // 리스트로 수집
     }
 
-    public Set<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
-        Set<ImgPath> imgPaths = new HashSet<>();
+    public List<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
+        List<ImgPath> imgPaths = new ArrayList<>();
         for (String url : urlList) {
-            ImgPath imgPath = new ImgPath();
-            imgPath.setStoreMember(storeMember);
-            imgPath.setImgPath(url);
-            imgPaths.add(imgPath);
+            imgPaths.add(ImgPath.create(storeMember, url));
         }
         return imgPaths;
     }

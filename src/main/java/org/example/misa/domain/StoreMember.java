@@ -3,7 +3,9 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 import org.example.misa.controller.StoreMemberForm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
@@ -23,7 +25,7 @@ public class StoreMember {
     private Block block;
 
     @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ImgPath> imgPaths = new HashSet<>();
+    private List<ImgPath> imgPaths = new ArrayList<>();
 
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
     private String storeName;
@@ -114,19 +116,24 @@ public class StoreMember {
         this.instaPath = instaPath;
     }
 
-    public Set<ImgPath> getImgPaths() {
-        return imgPaths;
-    }
-
-    public void setImgPaths(Set<ImgPath> imgPaths) {
-        this.imgPaths = imgPaths;
-    }
-
-    public static StoreMember from(StoreMemberForm form) {
-        return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
-    }
-
     public Long getId() {
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<ImgPath> getImgPaths() {
+        return imgPaths;
+    }
+
+    public void setImgPaths(List<ImgPath> imgPaths) {
+        this.imgPaths = imgPaths;
+    }
+
+    public static StoreMember create(StoreMemberForm form) {
+        return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
+    }
+
 }

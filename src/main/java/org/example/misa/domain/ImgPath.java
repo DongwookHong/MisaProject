@@ -34,6 +34,9 @@ public class ImgPath {
 
     public void setStoreMember(StoreMember storeMember) {
         this.storeMember = storeMember;
+        if(!this.storeMember.getImgPaths().contains(this)) {
+            this.storeMember.getImgPaths().add(this);
+        }
     }
 
     public String getImgPath() {
@@ -42,6 +45,12 @@ public class ImgPath {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
-        this.storeMember.getImgPaths().add(this);
+    }
+
+    public static ImgPath create(StoreMember storeMember, String imgPath) {
+        ImgPath imgPathObj = new ImgPath();
+        imgPathObj.setStoreMember(storeMember);
+        imgPathObj.setImgPath(imgPath);
+        return imgPathObj;
     }
 }

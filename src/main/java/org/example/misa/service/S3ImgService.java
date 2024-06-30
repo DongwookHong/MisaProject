@@ -80,6 +80,7 @@ public class S3ImgService implements ImgService {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType("img/" + extension);
             objectMetadata.setContentLength(bytes.length);
+            System.out.println("bucketName: " + bucketName);
 
             try {
                 PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, S3FileName, byteArrayInputStream, objectMetadata)

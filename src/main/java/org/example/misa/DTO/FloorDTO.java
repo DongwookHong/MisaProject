@@ -1,7 +1,13 @@
 package org.example.misa.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.misa.domain.Block;
+import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 //건물, 층, 상점 이름
 public class FloorDTO {
@@ -12,23 +18,26 @@ public class FloorDTO {
     @JsonProperty("floorNumber")
     private String floorNumber;
     @JsonProperty("storeName")
-    private String storeName;
+    private List<String> storeNames;
 
-    public FloorDTO(String buildingName, String buildingDong, String floorNumber, String storeName) {
+    public FloorDTO(String buildingName, String buildingDong, String floorNumber, List<String> storeNames) {
         this.buildingName = buildingName;
         this.buildingDong = buildingDong;
         this.floorNumber = floorNumber;
-        this.storeName = storeName;
+        this.storeNames = storeNames;
     }
 
-    public static FloorDTO of(String buildingName, String buildingDong, String floorNumber, String storeName) {
-        return new FloorDTO(buildingName, buildingDong, floorNumber, storeName);
-    }
-
-    public static FloorDTO from(StoreMember storeMember) {
-        return new FloorDTO(storeMember.getBlock().getFloor().getBuildingName(),
-                storeMember.getBlock().getFloor().getBuildingDong(),
-                storeMember.getBlock().getFloor().getFloor(),
-                storeMember.getStoreName());
+    public static FloorDTO from(Floor floor) {
+        List<String> storeNames = new ArrayList<>();
+        List<Block> blocks = floor.getBlocks();
+        for (Block block : blocks) {
+            if (Objects.equals(block.getType(), "store")) {
+                storeNames.add(block.getStoreMember().getStoreName());
+            }
+        }
+        return new FloorDTO(floor.getBuildingName(),
+                floor.getBuildingDong(),
+                floor.getFloor(),
+                storeNames);
     }
 }

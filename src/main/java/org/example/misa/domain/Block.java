@@ -12,6 +12,9 @@ public class Block {
     @Column(name = "area", nullable = false)
     private Long area;
 
+    @Column(nullable = false)
+    private String type;
+
     @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
     private StoreMember storeMember;
 
@@ -21,9 +24,6 @@ public class Block {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
-
-    @Column(nullable = false)
-    private String type;
 
     //constructor
 

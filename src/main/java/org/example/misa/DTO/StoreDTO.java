@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.misa.domain.ImgPath;
 import org.example.misa.domain.StoreMember;
 
+import java.util.List;
 import java.util.Set;
 
 //상점의 모든 정보 + 상점 사진
@@ -29,7 +30,7 @@ public class StoreDTO {
     @JsonProperty("storePhone")
     private String storePhone;
     @JsonProperty("storeImages")
-    private Set<ImgPath> storeImages;
+    private List<ImgPath> storeImages;
 
     public StoreDTO(String buildingName,
                     String buildingDong,
@@ -41,7 +42,7 @@ public class StoreDTO {
                     String homepagePath,
                     String instaPath,
                     String storePhone,
-                    Set<ImgPath> storeImages) {
+                    List<ImgPath> storeImages) {
         this.buildingName = buildingName;
         this.buildingDong = buildingDong;
         this.floorNumber = floorNumber;
@@ -65,7 +66,7 @@ public class StoreDTO {
                               String homepagePath,
                               String instaPath,
                               String storePhone,
-                              Set<ImgPath> storeImages) {
+                              List<ImgPath> storeImages) {
         return new StoreDTO(buildingName, buildingDong, floorNumber, blockId, storeName, storeInfo,
                 storeTime, homepagePath, instaPath, storePhone, storeImages);
     }
