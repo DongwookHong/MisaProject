@@ -85,6 +85,7 @@ public class MisaUserController {
         return jsonSet;
     }
 
+
     @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
     public String findSpot(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
