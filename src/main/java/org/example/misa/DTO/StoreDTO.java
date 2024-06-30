@@ -30,7 +30,7 @@ public class StoreDTO {
     @JsonProperty("storePhone")
     private String storePhone;
     @JsonProperty("storeImages")
-    private List<ImgPath> storeImages;
+    private List<String> storeImages;
 
     public StoreDTO(String buildingName,
                     String buildingDong,
@@ -42,7 +42,7 @@ public class StoreDTO {
                     String homepagePath,
                     String instaPath,
                     String storePhone,
-                    List<ImgPath> storeImages) {
+                    List<String> storeImages) {
         this.buildingName = buildingName;
         this.buildingDong = buildingDong;
         this.floorNumber = floorNumber;
@@ -56,21 +56,6 @@ public class StoreDTO {
         this.storeImages = storeImages;
     }
 
-    public static StoreDTO of(String buildingName,
-                              String buildingDong,
-                              String floorNumber,
-                              String blockId,
-                              String storeName,
-                              String storeInfo,
-                              String storeTime,
-                              String homepagePath,
-                              String instaPath,
-                              String storePhone,
-                              List<ImgPath> storeImages) {
-        return new StoreDTO(buildingName, buildingDong, floorNumber, blockId, storeName, storeInfo,
-                storeTime, homepagePath, instaPath, storePhone, storeImages);
-    }
-
     public static StoreDTO from(StoreMember storeMember) {
         return new StoreDTO(storeMember.getBlock().getFloor().getBuildingName(),
                 storeMember.getBlock().getFloor().getBuildingDong(),
@@ -82,6 +67,6 @@ public class StoreDTO {
                 storeMember.getHomePagePath(),
                 storeMember.getInstaPath(),
                 storeMember.getStoreNumber(),
-                storeMember.getImgPaths());
+                storeMember.getImgPathsAsString());
     }
 }

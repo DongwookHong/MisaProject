@@ -136,4 +136,12 @@ public class StoreMember {
         return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
     }
 
+    public List<String> getImgPathsAsString() {
+        List<String> imgPaths = new ArrayList<>();
+        for (ImgPath imgPath : this.imgPaths) {
+            imgPaths.add(imgPath.getImgPath());
+        }
+        return imgPaths;
+    }
+
 }
