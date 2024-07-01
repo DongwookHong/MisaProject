@@ -2,20 +2,16 @@ package org.example.misa.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.misa.DTO.FindSpotDTO;
-import org.example.misa.DTO.FloorDTO;
-import org.example.misa.DTO.MenuDTO;
-import org.example.misa.DTO.StoreDTO;
+import org.example.misa.DTO.*;
+import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,12 +27,8 @@ public class MisaUserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/")
-//    public String home() {
-//        return "home";
-//    }
-    @GetMapping("/api/store")// 상점의 모든 정보
-    public String store(@RequestParam(value = "name") String name) {
+    @GetMapping("/api/store/{name}")// 상점의 모든 정보
+    public String store(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "";
         if (storeMember != null) {
@@ -53,13 +45,13 @@ public class MisaUserController {
 
     @GetMapping("/api/menu") // 건물, 층, 상점 이름, 상점 사진
     public List<String> menu() {
-        List<StoreMember> storeMembers = userService.findStoreMembers();
+        List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
-        if (!storeMembers.isEmpty()) {
+        if (!floors.isEmpty()) {
             ObjectMapper mapper = new ObjectMapper();
-            for (StoreMember storeMember : storeMembers) {
+            for (Floor floor : floors) {
                 try {
-                    String json = mapper.writeValueAsString(MenuDTO.from(storeMember));
+                    String json = mapper.writeValueAsString(MenuDTO.from(floor, MenuDTO.Data.dataList(floor.getBlocks())));
                     jsonSet.add(json);
                 } catch (JsonProcessingException e) {
                     throw new IllegalStateException("Failed to serialize store", e);
@@ -70,13 +62,32 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/qrpage") // 건물, 층, 상점 이름, 상점 위치 (추후 작업)
-    public String qrpage(Model model) {
-        return "qrpage";
+    @GetMapping("/api/qr-page") // 건물, 층, 상점 이름, 상점 위치 (추후 작업)
+    public List<String> qrPage() {
+        List<Floor> floors = userService.findFloors();
+        List<String> jsonSet = new ArrayList<>();
+
+        if (!floors.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            for (Floor floor : floors) {
+                try {
+                    String json = mapper.writeValueAsString(QrDTO.from(floor, QrDTO.Data.dataList(floor.getBlocks())));
+                    jsonSet.add(json);
+                } catch (IOException e) {
+                    throw new IllegalStateException("Failed to serialize floor", e);
+                }
+            }
+            for (String json : jsonSet) {
+                System.out.println(json);
+            }
+            return jsonSet;
+        }
+        return jsonSet;
     }
 
-    @GetMapping("/api/findspot") // 상점 이름, 상점 위치, 블럭, 층 이미지
-    public String findSpot(@RequestParam(value = "name") String name) {
+
+    @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
+    public String findSpot(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "";
         if (storeMember != null) {
@@ -93,13 +104,13 @@ public class MisaUserController {
 
     @GetMapping("/api/floor") //건물, 층, 상점 이름
     public List<String> floor() {
-        List<StoreMember> storeMembers = userService.findStoreMembers();
+        List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
-        if (!storeMembers.isEmpty()) {
+        if (!floors.isEmpty()) {
             ObjectMapper mapper = new ObjectMapper();
-            for (StoreMember storeMember : storeMembers) {
+            for (Floor floor : floors) {
                 try {
-                    String json = mapper.writeValueAsString(FloorDTO.from(storeMember));
+                    String json = mapper.writeValueAsString(FloorDTO.from(floor));
                     jsonSet.add(json);
                 } catch (JsonProcessingException e) {
                     throw new IllegalStateException("Failed to serialize store", e);
