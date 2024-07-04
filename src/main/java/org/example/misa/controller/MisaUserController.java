@@ -102,7 +102,7 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/floor") //건물, 층, 상점 이름
+    @GetMapping("/api/floor") //floor -> floors
     public List<String> floor() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();

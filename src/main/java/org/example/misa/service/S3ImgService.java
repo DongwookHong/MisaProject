@@ -91,7 +91,7 @@ public class S3ImgService implements ImgService {
                 inputStream.close();
                 byteArrayInputStream.close();
             }
-            urlList.add(S3Client.getUrl(bucketName, S3FileName).toString());
+            urlList.add(S3Client.getUrl(bucketName, S3FileName).toString()); // cloudfront + S3Client.getUrl(bucketName, S3FileName).toString() 로 수정
         }
         return urlList;
     }
