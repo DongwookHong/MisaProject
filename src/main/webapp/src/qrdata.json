@@ -1,0 +1,96 @@
+[
+  {
+    "buildId": "0",
+    "building_name": "힐스테이트",
+    "building_dong": "A동",
+    "floor_number": "1",
+    "data": [
+      { "id": "101001", "type": "store", "name": "쥬씨" },
+      { "id": "101002", "type": "store", "name": "미사" },
+      { "id": "101003", "type": "facility", "name": "화장실" }
+    ]
+  },
+  {
+    "building_name": "힐스테이트",
+    "building_dong": "A동",
+    "floor_number": "2",
+    "data": [
+      { "id": "101010", "type": "store", "name": "이디야" },
+      { "id": "101011", "type": "store", "name": "배스킨라빈스" },
+      { "id": "101012", "type": "facility", "name": "엘레베이터" }
+    ]
+  },
+  {
+    "building_name": "힐스테이트",
+    "building_dong": "A동",
+    "floor_number": "3",
+    "data": [
+      { "id": "101020", "type": "store", "name": "다이소" },
+      { "id": "101021", "type": "store", "name": "올리브영" },
+      { "id": "101022", "type": "facility", "name": "에스컬레이터" }
+    ]
+  },
+  {
+    "buildId": "1",
+
+    "building_name": "힐스테이트",
+    "building_dong": "B동",
+    "floor_number": "1",
+    "data": [
+      { "id": "101004", "type": "store", "name": "스타벅스" },
+      { "id": "101005", "type": "store", "name": "파리바게트" },
+      { "id": "101006", "type": "facility", "name": "엘레베이터" }
+    ]
+  },
+  {
+    "building_name": "힐스테이트",
+    "building_dong": "B동",
+    "floor_number": "2",
+    "data": [
+      { "id": "101030", "type": "store", "name": "맥도날드" },
+      { "id": "101031", "type": "store", "name": "버거킹" },
+      { "id": "101032", "type": "facility", "name": "화장실" }
+    ]
+  },
+  {
+    "building_name": "힐스테이트",
+    "building_dong": "B동",
+    "floor_number": "3",
+    "data": [
+      { "id": "101040", "type": "store", "name": "CU" },
+      { "id": "101041", "type": "store", "name": "GS25" },
+      { "id": "101042", "type": "facility", "name": "엘레베이터" }
+    ]
+  },
+  {
+    "buildId": "2",
+    "building_name": "롯데캐슬",
+    "building_dong": "C동",
+    "floor_number": "1",
+    "data": [
+      { "id": "101007", "type": "store", "name": "롯데리아" },
+      { "id": "101008", "type": "store", "name": "서브웨이" },
+      { "id": "101009", "type": "facility", "name": "화장실" }
+    ]
+  },
+  {
+    "building_name": "롯데캐슬",
+    "building_dong": "C동",
+    "floor_number": "2",
+    "data": [
+      { "id": "101050", "type": "store", "name": "ABC마트" },
+      { "id": "101051", "type": "store", "name": "나이키" },
+      { "id": "101052", "type": "facility", "name": "엘레베이터" }
+    ]
+  },
+  {
+    "building_name": "롯데캐슬",
+    "building_dong": "C동",
+    "floor_number": "3",
+    "data": [
+      { "id": "101060", "type": "store", "name": "탐앤탐스" },
+      { "id": "101061", "type": "store", "name": "할리스" },
+      { "id": "101062", "type": "facility", "name": "화장실" }
+    ]
+  }
+]

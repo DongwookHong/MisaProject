@@ -89,6 +89,8 @@
   font-size: 18px; /* Increased font size */
   font-weight: bold;
   display: block; /* Ensures new line for the text */
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .homepage-link {

@@ -12,33 +12,40 @@ function MenuBar({ menuOpen, closeMenu }) {
         <ul className="wrap-menubar">
           <div className="space" />
           <li className="menubar">
-            <Link to="/main" onClick={closeMenu}>
+            <Link to="/" onClick={closeMenu} className="menu-link">
               <h2>
                 <span className="border-top">홈</span> 가기
               </h2>
             </Link>
           </li>
           <li className="menubar">
-            <Link to="/storelist" onClick={closeMenu}>
+            <Link to="/storelist" onClick={closeMenu} className="menu-link">
               <h2>
                 <span className="border-top">매장</span> 찾기
               </h2>
             </Link>
           </li>
           <li className="menubar">
-            <Link to="/parkinfo" onClick={closeMenu}>
+            <Link to="/floor0" onClick={closeMenu} className="menu-link">
+              <h2>
+                <span className="border-top">층별</span> 안내
+              </h2>
+            </Link>
+          </li>
+          <li className="menubar">
+            <Link to="/parkinfo" onClick={closeMenu} className="menu-link">
               <h2>
                 <span className="border-top">주차</span> 안내
               </h2>
             </Link>
           </li>
-          <li className="menubar">
-            <Link to="/parkinfo" onClick={closeMenu}>
+          {/* <li className="menubar">
+            <Link to="/parkinfo" onClick={closeMenu} className="menu-link">
               <h2>
                 <span className="border-top">편의</span> 시설
               </h2>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>
