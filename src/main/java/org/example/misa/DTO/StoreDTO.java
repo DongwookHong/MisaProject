@@ -4,77 +4,69 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.misa.domain.ImgPath;
 import org.example.misa.domain.StoreMember;
 
+import java.util.List;
 import java.util.Set;
 
 //상점의 모든 정보 + 상점 사진
 public class StoreDTO {
-    @JsonProperty("BuildingName")
+    @JsonProperty("buildingName")
     private String buildingName;
-    @JsonProperty("Floor")
-    private String floor;
-    @JsonProperty("BlockName")
-    private String blockName;
-    @JsonProperty("StoreName")
+    @JsonProperty("buildingDong")
+    private String buildingDong;
+    @JsonProperty("floorNumber")
+    private String floorNumber;
+    @JsonProperty("blockId")
+    private String blockId;
+    @JsonProperty("storeName")
     private String storeName;
-    @JsonProperty("Info")
-    private String info;
-    @JsonProperty("BusinessHour")
-    private String businessHour;
-    @JsonProperty("HomePagePath")
+    @JsonProperty("storeInfo")
+    private String storeInfo;
+    @JsonProperty("storeTime")
+    private String storeTime;
+    @JsonProperty("homePagePath")
     private String homepagePath;
-    @JsonProperty("InstaPath")
+    @JsonProperty("instaPath")
     private String instaPath;
-    @JsonProperty("StoreNumber")
-    private String storeNumber;
-    @JsonProperty("ImgPaths")
-    private Set<ImgPath> imgPaths;
+    @JsonProperty("storePhone")
+    private String storePhone;
+    @JsonProperty("storeImages")
+    private List<String> storeImages;
 
     public StoreDTO(String buildingName,
-                    String floor,
-                    String blockName,
+                    String buildingDong,
+                    String floorNumber,
+                    String blockId,
                     String storeName,
-                    String info,
-                    String businessHour,
+                    String storeInfo,
+                    String storeTime,
                     String homepagePath,
                     String instaPath,
-                    String storeNumber,
-                    Set<ImgPath> imgPaths) {
+                    String storePhone,
+                    List<String> storeImages) {
         this.buildingName = buildingName;
-        this.floor = floor;
-        this.blockName = blockName;
+        this.buildingDong = buildingDong;
+        this.floorNumber = floorNumber;
+        this.blockId = blockId;
         this.storeName = storeName;
-        this.info = info;
-        this.businessHour = businessHour;
+        this.storeInfo = storeInfo;
+        this.storeTime = storeTime;
         this.homepagePath = homepagePath;
         this.instaPath = instaPath;
-        this.storeNumber = storeNumber;
-        this.imgPaths = imgPaths;
-    }
-
-    public static StoreDTO of(String buildingName,
-                              String floor,
-                              String blockName,
-                              String storeName,
-                              String info,
-                              String businessHour,
-                              String homepagePath,
-                              String instaPath,
-                              String storeNumber,
-                              Set<ImgPath> imgPaths) {
-        return new StoreDTO(buildingName, floor, blockName, storeName, info,
-                businessHour, homepagePath, instaPath, storeNumber, imgPaths);
+        this.storePhone = storePhone;
+        this.storeImages = storeImages;
     }
 
     public static StoreDTO from(StoreMember storeMember) {
         return new StoreDTO(storeMember.getBlock().getFloor().getBuildingName(),
+                storeMember.getBlock().getFloor().getBuildingDong(),
                 storeMember.getBlock().getFloor().getFloor(),
-                storeMember.getBlock().getBlockName(),
+                storeMember.getBlock().getArea().toString(),
                 storeMember.getStoreName(),
                 storeMember.getInfo(),
                 storeMember.getBusinessHour(),
                 storeMember.getHomePagePath(),
                 storeMember.getInstaPath(),
                 storeMember.getStoreNumber(),
-                storeMember.getImgPaths());
+                storeMember.getImgPathsAsString());
     }
 }

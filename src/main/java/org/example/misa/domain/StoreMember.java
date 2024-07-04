@@ -3,6 +3,9 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 import org.example.misa.controller.StoreMemberForm;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
@@ -22,11 +25,10 @@ public class StoreMember {
     private Block block;
 
     @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ImgPath> imgPaths;
+    private List<ImgPath> imgPaths = new ArrayList<>();
 
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
     private String storeName;
-
     @Column(name = "business_hour")
     private String businessHour;
     @Column(name = "info", length = 1000)
@@ -54,20 +56,13 @@ public class StoreMember {
 
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Block getBlock() {
         return block;
     }
 
     public void setBlock(Block block) {
         this.block = block;
+        block.setStoreMember(this);
     }
 
     public String getStoreName() {
@@ -79,14 +74,6 @@ public class StoreMember {
             throw new IllegalArgumentException("storeName cannot be null");
         }
         this.storeName = storeName;
-    }
-
-    public Block getStoreLocation() {
-        return block;
-    }
-
-    public void setStoreLocation(Block block) {
-        this.block = block;
     }
 
     public String getBusinessHour() {
@@ -129,15 +116,32 @@ public class StoreMember {
         this.instaPath = instaPath;
     }
 
-    public Set<ImgPath> getImgPaths() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<ImgPath> getImgPaths() {
         return imgPaths;
     }
 
-    public void setImgPaths(Set<ImgPath> imgPaths) {
+    public void setImgPaths(List<ImgPath> imgPaths) {
         this.imgPaths = imgPaths;
     }
 
-    public static StoreMember from(StoreMemberForm form) {
+    public static StoreMember create(StoreMemberForm form) {
         return new StoreMember(form.getStoreName(), form.getBusinessHour(), form.getInfo(), form.getStoreNumber(), form.getHomePagePath(), form.getInstaPath());
     }
+
+    public List<String> getImgPathsAsString() {
+        List<String> imgPaths = new ArrayList<>();
+        for (ImgPath imgPath : this.imgPaths) {
+            imgPaths.add(imgPath.getImgPath());
+        }
+        return imgPaths;
+    }
+
 }
