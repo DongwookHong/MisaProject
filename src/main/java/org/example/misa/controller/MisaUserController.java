@@ -35,6 +35,7 @@ public class MisaUserController {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 json = mapper.writeValueAsString(StoreDTO.from(storeMember));
+                System.out.println("json: " + json);
                 return json;
             } catch (JsonProcessingException e) {
                 throw new IllegalStateException("Failed to serialize store", e);
