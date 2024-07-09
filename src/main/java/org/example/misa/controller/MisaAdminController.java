@@ -20,10 +20,10 @@ public class MisaAdminController {
         this.adminService = adminService;
     }
 
-//    @GetMapping("/")
-//    public String home() {
-//        return "home";
-//    }
+    @GetMapping("/admin")
+    public String home() {
+        return "admin/home";
+    }
 
     @GetMapping("/admin/create")
     public String CreateForm() {
@@ -33,7 +33,7 @@ public class MisaAdminController {
     @PostMapping("/admin/create")
     public String createStoreMember(StoreMemberForm form) {
         Long id = adminService.join(form);
-        return "admin/home";
+        return "admin/createStoreMemberForm";
     }
 
     @GetMapping("user/storelist")

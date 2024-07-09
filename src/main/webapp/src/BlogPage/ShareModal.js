@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import KakaoShare from './KakaoShare.js';
-import FacebookShare from './FacebookShare.js';
-import TwitterShare from './TwitterShare.js';
-import LinkTo from './LinkTo.js';
-import './ShareModal.css';
+import KakaoShare from './LinkKakaoShare.js';
+import FacebookShare from './LinkFacebookShare.js';
+import TwitterShare from './LinkTwitterShare.js';
+import LinkTo from './LinkAll.js';
+import '../style/BlogPage/ShareModal.css';
 
 function ShareModal({ show, handleClose }) {
   const currentUrl = window.location.href;
@@ -35,7 +35,7 @@ function ShareModal({ show, handleClose }) {
             title="제목 영역입니다."
             className="sns-icon"
           />
-          <LinkTo url={currentUrl} className="sns-icon" />
+          <LinkTo url={currentUrl} className="sns-icon link-to-icon" />
         </div>
       </Modal.Body>
       <Modal.Footer></Modal.Footer>

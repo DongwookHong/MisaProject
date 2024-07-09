@@ -19,7 +19,7 @@ function MenuBar({ menuOpen, closeMenu }) {
             </Link>
           </li>
           <li className="menubar">
-            <Link to="/menu" onClick={closeMenu}>
+            <Link to="/storelist" onClick={closeMenu}>
               <h2>
                 <span className="border-top">매장</span> 찾기
               </h2>

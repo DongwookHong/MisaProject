@@ -6,10 +6,7 @@ import org.example.misa.domain.StoreMember;
 import org.example.misa.repository.AdminRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //관리자 서비스 (CRUD 가능)
@@ -24,14 +21,14 @@ public class TmplAdminService {
         this.imgService = imgService;
     }
 
-    public List<String> convertToImagePaths(Set<ImgPath> imgPaths) {
+    public List<String> convertToImagePaths(List<ImgPath> imgPaths) {
         return imgPaths.stream()
                 .map(ImgPath::getImgPath)  // StoreImage 객체의 imagePath 필드를 추출
                 .collect(Collectors.toList()); // 리스트로 수집
     }
 
-    public Set<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
-        Set<ImgPath> imgPaths = new HashSet<>();
+    public List<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
+        List<ImgPath> imgPaths = new ArrayList<>();
         for (String url : urlList) {
             ImgPath imgPath = new ImgPath();
             imgPath.setStoreMember(storeMember);

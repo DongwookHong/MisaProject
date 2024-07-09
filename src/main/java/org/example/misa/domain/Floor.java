@@ -3,6 +3,7 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 import org.example.misa.controller.StoreMemberForm;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,10 +15,14 @@ public class Floor {
     private Long id;
 
     @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Block> blocks;
+    @OrderBy("area asc")
+    private List<Block> blocks;
 
     @Column(nullable = false)
     private String buildingName;
+
+    @Column(nullable = false)
+    private String buildingDong;
 
     @Column(nullable = false)
     private String floor;
@@ -35,11 +40,11 @@ public class Floor {
         this.id = id;
     }
 
-    public Set<Block> getBlocks() {
+    public List<Block> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(Set<Block> blocks) {
+    public void setBlocks(List<Block> blocks) {
         this.blocks = blocks;
     }
 
@@ -49,6 +54,14 @@ public class Floor {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
+    }
+
+    public String getBuildingDong() {
+        return buildingDong;
+    }
+
+    public void setBuildingDong(String buildingDong) {
+        this.buildingDong = buildingDong;
     }
 
     public String getFloor() {

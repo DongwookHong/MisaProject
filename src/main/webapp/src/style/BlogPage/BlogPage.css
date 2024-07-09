@@ -142,3 +142,7 @@
     height: 200px; /* Further adjust height for very small screens */
   }
 }
+
+.store-describe {
+  white-space: pre-line;
+}

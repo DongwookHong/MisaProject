@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,27 +29,25 @@ public class AdminService {
 
     public Long join(StoreMemberForm form) {
         Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName());
-        validateDuplicateBlockName(form.getBlockName(), floor);
-        Block block = new Block(floor, form.getBlockName());
-
+        validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
+        Block block = new Block(floor, Long.parseLong(form.getBlockId()), "store");
         try {
-            blockRepository.save(block);
+            block = blockRepository.save(block);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to add block", e);
         }
 
-        StoreMember storeMember = StoreMember.from(form);
+        StoreMember storeMember = StoreMember.create(form);
         validateDuplicateStoreMember(storeMember);
         storeMember.setBlock(block);
         saveImgPaths(form, storeMember);
 
         try {
-            storeMemberRepository.save(storeMember);
+            storeMember = storeMemberRepository.save(storeMember);
         } catch (Exception e) {
             imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
             throw new IllegalStateException("Could not save storeMember", e);
         }
-
         return storeMember.getId();
     }
 
@@ -62,17 +61,18 @@ public class AdminService {
         return floor;
     }
 
-    private void validateDuplicateBlockName(String blockName, Floor floor) {
-        Block block = blockRepository.findByBlockNameAndFloorId(blockName, floor.getId());
+    private void validateDuplicateBlockId(Long area, Floor floor) {
+        Block block = blockRepository.findByAreaAndFloorId(area, floor.getId());
 
         if (block != null) {
             throw new IllegalStateException("이미 등록된 구역 이름입니다.");
         }
+
     }
 
     private void validateDuplicateStoreMember(StoreMember storeMember) {
-        StoreMember store = storeMemberRepository.findByStoreName(storeMember.getStoreName());
-        if (store != null) {
+        storeMember = storeMemberRepository.findByStoreName(storeMember.getStoreName());
+        if (storeMember != null) {
             throw new IllegalStateException("이미 존재하는 상점입니다.");
         }
     }
@@ -81,19 +81,16 @@ public class AdminService {
         storeMember.setImgPaths(makeImgPaths(imgService.upload(form.getFiles()), storeMember));
     }
 
-    public List<String> convertToImagePaths(Set<ImgPath> imgPaths) {
+    public List<String> convertToImagePaths(List<ImgPath> imgPaths) {
         return imgPaths.stream()
                 .map(ImgPath::getImgPath)  // StoreImage 객체의 imagePath 필드를 추출
                 .collect(Collectors.toList()); // 리스트로 수집
     }
 
-    public Set<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
-        Set<ImgPath> imgPaths = new HashSet<>();
+    public List<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
+        List<ImgPath> imgPaths = new ArrayList<>();
         for (String url : urlList) {
-            ImgPath imgPath = new ImgPath();
-            imgPath.setStoreMember(storeMember);
-            imgPath.setImgPath(url);
-            imgPaths.add(imgPath);
+            imgPaths.add(ImgPath.create(storeMember, url));
         }
         return imgPaths;
     }

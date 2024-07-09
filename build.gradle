@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.example'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.5-SNAPSHOT'
 
 java {
     toolchain {
@@ -17,8 +17,15 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+}
+
 
 dependencies {
+    implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -74,4 +81,9 @@ task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
     from "$frontendDir/build"
     into "$projectDir/src/main/resources/static"
+}
+
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
 }
