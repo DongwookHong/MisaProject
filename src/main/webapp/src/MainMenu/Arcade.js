@@ -22,10 +22,14 @@ function Arcade() {
         <div className="overlay">
           <div className="text">힐스테이트</div>
           <div className="arcade-fragment">
-            <Link to="/arcade" className="arcade-direction">
+            <Link
+              to="/build?building=힐스테이트 A동&floor=1"
+              className="arcade-direction">
               A동 바로가기 &gt;
             </Link>
-            <Link to="/qr" className="arcade-direction">
+            <Link
+              to="/build?building=힐스테이트 B동&floor=1"
+              className="arcade-direction">
               B동 바로가기 &gt;
             </Link>
           </div>
@@ -37,7 +41,9 @@ function Arcade() {
         <div className="overlay">
           <div className="text">롯데 캐슬</div>
           <div className="arcade-fragment">
-            <Link to="/" className="arcade-direction">
+            <Link
+              to="/build?building=롯데캐슬 &floor=1"
+              className="arcade-direction">
               바로가기 &gt;
             </Link>
             <Link to="/" className="arcade-direction">

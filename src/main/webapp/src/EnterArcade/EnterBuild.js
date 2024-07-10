@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Advertise from '../Fix/Advertise';
 
-import DropDown from '../QRpage/Dropdown.js';
+import DropDown from './DropDownMenu.js';
 import MapLocation from '../QRpage/MapLocation';
 
 import Guide_demo from '../QRpage/Guide_demo';

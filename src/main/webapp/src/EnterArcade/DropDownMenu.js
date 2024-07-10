@@ -3,12 +3,7 @@ import Select from 'react-select';
 import '../style/QRpage/Dropdown.css';
 import jsonData from '../qrdata.json';
 
-function DropdownMenu({
-  setBuilding,
-  setFloor,
-  initialBuilding,
-  initialFloor,
-}) {
+function Dropdown({ setBuilding, setFloor, initialBuilding, initialFloor }) {
   const [buildingOptions, setBuildingOptions] = useState([]);
   const [allFloorOptions, setAllFloorOptions] = useState([]);
   const [filteredFloorOptions, setFilteredFloorOptions] = useState([]);
@@ -144,4 +139,4 @@ function DropdownMenu({
   );
 }
 
-export default DropdownMenu;
+export default Dropdown;

@@ -65,7 +65,7 @@
   {
     "buildId": "2",
     "building_name": "롯데캐슬",
-    "building_dong": "C동",
+    "building_dong": "",
     "floor_number": "1",
     "data": [
       { "id": "101007", "type": "store", "name": "롯데리아" },
@@ -75,7 +75,7 @@
   },
   {
     "building_name": "롯데캐슬",
-    "building_dong": "C동",
+    "building_dong": "",
     "floor_number": "2",
     "data": [
       { "id": "101050", "type": "store", "name": "ABC마트" },
@@ -85,7 +85,7 @@
   },
   {
     "building_name": "롯데캐슬",
-    "building_dong": "C동",
+    "building_dong": "",
     "floor_number": "3",
     "data": [
       { "id": "101060", "type": "store", "name": "탐앤탐스" },
