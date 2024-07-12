@@ -1,35 +1,19 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import LocSearch from './LocSearch';
-import AdvertiseQR from '../Fix/AdvertiseQR';
+import Advertise from '../Fix/Advertise';
 
-import DropDown from './Dropdown.js';
-import MapLocation from './MapLocation';
-import Guide from './Guide';
-import Guide_demo from './Guide_demo';
-import PinMove from './PinMove';
+import DropDown from './DropDownMenu.js';
+import MapLocation from '../QRpage/MapLocation';
+
+import Guide_demo from '../QRpage/Guide_demo';
+import PinMove from '../QRpage/PinMove';
 import MainFooter from '../Fix/MainFooter';
 import jsonData from '../qrdata.json';
+import MainHeader from '../Fix/MainHeader.js';
 
-function QrPage() {
+function EnterArcade() {
   const [dong, setDong] = useState('');
   const [cheung, setCheung] = useState('');
 
-  // const filteredData = jsonData
-  //   .filter(
-  //     (item) =>
-  //       `${item.building_name} ${item.building_dong}` === dong &&
-  //       item.floor_number.toString() === cheung
-  //   )
-  //   .flatMap((item) => item.data); // => 기존
-  // const filteredData = jsonData.flatMap((item) => {
-  //   if (
-  //     (!dong || `${item.building_name} ${item.building_dong}` === dong) &&
-  //     (!cheung || item.floor_number.toString() === cheung)
-  //   ) {
-  //     return item.data;
-  //   }
-  //   return [];
-  // });
   const filteredData = useMemo(() => {
     const allItems = jsonData.flatMap((item) => {
       if (
@@ -68,8 +52,8 @@ function QrPage() {
 
   return (
     <div>
-      <LocSearch />
-      <AdvertiseQR />
+      <MainHeader />
+      <Advertise />
       <DropDown setDong={setDong} setCheung={setCheung} />
       {/* <Guide_demo data={filteredData} onIconClick={handleIconClick} /> */}
       <PinMove filteredData={filteredData} />
@@ -78,4 +62,4 @@ function QrPage() {
   );
 }
 
-export default QrPage;
+export default EnterArcade;

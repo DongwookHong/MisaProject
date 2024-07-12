@@ -1,24 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import '../style/QRpage/Dropdown.css';
+import jsonData from '../qrdata.json';
 
-function DropdownMenu() {
-  const [dong, setDong] = useState('');
-  const [cheung, setCheung] = useState('');
+function DropdownMenu({ setDong, setCheung }) {
+  const [dongOptions, setDongOptions] = useState([]);
+  const [cheungOptions, setCheungOptions] = useState([]);
 
-  const dongOptions = [
-    { value: 'dong1', label: '힐스테이트 A' },
-    { value: 'dong2', label: '힐스테이트 B' },
-    { value: 'dong3', label: '롯데캐슬' },
-  ];
+  useEffect(() => {
+    if (jsonData && Array.isArray(jsonData)) {
+      const uniqueDongs = Array.from(
+        new Set(
+          jsonData.map((item) => `${item.building_name} ${item.building_dong}`)
+        )
+      );
+      const uniqueCheungs = Array.from(
+        new Set(jsonData.map((item) => item.floor_number))
+      );
 
-  const cheungOptions = [
-    { value: 'cheung-1', label: 'B2' },
-    { value: 'cheung0', label: 'B1' },
-    { value: 'cheung1', label: '1F' },
-    { value: 'cheung2', label: '2F' },
-    { value: 'cheung3', label: '3F' },
-  ];
+      setDongOptions(uniqueDongs.map((dong) => ({ value: dong, label: dong })));
+      setCheungOptions(
+        uniqueCheungs.map((cheung) => ({
+          value: cheung.toString(),
+          label: cheung === 0 ? 'B1' : `${cheung}층`,
+        }))
+      );
+    } else {
+      console.error('jsonData is not defined or not an array');
+    }
+  }, []);
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -40,6 +51,7 @@ function DropdownMenu() {
       color: 'black',
     }),
   };
+
   return (
     <div className="dropdown-container">
       <div className="dropdown">
@@ -49,7 +61,6 @@ function DropdownMenu() {
         <Select
           id="dong-select"
           options={dongOptions}
-          value={dongOptions.find((option) => option.value === dong)}
           onChange={(selectedOption) => setDong(selectedOption.value)}
           classNamePrefix="react-select"
           placeholder="동을 선택하세요"
@@ -64,10 +75,9 @@ function DropdownMenu() {
         <Select
           id="cheung-select"
           options={cheungOptions}
-          value={cheungOptions.find((option) => option.value === cheung)}
           onChange={(selectedOption) => setCheung(selectedOption.value)}
           classNamePrefix="react-select"
-          placeholder="층을 선택하세요"
+          placeholder="층 선택"
           styles={customStyles}
         />
       </div>
