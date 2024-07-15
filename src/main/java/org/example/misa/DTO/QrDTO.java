@@ -39,16 +39,16 @@ public class QrDTO {
     }
 
     public static class Data {
-        @JsonProperty("type")
-        private String type;
         @JsonProperty("blockId")
         private String blockId;
+        @JsonProperty("type")
+        private String type;
         @JsonProperty("name")
         private String name;
 
-        private Data(String type, String blockId, String name) {
-            this.type = type;
+        private Data(String blockId, String type, String name) {
             this.blockId = blockId;
+            this.type = type;
             this.name = name;
         }
 
@@ -64,7 +64,7 @@ public class QrDTO {
             if (Objects.isNull(name)) {
                 name = "";
             }
-            return new Data(type, block.getArea().toString(), name);
+            return new Data(block.getArea().toString(), type, name);
         }
 
         public static List<Data> dataList(List<Block> blocks) {

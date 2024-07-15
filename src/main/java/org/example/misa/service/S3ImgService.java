@@ -28,6 +28,12 @@ public class S3ImgService implements ImgService {
     @Value("${cloud.aws.s3.bucketName}")
     private String bucketName;
 
+    @Value("${cloud.aws.s3.folderName}")
+    private String folderName;
+
+    @Value("${cloud.aws.cloudfront.domain}")
+    private String cloudFrontDomain;
+
     @Override
     public List<String> upload(List<MultipartFile> files) {
         if (Objects.isNull(files) || files.isEmpty()) {
@@ -69,21 +75,22 @@ public class S3ImgService implements ImgService {
     public List<String> uploadImgToDB(List<MultipartFile> files) throws IOException {
         List<String> urlList = new ArrayList<>();
         for (MultipartFile file : files) {
-            String orinalFileName = file.getOriginalFilename();
-            String extension = orinalFileName.substring(orinalFileName.lastIndexOf(".") + 1);
-            String S3FileName = UUID.randomUUID().toString() + "_" + orinalFileName;
+            String originalFileName = file.getOriginalFilename();
+            String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            String S3FileName = folderName + "/" + UUID.randomUUID().toString() + "_" + originalFileName;
 
             InputStream inputStream = file.getInputStream();
             byte[] bytes = IOUtils.toByteArray(inputStream);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType("img/" + extension);
+//            objectMetadata.setContentType("img/" + extension);
+            objectMetadata.setContentType(extension);
             objectMetadata.setContentLength(bytes.length);
 
             try {
                 PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, S3FileName, byteArrayInputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead);
+                        .withCannedAcl(CannedAccessControlList.Private);
                 S3Client.putObject(putObjectRequest); //send to S3
             } catch (Exception e) {
                 throw new AmazonS3Exception("Failed to upload image", e);
@@ -91,7 +98,7 @@ public class S3ImgService implements ImgService {
                 inputStream.close();
                 byteArrayInputStream.close();
             }
-            urlList.add(S3Client.getUrl(bucketName, S3FileName).toString()); // cloudfront + S3Client.getUrl(bucketName, S3FileName).toString() 로 수정
+            urlList.add(cloudFrontDomain + "/" + S3FileName);
         }
         return urlList;
     }

@@ -35,7 +35,6 @@ public class MisaUserController {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 json = mapper.writeValueAsString(StoreDTO.from(storeMember));
-                System.out.println("json: " + json);
                 return json;
             } catch (JsonProcessingException e) {
                 throw new IllegalStateException("Failed to serialize store", e);
@@ -78,9 +77,6 @@ public class MisaUserController {
                     throw new IllegalStateException("Failed to serialize floor", e);
                 }
             }
-            for (String json : jsonSet) {
-                System.out.println(json);
-            }
             return jsonSet;
         }
         return jsonSet;
@@ -122,13 +118,29 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/user/read")
-    public String read() {
-        return "user/read";
-    }
+    @GetMapping("/api/building/{buildingName}/{buildingDong}")
+    public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
+        List<Floor> floors = userService.findFloors();
+        List<String> jsonSet = new ArrayList<>();
 
-    @GetMapping("/admin/home")
-    public String adminHome() {
-        return "admin/home";
+        if (!floors.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            for (Floor floor : floors) {
+                try {
+
+                    if (!floor.getBuildingName().equals(buildingName) || !floor.getBuildingDong().equals(buildingDong)) {
+                        continue;
+                    }
+
+                    String json = mapper.writeValueAsString(BuildingDTO.from(floor, BuildingDTO.Data.dataList(floor.getBlocks())));
+                    jsonSet.add(json);
+
+                } catch (IOException e) {
+                    throw new IllegalStateException("Failed to serialize building", e);
+                }
+            }
+            return jsonSet;
+        }
+        return jsonSet;
     }
 }
