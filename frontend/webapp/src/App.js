@@ -116,8 +116,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<QrPage />} />
-          <Route path="/main" element={<Main />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/qr" element={<QrPage />} />
           <Route path="/storeinfo/:name" element={<BlogPage />} />
           <Route path="/storelist" element={<StoreList />} />
           <Route path="/parkinfo" element={<Park />} />
