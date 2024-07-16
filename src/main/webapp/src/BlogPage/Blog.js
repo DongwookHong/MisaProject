@@ -1,23 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 import MainFooter from '../Fix/MainFooter.js';
 import MainHeader from '../Fix/MainHeader.js';
 import ShareModal from './ShareModal.js';
 import Slide from './BlogPhotoSlide.js';
 import InfoPage from './InfoPage';
-import jsonData from '../test.json'; // JSON 파일 가져오기
+import '../style/BlogPage/BlogPage.css'
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 function Blog() {
-  const { id } = useParams(); // URL 파라미터에서 상점 ID를 가져옴
+  const { name } = useParams();
   const [store, setStore] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [shareData, setShareData] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storeData = jsonData.find((item) => item.id.toString() === id);
-    setStore(storeData);
-  }, [id]);
+    const fetchStoreData = async () => {
+      try {
+        const encodedName = encodeURIComponent(name);
+        const response = await axios.get(`/api/store/${encodedName}`, {
+          headers: {
+            'accept': '*/*',
+            'x-api-key': API_KEY
+          }
+        });
+        console.log('API Response:', response.data);
+        setStore(response.data);
+      } catch (error) {
+        console.error('Error fetching store data:', error);
+        setError('상점 정보를 불러오는 데 실패했습니다.');
+      }
+    };
+
+    fetchStoreData();
+  }, [name]);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -25,8 +45,8 @@ function Blog() {
   const handleShare = async () => {
     const currentUrl = window.location.href;
     const shareData = {
-      title: store.store_name,
-      text: `Check out this amazing place: ${store.info}`,
+      title: store.storeName,
+      text: `Check out this amazing place: ${store.storeInfo}`,
       url: currentUrl,
     };
 
@@ -34,7 +54,7 @@ function Blog() {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        setShareData(shareData); // 공유 데이터를 상태로 설정
+        setShareData(shareData);
         handleShowModal();
       }
     } catch (error) {
@@ -42,33 +62,43 @@ function Blog() {
     }
   };
 
-  if (!store) {
-    return <div>잘못된 페이지 접근입니다.</div>; // 데이터가 로드되지 않은 경우 로딩 메시지 표시
+  if (error) {
+    return <div>{error}</div>;
   }
+
+  if (!store) {
+    return <div>로딩 중...</div>;
+  }
+
+  console.log("Store data:", store);
 
   return (
     <>
       <MainHeader />
       <div className="blog-card">
         <InfoPage
-          store_name={store.store_name}
-          building_name={store.building_name}
-          building_dong={store.building_dong}
-          floor_number={store.floor_number}
-          business_hour={store.business_hour}
-          store_number={store.store_number}
-          insta_path={store.insta_path}
-          store_info={store.store_info}
+          store_name={store.storeName}
+          building_name={store.buildingName}
+          building_dong={store.buildingDong}
+          floor_number={store.floorNumber}
+          business_hour={store.storeTime}
+          store_number={store.storePhone}
+          insta_path={store.instaPath}
+          home_page_path={store.homePagePath}
+          store_info={store.storeInfo}
           handleShare={handleShare}
         />
-        <Slide />
+        
+        {store.storeImages && store.storeImages.length > 0 && (
+          <Slide imageUrls={store.storeImages} />
+        )}
         <ShareModal
           show={showModal}
           handleClose={handleCloseModal}
           shareData={shareData}
         />
-        <MainFooter />
       </div>
+      <MainFooter />
     </>
   );
 }
