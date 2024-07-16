@@ -9,7 +9,7 @@ import {
   Form,
 } from 'react-router-dom';
 
-import Blog from './BlogPage/BlogPage';
+// import Blog from './BlogPage/BlogPage';
 import Park from './ParkPage/ParkPage.js';
 import QrPage from './QRpage/QrPage.js';
 import FindSpot from './FindSpot/FindSpot.js';
@@ -26,13 +26,14 @@ function App() {
         <Routes>
           <Route path="/" element={<QrPage />} />
           <Route path="/main" element={<Main />} />
-          <Route path="/store0" element={<Blog />} />
-          <Route path="/storeinfo/:id" element={<BlogPage />} />
+          {/* <Route path="/store0" element={<Blog />} /> */}
+          {/* <Route path="/storeinfo/:id" element={<BlogPage />} /> */}
+          <Route path="/storeinfo/:name" element={<BlogPage />} />
           <Route path="/storelist" element={<StoreList />} />
           <Route path="/parkinfo" element={<Park />} />
           <Route path="/floorspecific" element={<MainComponent />} />
           <Route path="/qrpage" element={<QrPage />} />
-          <Route path="/findspot/:id" element={<FindSpot />} />
+          <Route path="/findspot/:name" element={<FindSpot />} />
           <Route path="/floor0" element={<FloorMenu />} />
           {/* <Route path="/store/:id" element={<StoreDetail />} /> */}
         </Routes>

@@ -8,8 +8,8 @@ const ListResult = ({ stores }) => {
       <div className="store-list">
         {stores.map((store) => (
           <Link
-            key={store.id}
-            to={`/storeinfo/${store.id}`}
+            key={store.storeName}
+            to={`/storeinfo/${store.storeName}`}
             className="store-card-link">
             <StoreCard store={store} />
           </Link>
@@ -23,14 +23,14 @@ const StoreCard = ({ store }) => {
   return (
     <div className="store-card">
       <img
-        src={store.store_image}
-        alt={store.store_name}
+        src={store.storeImage}
+        alt={store.storeName}
         className="store-image"
       />
       <div className="store-section">
-        <h3 className="store-name">{store.store_name}</h3>
+        <h3 className="store-name">{store.storeName}</h3>
         <p className="store-address">
-          {store.building_name} {store.building_dong} {store.floor_number}층
+          {store.buildingName} {store.buildingDong} {store.floorNumber}층
         </p>
       </div>
     </div>

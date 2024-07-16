@@ -1,40 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { json, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/QRpage/LocSearch.css';
-import MenuBar from '../Fix/MenuBar'; // MenuBar 컴포넌트 가져오기
+import MenuBar from '../Fix/MenuBar';
 import IconLoc from '../asset/tool/locpin.png';
 import SearchBtn from '../asset/tool/searchbtn3.png';
 import Menu from '../asset/tool/menu.png';
-import jsonData from '../test.json';
 
-function LocSearch() {
+function LocSearch({ floorData }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  //검색 하면 나오게끔
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
 
   useEffect(() => {
-    setResults(jsonData); // 처음에 모든 데이터를 결과로 설정
-  }, []);
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchRef]);
 
   const handleSearch = (event) => {
     const value = event.target.value;
     setQuery(value);
-    console.log(value);
     if (value) {
       const cleanedValue = value.trim().replace(/\s+/g, ' ').toLowerCase();
-      const filteredStores = jsonData.filter((store) =>
-        store.store_name
-          .trim()
-          .replace(/\s+/g, ' ')
-          .toLowerCase()
-          .includes(cleanedValue)
+      const filteredStores = floorData.flatMap(floor => 
+        floor.data.filter(store => 
+          store.type === 'store' && 
+          store.name.trim().replace(/\s+/g, ' ').toLowerCase().includes(cleanedValue)
+        )
       );
       setResults(filteredStores);
+      setShowResults(true);
     } else {
-      setResults(jsonData);
+      setResults([]);
+      setShowResults(false);
     }
   };
 
@@ -48,25 +56,31 @@ function LocSearch() {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      navigateToStore();
+      navigateToStore(query);
     }
   };
 
   const handleIconClick = () => {
-    navigateToStore();
+    navigateToStore(query);
   };
 
-  const navigateToStore = () => {
-    const cleanedQuery = query.trim().replace(/\s+/g, ' ').toLowerCase();
-    const matchingStore = jsonData.find(
-      (store) =>
-        store.store_name.trim().replace(/\s+/g, ' ').toLowerCase() ===
-        cleanedQuery
+  const navigateToStore = (storeName) => {
+    const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
+    const matchingStore = floorData.flatMap(floor => floor.data).find(
+      store => store.type === 'store' && 
+               store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
     );
     if (matchingStore) {
-      navigate(`/findspot/${matchingStore.id}`);
+      navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`);
     }
+    setShowResults(false);
   };
+
+  const handleResultClick = (storeName) => {
+    setQuery(storeName);
+    navigateToStore(storeName);
+  };
+
   return (
     <>
       <div className="locsearch-header">
@@ -88,7 +102,7 @@ function LocSearch() {
             <img src={Menu} alt="menu-bar" width="30" height="30" />
           </div>
         </div>
-        <div className="search-bar">
+        <div className="search-bar" ref={searchRef}>
           <input
             type="text"
             placeholder="장소 위치를 찾는 곳을 입력해주세요"
@@ -104,6 +118,19 @@ function LocSearch() {
             width="32"
             height="32"
           />
+          {showResults && results.length > 0 && (
+            <div className="search-results">
+              {results.map((store, index) => (
+                <div 
+                  key={index} 
+                  className="search-result-item"
+                  onClick={() => handleResultClick(store.name)}
+                >
+                  {store.name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <MenuBar menuOpen={menuOpen} closeMenu={closeMenu} />

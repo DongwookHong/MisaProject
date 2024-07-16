@@ -5,7 +5,11 @@
   padding-top: 100px;
 }
 
+
+
+
 .header {
+  padding-top: 20px; /* 상단 여백 추가 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +28,7 @@
   flex-grow: 1;
   margin-top: -10px; /* Adjust this value to move the title section up */
   margin-bottom: 0px; /* Adjust this value to move title section up or down */
+  padding-top: 20px; /* 상단 여백 추가 */
 }
 
 .main-title {
@@ -39,6 +44,7 @@
   width: 100%;
   position: relative;
   background-color: white !important; /* 우선순위를 높이기 위해 !important 사용 */
+  padding-top: 10px; /* 상단 여백 추가 */
 }
 
 .info_floor {
