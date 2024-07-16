@@ -12,6 +12,14 @@ function InfoPage({
   store_info,
   handleShare,
 }) {
+  const getFloorDisplay = (floorNum) => {
+    const num = Number(floorNum);
+    if (num == 0) {
+      return 'B1F';
+    } else {
+      return `${num}F`;
+    }
+  };
   return (
     <>
       <div>
@@ -21,7 +29,7 @@ function InfoPage({
           </div>
           <div className="title-subsection">
             <h6 className="info_floor">
-              {building_name} {building_dong} {floor_number}F
+              {building_name} {building_dong} {getFloorDisplay(floor_number)}
             </h6>
             <div className="share-button" onClick={handleShare}>
               <LuShare />

@@ -20,6 +20,14 @@ const ListResult = ({ stores }) => {
 };
 
 const StoreCard = ({ store }) => {
+  const getFloorDisplay = (floorNumber) => {
+    console.log(floorNumber);
+    if (floorNumber == 0) {
+      return 'B1층';
+    } else {
+      return `${floorNumber}층`;
+    }
+  };
   return (
     <div className="store-card">
       <img
@@ -30,7 +38,8 @@ const StoreCard = ({ store }) => {
       <div className="store-section">
         <h3 className="store-name">{store.storeName}</h3>
         <p className="store-address">
-          {store.buildingName} {store.buildingDong} {store.floorNumber}층
+          {store.buildingName} {store.buildingDong}{' '}
+          {getFloorDisplay(store.floorNumber)}
         </p>
       </div>
     </div>

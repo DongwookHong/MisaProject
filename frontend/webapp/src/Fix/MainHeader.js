@@ -22,7 +22,7 @@ function MainHeader() {
           <Link to="/" onClick={closeMenu}>
             <img
               className="logo"
-              src={`${process.env.PUBLIC_URL}/img/logo.png`}
+              src={`${process.env.PUBLIC_URL}/img/misalogo.png`}
               alt="MISA RODEO"
             />
           </Link>

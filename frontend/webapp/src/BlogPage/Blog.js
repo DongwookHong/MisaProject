@@ -7,7 +7,7 @@ import MainHeader from '../Fix/MainHeader.js';
 import ShareModal from './ShareModal.js';
 import Slide from './BlogPhotoSlide.js';
 import InfoPage from './InfoPage';
-import '../style/BlogPage/BlogPage.css'
+import '../style/BlogPage/BlogPage.css';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -24,9 +24,9 @@ function Blog() {
         const encodedName = encodeURIComponent(name);
         const response = await axios.get(`/api/store/${encodedName}`, {
           headers: {
-            'accept': '*/*',
-            'x-api-key': API_KEY
-          }
+            accept: '*/*',
+            'x-api-key': API_KEY,
+          },
         });
         console.log('API Response:', response.data);
         setStore(response.data);
@@ -70,7 +70,7 @@ function Blog() {
     return <div>로딩 중...</div>;
   }
 
-  console.log("Store data:", store);
+  console.log('Store data:', store);
 
   return (
     <>
@@ -88,7 +88,7 @@ function Blog() {
           store_info={store.storeInfo}
           handleShare={handleShare}
         />
-        
+
         {store.storeImages && store.storeImages.length > 0 && (
           <Slide imageUrls={store.storeImages} />
         )}

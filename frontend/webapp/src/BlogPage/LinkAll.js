@@ -30,8 +30,13 @@ function LinkTo({ url, className }) {
   };
 
   return (
-    <button className={className} onClick={copyToClipboard}>
-      <img src={LinkIcon} alt="Copy Link" />
+    <button className="sns-icon" onClick={copyToClipboard}>
+      <img
+        src={LinkIcon}
+        className="sns-icon"
+        alt="Copy Link"
+        // style={{ width: '50px', height: '50px' }}
+      />
     </button>
   );
 }
