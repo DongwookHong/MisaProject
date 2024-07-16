@@ -1,27 +1,14 @@
-
-
-
-
-
-
-
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import LocSearch from './LocSearch';
 import AdvertiseQR from '../Fix/AdvertiseQR';
-import axios from 'axios';
-import DropDown from './Dropdown.js';
-import MapLocation from './MapLocation';
-import Guide from './Guide';
-import Guide_demo from './Guide_demo';
-
+import DropDown from './Dropdown';
 import PinMove from './PinMove';
 import MainFooter from '../Fix/MainFooter';
-import jsonData from '../qrdata.json';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 function QrPage() {
-
   const [floorData, setFloorData] = useState([]);
   const [selectedFloorData, setSelectedFloorData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,71 +42,13 @@ function QrPage() {
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
-// ======= main
-//   const [dong, setDong] = useState('');
-//   const [cheung, setCheung] = useState('');
-
-//   // const filteredData = jsonData
-//   //   .filter(
-//   //     (item) =>
-//   //       `${item.building_name} ${item.building_dong}` === dong &&
-//   //       item.floor_number.toString() === cheung
-//   //   )
-//   //   .flatMap((item) => item.data); // => 기존
-//   // const filteredData = jsonData.flatMap((item) => {
-//   //   if (
-//   //     (!dong || `${item.building_name} ${item.building_dong}` === dong) &&
-//   //     (!cheung || item.floor_number.toString() === cheung)
-//   //   ) {
-//   //     return item.data;
-//   //   }
-//   //   return [];
-//   // });
-//   const filteredData = useMemo(() => {
-//     const allItems = jsonData.flatMap((item) => {
-//       if (
-//         (!dong || `${item.building_name} ${item.building_dong}` === dong) &&
-//         (!cheung || item.floor_number.toString() === cheung)
-//       ) {
-//         return item.data;
-//       }
-//       return [];
-//     });
-
-//     const stores = allItems.filter((item) => item.type === 'store');
-
-//     // 편의시설 중복 제거
-//     const facilitiesMap = new Map();
-//     allItems.forEach((item) => {
-//       if (item.type === 'facility') {
-//         if (!facilitiesMap.has(item.name)) {
-//           facilitiesMap.set(item.name, item);
-//         }
-//       }
-//     });
-//     const facilities = Array.from(facilitiesMap.values());
-
-//     return [...stores, ...facilities];
-//   }, [dong, cheung]);
-//   const handleIconClick = (item) => {
-//     console.log(`${item} 위치로 이동합니다.`);
-//   };
-
-//   useEffect(() => {
-//     console.log('동:', dong);
-//     console.log('층:', cheung);
-//     console.log('필터링된 데이터:', filteredData);
-//   }, [dong, cheung, filteredData]);
-// >>>>>>> main
 
   return (
     <div>
       <LocSearch floorData={floorData} />
       <AdvertiseQR />
-
       <DropDown floorData={floorData} onFloorSelect={handleFloorSelect} />
       <PinMove floorData={floorData} selectedFloorData={selectedFloorData} />
-
       <MainFooter />
     </div>
   );

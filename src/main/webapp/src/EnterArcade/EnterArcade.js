@@ -56,7 +56,7 @@ function EnterArcade() {
 
   return (
     <div>
-      <MainHeader />
+      {/* <MainHeader />
       <Advertise />
       <DropDown
         setBuilding={setBuilding}
@@ -65,7 +65,7 @@ function EnterArcade() {
         initialFloor={floor}
       />
       <PinMove filteredData={filteredData} />
-      <MainFooter />
+      <MainFooter /> */}
     </div>
   );
 }
