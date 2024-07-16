@@ -25,48 +25,51 @@ const getManualBoundingRectFromPath = (pathElement) => {
   };
 };
 
-export const drawLocpin = (svgDoc, ctx) => {
-  const rectIds = ["misa", "용용"];
-  const locpinImg = new Image();
-  locpinImg.src = locpin; // 절대 경로 사용
 
-  const locpinWidth = 50; // 핀 이미지의 너비 조정
-  const locpinHeight = 50; // 핀 이미지의 높이 조정
+export const drawLocpin = (svgDoc, ctx, selectedItem, floorData) => {
+  const locpinImg = new Image();
+  locpinImg.src = locpin;
+
+  const locpinWidth = 50;
+  const locpinHeight = 50;
 
   locpinImg.onload = () => {
-    rectIds.forEach((id) => {
-      const targetElement = svgDoc.querySelector(escapeCssSelector(id));
-      if (targetElement) {
-        const x = parseFloat(targetElement.getAttribute("x")) || 0;
-        const y = parseFloat(targetElement.getAttribute("y")) || 0;
-        const width = parseFloat(targetElement.getAttribute("width"));
-        const height = parseFloat(targetElement.getAttribute("height"));
+    if (!selectedItem || !floorData) return;
 
-        if (width === 0 || height === 0) {
-          console.log(`Element with ID: ${id} has invalid dimensions.`);
-        } else {
-          const cx = x + width / 2 - locpinWidth / 2;
-          const cy = y + height / 2 - locpinHeight / 2;
-          ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
-        }
-      } else {
-        console.log(`Element with ID: ${id} not found.`);
+    const selectedBlock = floorData.data.find(item => item.name === selectedItem);
+    if (!selectedBlock) {
+      console.log(`Selected item ${selectedItem} not found in floor data.`);
+      return;
+    }
+
+    const targetElement = svgDoc.getElementById(selectedBlock.blockId);
+    if (!targetElement) {
+      console.log(`Element with ID: ${selectedBlock.blockId} not found in SVG.`);
+      return;
+    }
+
+    let cx, cy;
+
+    if (targetElement.tagName.toLowerCase() === 'path') {
+      const rect = getManualBoundingRectFromPath(targetElement);
+      cx = rect.x + rect.width / 2 - locpinWidth / 2;
+      cy = rect.y + rect.height / 2 - locpinHeight / 2;
+    } else {
+      const x = parseFloat(targetElement.getAttribute("x")) || 0;
+      const y = parseFloat(targetElement.getAttribute("y")) || 0;
+      const width = parseFloat(targetElement.getAttribute("width"));
+      const height = parseFloat(targetElement.getAttribute("height"));
+
+      if (width === 0 || height === 0) {
+        console.log(`Element with ID: ${selectedBlock.blockId} has invalid dimensions.`);
+        return;
       }
-    });
 
-    const pathIds = ["la", "re"];
-    pathIds.forEach((id) => {
-      const targetElement = svgDoc.querySelector(escapeCssSelector(id));
-      if (targetElement) {
-        const rect = getManualBoundingRectFromPath(targetElement);
-        const cx = rect.x + rect.width / 2 - locpinWidth / 2;
-        const cy = rect.y + rect.height / 2 - locpinHeight / 2;
+      cx = x + width / 2 - locpinWidth / 2;
+      cy = y + height / 2 - locpinHeight / 2;
+    }
 
-        ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
-      } else {
-        console.log(`Path with ID: ${id} not found.`);
-      }
-    });
+    ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
   };
 
   locpinImg.onerror = () => {

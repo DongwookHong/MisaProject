@@ -2,58 +2,58 @@ import React, { useState, useEffect } from 'react';
 import '../style/StoreList/SearchBar.css';
 import Select from 'react-select';
 import Findimogi from '../asset/tool/searchbtn3.png';
-import jsonData from '../test.json';
 
-const ListSearchBar = ({ setFilteredStores }) => {
+const ListSearchBar = ({ setFilteredStores, allStores }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDong, setSelectedDong] = useState(null);
   const [selectedCheung, setSelectedCheung] = useState(null);
 
   const dongOptions = Array.from(
     new Set(
-      jsonData.map((store) => `${store.building_name} ${store.building_dong}`)
+      allStores.map((store) => `${store.buildingName} ${store.buildingDong}`)
     )
   ).map((dong) => ({ value: dong, label: dong }));
 
   const cheungOptions = Array.from(
-    new Set(jsonData.map((store) => store.floor_number))
+    new Set(allStores.map((store) => store.floorNumber))
   )
     .map((cheung) => ({
       value: cheung,
-      label: cheung === 0 ? 'B1층' : `${cheung}층`,
+      label: cheung === '0' ? 'B1층' : `${cheung}층`,
     }))
-    .sort((a, b) => (a.value === 0 ? -1 : a.value - b.value));
+    .sort((a, b) => (a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)));
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: 'white',
-      borderColor: '#f0f0ff',
-      boxShadow: 'none',
-      borderRadius: '5px',
-      height: '40px',
-      minHeight: '40px',
-      width: '160px',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: 'white',
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected ? '#bdafff' : 'white',
-      color: 'black',
-    }),
-  };
+    const customStyles = {
+      control: (provided) => ({
+        ...provided,
+        backgroundColor: 'white',
+        borderColor: '#f0f0ff',
+        boxShadow: 'none',
+        borderRadius: '5px',
+        height: '40px',
+        minHeight: '40px',
+        width: '160px',
+      }),
+      menu: (provided) => ({
+        ...provided,
+        backgroundColor: 'white',
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? '#bdafff' : 'white',
+        color: 'black',
+      }),
+    };
+  
 
   const handleSearch = () => {
-    const results = jsonData.filter((store) => {
-      const matchesSearchTerm = store.store_name.includes(searchTerm);
+    const results = allStores.filter((store) => {
+      const matchesSearchTerm = store.storeName.includes(searchTerm);
       const matchesDong = selectedDong
-        ? `${store.building_name} ${store.building_dong}` === selectedDong.value
+        ? `${store.buildingName} ${store.buildingDong}` === selectedDong.value
         : true;
       const matchesCheung = selectedCheung
-        ? store.floor_number === selectedCheung.value
+        ? store.floorNumber === selectedCheung.value
         : true;
       return matchesSearchTerm && matchesDong && matchesCheung;
     });
@@ -67,17 +67,13 @@ const ListSearchBar = ({ setFilteredStores }) => {
   };
 
   useEffect(() => {
-    if (selectedDong && selectedCheung) {
-      const results = jsonData.filter((store) => {
-        const matchesDong =
-          `${store.building_name} ${store.building_dong}` ===
-          selectedDong.value;
-        const matchesCheung = store.floor_number === selectedCheung.value;
-        return matchesDong && matchesCheung;
-      });
-      setFilteredStores(results);
+    if (selectedDong || selectedCheung || searchTerm) {
+      handleSearch();
+    } else {
+      setFilteredStores(allStores);
     }
-  }, [selectedDong, selectedCheung, setFilteredStores]);
+  }, [selectedDong, selectedCheung, searchTerm, allStores]);
+
   return (
     <div className="searchbar-container">
       <div className="search-header">

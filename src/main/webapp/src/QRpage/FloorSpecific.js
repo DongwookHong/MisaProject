@@ -1,24 +1,30 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-// import './FloorSpecific.css';
+import React, { useLayoutEffect, useRef, useEffect } from 'react';
 import { drawLocpin } from '../utils/drawLocpin';
 
-function FloorSpecific({ canvasRef }) {
-  const [currentFloor, setCurrentFloor] = useState('2F');
+function FloorSpecific({ canvasRef, selectedItem, selectedFloorData }) {
+  const svgDocRef = useRef(null);
+  const imgRef = useRef(null);
 
   useLayoutEffect(() => {
+    if (!selectedFloorData) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
     const loadSvgAndDraw = async () => {
       try {
-        const response = await fetch(`/img/Lotte_${currentFloor}.svg`);
+        const imageUrl = `/${selectedFloorData.floorImage}`;
+        console.log("Attempting to fetch from URL:", imageUrl);
+
+        const response = await fetch(imageUrl);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         const svgText = await response.text();
 
         const parser = new DOMParser();
         const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+        svgDocRef.current = svgDoc;
 
         const svgElement = svgDoc.querySelector('svg');
         if (!svgElement) {
@@ -28,27 +34,40 @@ function FloorSpecific({ canvasRef }) {
         const height = svgElement.getAttribute('height');
 
         const img = new Image();
-        img.src =
-          'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+        imgRef.current = img;
 
         img.onload = () => {
           canvas.width = width;
           canvas.height = height;
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0);
-          drawLocpin(svgDoc, ctx);
+          if (selectedItem) {
+            drawLocpin(svgDoc, ctx, selectedItem, selectedFloorData);
+          }
         };
 
-        img.onerror = () => {
-          console.error('Failed to load the SVG image.');
+        img.onerror = (error) => {
+          console.error('Failed to load the SVG image:', error);
         };
       } catch (error) {
-        console.error('Error fetching or parsing the SVG file:', error);
+        console.error('Error fetching or parsing the SVG file:', error.message);
       }
     };
 
     loadSvgAndDraw();
-  }, [currentFloor, canvasRef]);
+  }, [selectedFloorData, canvasRef]);
+
+  useEffect(() => {
+    if (svgDocRef.current && canvasRef.current && imgRef.current && selectedFloorData) {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      ctx.drawImage(imgRef.current, 0, 0);
+      if (selectedItem) {
+        drawLocpin(svgDocRef.current, ctx, selectedItem, selectedFloorData);
+      }
+    }
+  }, [selectedItem, selectedFloorData]);
 
   return (
     <div className="MapImage">

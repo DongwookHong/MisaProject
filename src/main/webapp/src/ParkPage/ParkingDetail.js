@@ -52,7 +52,9 @@ function ParkingDetail() {
         </div>
         {activeIndex === 1 && (
           <div className="accordion-content">
+            <p className="custom-p"> 지하철 5호선</p>
             <p className="custom-p">2번출구에서 바로 연결</p>
+            <p className="custom-p">1번출구에서 바로 연결</p>
           </div>
         )}
       </div>
@@ -61,11 +63,12 @@ function ParkingDetail() {
           <h2>버스 이용 시</h2>
           <span>{activeIndex === 2 ? '▲' : '▼'}</span>
         </div>
+
         {activeIndex === 2 && (
           <div className="accordion-content">
-            <p className="custom-p">미사역 (xxx번)</p>
-            <p className="custom-p">미사로데오 (1x-1xx)</p>
-            <p className="custom-p">custom</p>
+            <p className="custom-p">직행: 9302, 9304 </p>
+            <p className="custom-p">일반: 1-4, 81, 87, 89</p>
+            <p className="custom-p">마을: 3-1, 3-2, 5, 10, 50</p>
           </div>
         )}
       </div>
