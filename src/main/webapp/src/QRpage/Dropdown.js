@@ -1,8 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import Select from 'react-select';
 import '../style/QRpage/Dropdown.css';
-import jsonData from '../qrdata.json';
-
 
 function DropdownMenu({ floorData, onFloorSelect }) {
   const [selectedBuilding, setSelectedBuilding] = useState('');
@@ -35,34 +33,6 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     );
     onFloorSelect(selectedFloorData);
   };
-// main
-// function DropdownMenu({ setDong, setCheung }) {
-//   const [dongOptions, setDongOptions] = useState([]);
-//   const [cheungOptions, setCheungOptions] = useState([]);
-
-//   useEffect(() => {
-//     if (jsonData && Array.isArray(jsonData)) {
-//       const uniqueDongs = Array.from(
-//         new Set(
-//           jsonData.map((item) => `${item.building_name} ${item.building_dong}`)
-//         )
-//       );
-//       const uniqueCheungs = Array.from(
-//         new Set(jsonData.map((item) => item.floor_number))
-//       );
-
-//       setDongOptions(uniqueDongs.map((dong) => ({ value: dong, label: dong })));
-//       setCheungOptions(
-//         uniqueCheungs.map((cheung) => ({
-//           value: cheung.toString(),
-//           label: cheung === 0 ? 'B1' : `${cheung}층`,
-//         }))
-//       );
-//     } else {
-//       console.error('jsonData is not defined or not an array');
-//     }
-//   }, []);
-
 
   const customStyles = {
     control: (provided) => ({
@@ -93,16 +63,10 @@ function DropdownMenu({ floorData, onFloorSelect }) {
           동별 안내
         </label>
         <Select
-
           id="building-select"
           options={buildingOptions}
           value={buildingOptions.find((option) => option.value === selectedBuilding)}
           onChange={handleBuildingChange}
-//           main
-//           id="dong-select"
-//           options={dongOptions}
-//           onChange={(selectedOption) => setDong(selectedOption.value)}
-
           classNamePrefix="react-select"
           placeholder="건물을 선택하세요"
           styles={customStyles}
@@ -114,7 +78,6 @@ function DropdownMenu({ floorData, onFloorSelect }) {
           층별 안내
         </label>
         <Select
-
           id="floor-select"
           options={floorOptions}
           value={floorOptions.find((option) => option.value === selectedFloor)}
@@ -122,14 +85,6 @@ function DropdownMenu({ floorData, onFloorSelect }) {
           classNamePrefix="react-select"
           placeholder="층을 선택하세요"
           isDisabled={!selectedBuilding}
-
-//           main
-//           id="cheung-select"
-//           options={cheungOptions}
-//           onChange={(selectedOption) => setCheung(selectedOption.value)}
-//           classNamePrefix="react-select"
-//           placeholder="층 선택"
-
           styles={customStyles}
         />
       </div>
