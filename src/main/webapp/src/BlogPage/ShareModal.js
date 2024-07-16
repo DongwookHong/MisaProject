@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import KakaoShare from './LinkKakaoShare.js';
 import FacebookShare from './LinkFacebookShare.js';
-import TwitterShare from './LinkTwitterShare.js';
+// import TwitterShare from './LinkTwitterShare.js';
 import LinkTo from './LinkAll.js';
 import '../style/BlogPage/ShareModal.css';
 
@@ -30,11 +30,11 @@ function ShareModal({ show, handleClose }) {
             quote="제목 영역입니다."
             className="sns-icon"
           />
-          <TwitterShare
+          {/* <TwitterShare
             url={currentUrl}
             title="제목 영역입니다."
             className="sns-icon"
-          />
+          /> */}
           <LinkTo url={currentUrl} className="sns-icon link-to-icon" />
         </div>
       </Modal.Body>

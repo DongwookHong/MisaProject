@@ -14,8 +14,8 @@
 
 .sns-icon {
   padding: 0;
-  width: 65px;
-  height: 65px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,8 +31,8 @@ button.sns-icon {
 }
 
 .link-to-icon {
-  width: 50px; /* 원하는 크기로 조정 */
-  height: 50px; /* 원하는 크기로 조정 */
+  width: 10px; /* 원하는 크기로 조정 */
+  height: 10px; /* 원하는 크기로 조정 */
 }
 
 .custom-close-button {

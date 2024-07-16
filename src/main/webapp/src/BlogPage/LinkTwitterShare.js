@@ -10,8 +10,8 @@ function TwitterShare({ url, title, className }) {
   };
 
   return (
-    <button className={className} onClick={share}>
-      <img src={Twitter} alt="Twitter" />
+    <button className="sns-icon" onClick={share}>
+      <img src={Twitter} alt="Twitter" className="sns-icon" />
     </button>
   );
 }
