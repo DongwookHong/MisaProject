@@ -41,6 +41,7 @@
   font-family: 'Freesentation-9Black', sans-serif; /* 폰트 설정 */
   font-size: 40px; /* 폰트 크기 설정 */
   font-weight: 900; /* 폰트 굵기 설정 */
+  text-decoration: none;
 }
 
 .border-top {
@@ -85,8 +86,8 @@
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 a:visited {
@@ -95,4 +96,23 @@ a:visited {
 
 a:hover {
   color: inherit;
+}
+
+.menu-link {
+  text-decoration: none !important; /* 링크의 밑줄 제거 */
+  color: inherit !important;
+}
+
+.menu-link:visited {
+  color: inherit !important;
+}
+
+.menu-link:hover {
+  color: inherit !important;
+  text-decoration: none !important; /* 마우스 오버 시 밑줄 제거 */
+}
+
+.menu-link:active {
+  color: inherit !important;
+  text-decoration: none !important; /* 클릭 시 밑줄 제거 */
 }

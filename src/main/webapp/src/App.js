@@ -18,24 +18,23 @@ import MainComponent from './FloorSpecific/MainComponent.js';
 import Main from './MainMenu/Main.js';
 import BlogPage from './BlogPage/Blog';
 import StoreList from './StoreList/StoreList.js';
+import EnterArcade from './EnterArcade/EnterArcade.js';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<QrPage />} />
-          <Route path="/main" element={<Main />} />
-          {/* <Route path="/store0" element={<Blog />} /> */}
-          {/* <Route path="/storeinfo/:id" element={<BlogPage />} /> */}
+          <Route path="/" element={<Main />} />
           <Route path="/storeinfo/:name" element={<BlogPage />} />
           <Route path="/storelist" element={<StoreList />} />
           <Route path="/parkinfo" element={<Park />} />
           <Route path="/floorspecific" element={<MainComponent />} />
-          <Route path="/qrpage" element={<QrPage />} />
+          <Route path="/qr" element={<QrPage />} />
           <Route path="/findspot/:name" element={<FindSpot />} />
+          <Route path="/build" element={<EnterArcade />} />
           <Route path="/floor0" element={<FloorMenu />} />
-          {/* <Route path="/store/:id" element={<StoreDetail />} /> */}
+          <Route path="/floorspecific" element={<MainComponent />} />
         </Routes>
       </Router>
     </div>

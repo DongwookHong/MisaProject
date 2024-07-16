@@ -19,7 +19,7 @@ function MainHeader() {
     <>
       <div className="main_header">
         <div className="logo-container">
-          <Link to="/main" onClick={closeMenu}>
+          <Link to="/" onClick={closeMenu}>
             <img
               className="logo"
               src={`${process.env.PUBLIC_URL}/img/logo.png`}
