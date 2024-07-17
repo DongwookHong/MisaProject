@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./GuideFloor.css";
+import locpin from "../asset/tool/locpin.png";
 
-function GuideFloor({ onIconClick }) {
+function GuideFloor({ onIconClick, selectedFloorData }) {
   const [activeSection, setActiveSection] = useState("facility");
+  const [facilityItems, setFacilityItems] = useState([]);
+  const [storeItems, setStoreItems] = useState([]);
 
-  const facilityItems = ["화장실", "엘레베이터", "에스컬레이터"];
-  const storeItems = ["91MISA", "Ninety One", "쥬씨", "용용선생"];
-  const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    if (selectedFloorData) {
+      const facilities = selectedFloorData.data.filter(
+        (item) => item.type === "facility"
+      );
+      const stores = selectedFloorData.data.filter(
+        (item) => item.type === "store"
+      );
+      setFacilityItems(facilities);
+      setStoreItems(stores);
+    }
+  }, [selectedFloorData]);
 
   return (
     <div className="guide-container">
@@ -52,9 +57,9 @@ function FacilityContent({ items, onIconClick }) {
     <div className="facility-content">
       {items.map((item, index) => (
         <div className="facility-item" key={index}>
-          {item}
-          <span className="logospace" onClick={() => onIconClick("misa")}>
-            <img src="/image/pin.png" alt="loc" width="30" height="20" />
+          {item.name}
+          <span className="logospace" onClick={() => onIconClick(item.blockId)}>
+            <img src={locpin} alt="loc" width="30" height="20" />
           </span>
         </div>
       ))}

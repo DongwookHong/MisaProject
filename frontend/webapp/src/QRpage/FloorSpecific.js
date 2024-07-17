@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useEffect } from 'react';
 import { drawLocpin } from '../utils/drawLocpin';
 
-function FloorSpecific({ canvasRef, selectedItem, selectedFloorData }) {
+function FloorSpecific({ canvasRef, selectedItem, selectedFloorData, currentLocation }) {
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
 
@@ -13,7 +13,7 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData }) {
 
     const loadSvgAndDraw = async () => {
       try {
-        const imageUrl = `/${selectedFloorData.floorImage}`;
+        const imageUrl = `${selectedFloorData.floorImage}`;
         console.log("Attempting to fetch from URL:", imageUrl);
 
         const response = await fetch(imageUrl);
@@ -42,8 +42,11 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData }) {
           canvas.height = height;
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0);
+          if (currentLocation) {
+            drawLocpin(svgDoc, ctx, currentLocation, selectedFloorData, true);
+          }
           if (selectedItem) {
-            drawLocpin(svgDoc, ctx, selectedItem, selectedFloorData);
+            drawLocpin(svgDoc, ctx, { name: selectedItem }, selectedFloorData, false);
           }
         };
 
@@ -56,18 +59,21 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData }) {
     };
 
     loadSvgAndDraw();
-  }, [selectedFloorData, canvasRef]);
+  }, [selectedFloorData, canvasRef, currentLocation]);
 
   useEffect(() => {
     if (svgDocRef.current && canvasRef.current && imgRef.current && selectedFloorData) {
       const ctx = canvasRef.current.getContext('2d');
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(imgRef.current, 0, 0);
+      if (currentLocation) {
+        drawLocpin(svgDocRef.current, ctx, currentLocation, selectedFloorData, true);
+      }
       if (selectedItem) {
-        drawLocpin(svgDocRef.current, ctx, selectedItem, selectedFloorData);
+        drawLocpin(svgDocRef.current, ctx, { name: selectedItem }, selectedFloorData, false);
       }
     }
-  }, [selectedItem, selectedFloorData]);
+  }, [selectedItem, selectedFloorData, currentLocation]);
 
   return (
     <div className="MapImage">

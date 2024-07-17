@@ -47,7 +47,7 @@ function Banner({ imageUrl }) {
   return (
     <div className="main_ban_qr">
       <div className="banner-content">
-        <Link to="/store0">
+        <Link to="/findad">
           <img className="ban" src={imageUrl} alt="banner" />
         </Link>
       </div>

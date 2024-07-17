@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Guide_demo from './Guide_demo';
 import FloorSpecific from './FloorSpecific';
 
-function PinMove({ floorData, selectedFloorData }) {
+function PinMove({ floorData, selectedFloorData, currentLocation }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const canvasRef = useRef(null);
 
@@ -13,8 +13,16 @@ function PinMove({ floorData, selectedFloorData }) {
 
   return (
     <div>
-      <FloorSpecific canvasRef={canvasRef} selectedItem={selectedItem} selectedFloorData={selectedFloorData} />
-      <Guide_demo onIconClick={handleIconClick} floorData={selectedFloorData ? [selectedFloorData] : floorData} />
+      <FloorSpecific 
+        canvasRef={canvasRef} 
+        selectedItem={selectedItem} 
+        selectedFloorData={selectedFloorData}
+        currentLocation={currentLocation}
+      />
+      <Guide_demo 
+        onIconClick={handleIconClick} 
+        floorData={selectedFloorData ? [selectedFloorData] : floorData}
+      />
     </div>
   );
 }
