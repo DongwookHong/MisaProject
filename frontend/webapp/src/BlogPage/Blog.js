@@ -17,6 +17,7 @@ function Blog() {
   const [showModal, setShowModal] = useState(false);
   const [shareData, setShareData] = useState({});
   const [error, setError] = useState(null);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchStoreData = async () => {
@@ -30,6 +31,28 @@ function Blog() {
         });
         console.log('API Response:', response.data);
         setStore(response.data);
+        
+        // Check for storeImage or storeImages
+        if (response.data.storeImage) {
+          const url = response.data.storeImage.startsWith('http') 
+            ? response.data.storeImage 
+            : `https://${response.data.storeImage}`;
+          setImages([url]);
+          console.log('Single Image URL:', url);
+        } else if (Array.isArray(response.data.storeImages)) {
+          const processedImages = response.data.storeImages.map(url => {
+            if (typeof url === 'string') {
+              return url.startsWith('http') ? url : `https://${url}`;
+            }
+            return null;
+          }).filter(url => url !== null);
+          
+          setImages(processedImages);
+          console.log('Processed Images:', processedImages);
+        } else {
+          console.warn('No valid image data found');
+          setImages([]);
+        }
       } catch (error) {
         console.error('Error fetching store data:', error);
         setError('상점 정보를 불러오는 데 실패했습니다.');
@@ -71,6 +94,8 @@ function Blog() {
   }
 
   console.log('Store data:', store);
+  console.log('Images:', images);
+
 
   return (
     <>
@@ -89,8 +114,10 @@ function Blog() {
           handleShare={handleShare}
         />
 
-        {store.storeImages && store.storeImages.length > 0 && (
-          <Slide imageUrls={store.storeImages} />
+        {images.length > 0 && (
+          <>
+            <Slide imageUrls={images} />
+          </>
         )}
         <ShareModal
           show={showModal}

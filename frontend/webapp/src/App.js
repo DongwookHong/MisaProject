@@ -110,6 +110,7 @@ import Main from './MainMenu/Main.js';
 import BlogPage from './BlogPage/Blog';
 import StoreList from './StoreList/StoreList.js';
 import EnterArcade from './EnterArcade/EnterArcade.js';
+import FindAD from './Fix/FindAD.js';
 
 function App() {
   return (
@@ -126,6 +127,7 @@ function App() {
           <Route path="/build" element={<EnterArcade />} />
           <Route path="/floor0" element={<FloorMenu />} />
           <Route path="/floorspecific" element={<MainComponent />} />
+          <Route path="/findad" element={<FindAD />} />
         </Routes>
       </Router>
     </div>
