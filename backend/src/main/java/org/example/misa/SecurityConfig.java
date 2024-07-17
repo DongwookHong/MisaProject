@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole("USER")
 //                        .requestMatchers(mvcMatcherBuilder.pattern("/api/*")).hasRole("USER")
                         .anyRequest().authenticated())
-                .addFilterBefore(apiKeyFilter(), AuthorizationFilter.class)
+                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), AuthorizationFilter.class)
 //                .formLogin(AbstractHttpConfigurer::disable)
         ;
         return http.build();
@@ -69,36 +69,17 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
-//        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(new HandlerMappingIntrospector()).servletPath("/test");
-        http
-                .securityMatcher("/test")
-                .authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers(mvcMatcherBuilder.pattern("**")).permitAll()
-                        .anyRequest().permitAll());
-        return http.build();
-    }
-    @Bean
-    public ApiKeyFilter apiKeyFilter() {
-        return new ApiKeyFilter();
-    }
-
     @Bean
     public AuthenticationManager apiAuthenticationManager() {
         System.out.println("apiAuthenticationManager");
 
-        return new ProviderManager(apiKeyAuthProvider());
+        ApiKeyAuthProvider apiKeyAuthProvider = new ApiKeyAuthProvider();
+
+        return new ProviderManager(apiKeyAuthProvider);
     }
 
     @Bean
-    public ApiKeyAuthProvider apiKeyAuthProvider() {
-        return new ApiKeyAuthProvider();
-    }
-
-    @Bean
+    @Primary
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         System.out.println("authenticationManager");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

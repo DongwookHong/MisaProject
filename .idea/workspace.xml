@@ -5,279 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bd32b69-b1d2-49e8-928a-5756329f2974" name="변경" comment="merge">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AWSCLIV2.pkg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/FindSpotDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/FloorDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/MenuDTO$Data.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/MenuDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/QrDTO$Data.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/QrDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/DTO/StoreDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/MisaApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/S3Config.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/SpringConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/controller/HomeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/controller/MisaAdminController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/controller/MisaUserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/controller/StoreMemberForm.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/domain/Block.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/domain/Facility.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/domain/Floor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/domain/ImgPath.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/domain/StoreMember.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/AdminRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/BlockRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/FloorRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/SpringDataJpaAdminRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/SpringDataJpaUserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/StoreMemberRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/AdminService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/BlockService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/ImgService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/S3ImgService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/ServerImgService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/TmplAdminService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/org/example/misa/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/ban/ad1 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/ban/ad1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/ban/ad2 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/ban/ad2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/91misa.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/91misa1.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/91misa2 2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/91misa2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/H_A_1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/Lotte_2F.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/back 2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/back.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/blog.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/hillstateA1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/hillstateA1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/location 2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/location.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/logo.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/logodown.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/menu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/pin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/screeb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/미사로고1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/용용선생.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/용용선생.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/쥬씨.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/img/쥬씨.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/91map 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/91map.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/B.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/map1 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/map1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/misa1 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/mapcollect/misa1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.46acfbb6.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.46acfbb6.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.7d3edcf0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.7d3edcf0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.9af49381.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.9af49381.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.b04cfd8d.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.b04cfd8d.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.bbd0308f.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/css/main.bbd0308f.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/453.7ee4f7c5.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/453.7ee4f7c5.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.6e98da45.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.6e98da45.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.6e98da45.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.85b7398d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.85b7398d.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.85b7398d.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.9f779766.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.9f779766.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.9f779766.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.db3c6bfa.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.db3c6bfa.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.db3c6bfa.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f38cf2b7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f38cf2b7.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f38cf2b7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f83fde9d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f83fde9d.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/js/main.f83fde9d.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/91misa.8ac468af13d309151508.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/91misa1.deef4fbb23fe2d1b2fa9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/91misa2.68523abc31c3164f6426.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/Freesentation-3Light.21fc11c240403ea7d7e1.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/gmarket_medi.d4bac6b182bed73c9375.d4bac6b182bed73c9375.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/link.7e869abe8e03d96ca880.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/locpin.abf0fdd58616d801b5c9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/searchbtn3.7408d4718310ae5a8037.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/twitter.0a6edad28bf9b515be48.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/static/media/twitter.8926ec403245c8601a84.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/stores/store0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/stores/store1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/stores/store2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/static/stores/store3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/admin/createStoreMemberForm.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/admin/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/user/findstorebystorename.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/user/read.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/user/store.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main/templates/user/storelist.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/block.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/floor.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/storemember.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/BuildingDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/FindSpotDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/FloorDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/MenuDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/QrDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/DTO/StoreDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/MisaApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/S3Config.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/SpringConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/controller/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/controller/LoginController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/controller/MisaAdminController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/controller/MisaUserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/controller/StoreMemberForm.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/domain/Block.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/domain/Facility.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/domain/Floor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/domain/ImgPath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/domain/StoreMember.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/filter/ApiKeyAuthProvider.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/filter/ApiKeyFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/AdminRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/BlockRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/FloorRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/SpringDataJpaAdminRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/StoreMemberRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/AdminService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/BlockService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/ImgService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/S3ImgService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/ServerImgService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/misa/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/ban/ad1 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/ban/ad1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/ban/ad2 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/ban/ad2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/91misa.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/91misa1.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/91misa2 2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/91misa2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/H_A_1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/Lotte_2F.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/back 2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/back.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/blog.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/hillstateA1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/hillstateA1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/location 2.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/location.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logodown.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/menu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/pin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/screeb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/미사로고1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/용용선생.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/용용선생.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/쥬씨.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/쥬씨.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/91map 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/91map.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/B.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/map1 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/map1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/misa1 2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/mapcollect/misa1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.46acfbb6.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.46acfbb6.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.7d3edcf0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.7d3edcf0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.9af49381.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.9af49381.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.b04cfd8d.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.b04cfd8d.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.bbd0308f.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/css/main.bbd0308f.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/453.7ee4f7c5.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/453.7ee4f7c5.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.6e98da45.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.6e98da45.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.6e98da45.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.85b7398d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.85b7398d.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.85b7398d.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.9f779766.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.9f779766.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.9f779766.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.db3c6bfa.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.db3c6bfa.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.db3c6bfa.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f38cf2b7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f38cf2b7.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f38cf2b7.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f83fde9d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f83fde9d.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/js/main.f83fde9d.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/91misa.8ac468af13d309151508.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/91misa1.deef4fbb23fe2d1b2fa9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/91misa2.68523abc31c3164f6426.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/Freesentation-3Light.21fc11c240403ea7d7e1.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/gmarket_medi.d4bac6b182bed73c9375.d4bac6b182bed73c9375.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/link.7e869abe8e03d96ca880.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/locpin.abf0fdd58616d801b5c9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/searchbtn3.7408d4718310ae5a8037.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/twitter.0a6edad28bf9b515be48.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/static/media/twitter.8926ec403245c8601a84.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/stores/store0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/stores/store1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/stores/store2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/stores/store3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/createStoreMemberForm.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/findstorebystorename.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/read.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/store.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/storelist.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/misa/service/TempTmplAdminServiceTest.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/filter/ApiKeyAuthProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/filter/ApiKeyAuthProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/filter/ApiKeyFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/misa/filter/ApiKeyFilter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -326,6 +58,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="PerforceDirect.Settings">
+    <option name="CHARSET" value="없음" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -337,54 +72,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.소스 다운로드.executor": "Run",
-    "JUnit.AdminServiceTest.상점등록.executor": "Run",
-    "JUnit.MemoryStoreMemberRepositoryTest.executor": "Run",
-    "JUnit.MemoryStoreMemberRepositoryTest.findAll.executor": "Run",
-    "JUnit.MemoryStoreMemberRepositoryTest.findByStoreName.executor": "Run",
-    "JUnit.MemoryStoreMemberRepositoryTest.save.executor": "Run",
-    "JUnit.ServerImgServiceTest.upload.executor": "Run",
-    "JUnit.StoreAdminServiceTest.executor": "Run",
-    "JUnit.StoreAdminServiceTest.joinStoreMember.executor": "Run",
-    "JUnit.StoreAdminServiceTest.상점등록.executor": "Run",
-    "JUnit.StoreAdminServiceTest.중복_회원_예외.executor": "Run",
-    "JUnit.StoreMemberServiceTest.executor": "Run",
-    "JUnit.StoreMemberServiceTest.findStoreMembers.executor": "Run",
-    "JUnit.StoreMemberServiceTest.join.executor": "Run",
-    "JUnit.TempAdminServiceTest.findStoreMembers.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.MisaApplication (1).executor": "Run",
-    "Spring Boot.MisaApplication.executor": "Run",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "database.data.extractors.current.export.id": "SQL Inserts",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "JeIsNewbie",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/ahkiler/Desktop/MisaProject/src/main/resources/templates/admin",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "프로젝트",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.5114943",
-    "settings.editor.selected.configurable": "Errors",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.소스 다운로드.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AdminServiceTest.상점등록.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MemoryStoreMemberRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MemoryStoreMemberRepositoryTest.findAll.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MemoryStoreMemberRepositoryTest.findByStoreName.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MemoryStoreMemberRepositoryTest.save.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerImgServiceTest.upload.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreAdminServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreAdminServiceTest.joinStoreMember.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreAdminServiceTest.상점등록.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreAdminServiceTest.중복_회원_예외.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreMemberServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreMemberServiceTest.findStoreMembers.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StoreMemberServiceTest.join.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TempAdminServiceTest.findStoreMembers.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.MisaApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MisaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;JeIsNewbie&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/ahkiler/Desktop/MisaProject/src/main/resources/templates/admin&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;프로젝트&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.5114943&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/templates/admin" />
