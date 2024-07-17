@@ -118,15 +118,15 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/qr" element={<QrPage />} />
+          <Route path="/qr/:id" element={<QrPage />} />
           <Route path="/storeinfo/:name" element={<BlogPage />} />
           <Route path="/storelist" element={<StoreList />} />
           <Route path="/parkinfo" element={<Park />} />
           <Route path="/floorspecific" element={<MainComponent />} />
           <Route path="/findspot/:name" element={<FindSpot />} />
           <Route path="/build" element={<EnterArcade />} />
-          <Route path="/floor0" element={<FloorMenu />} />
-          <Route path="/floorspecific" element={<MainComponent />} />
+          <Route path="/floormenu" element={<FloorMenu />} />
+          <Route path="/floorspecific/:building/:wing"element={<MainComponent />}/>
           <Route path="/findad" element={<FindAD />} />
         </Routes>
       </Router>

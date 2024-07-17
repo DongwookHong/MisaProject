@@ -12,7 +12,7 @@ module.exports = function(app) {
   );
 
   app.use(
-    '/d2uoi63j88ocg6.cloudfront.net',
+    'd2uoi63j88ocg6.cloudfront.net',
     createProxyMiddleware({
       target: 'https://d2uoi63j88ocg6.cloudfront.net',
       changeOrigin: true,

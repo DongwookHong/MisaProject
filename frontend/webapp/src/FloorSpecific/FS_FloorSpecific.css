@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 100px; /* MenuBar와 FloorNav의 높이를 고려한 패딩 */
 }
 
 .MenuBar {
@@ -9,12 +10,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: white;
-  z-index: 1001;
+  z-index: 1002; /* FloorNav보다 위에 오도록 z-index 증가 */
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 0.5em 1em;
+  background-color: #fff; /* 배경색 추가 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
 }
 
 .MenuBar .back-button {
@@ -36,7 +38,6 @@
   align-items: center;
   cursor: pointer;
   font-size: 1.5em;
-  margin-left: 10px;
 }
 
 .MenuBar .menu-icon img {
@@ -46,11 +47,11 @@
 
 .FloorNav {
   position: fixed;
-  top: 50px;
+  top: 50px; /* MenuBar 아래에 위치하도록 조정 */
   left: 0;
   width: 100%;
   background: #444;
-  z-index: 1000;
+  z-index: 1001;
   display: flex;
   justify-content: space-around;
   padding: 0.5em 0;
@@ -76,10 +77,10 @@
 }
 
 .MapImage {
-  margin-top: 30px;
-  width: 90%;
+  width: 100%;
+  max-width: 800px; /* 최대 너비 설정 */
   height: auto;
-  margin-left: 20px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,12 +88,17 @@
 }
 
 .responsive-canvas {
-  width: 60%;
+  width: 100%;
   height: auto;
+  display: block;
 }
 
 /* 모바일에 맞춘 스타일 */
 @media (max-width: 430px) and (max-height: 932px) {
+  .FloorHeader {
+    padding-top: 90px; /* 모바일에서 상단 여백 조정 */
+  }
+
   .MenuBar {
     padding: 0.5em;
   }
@@ -121,12 +127,6 @@
   }
 
   .MapImage {
-    margin-top: 30px;
+    margin-top: 10px;
   }
-}
-
-.responsive-canvas {
-  width: 100%;
-  height: 100%; /* 기존 코드에서 height를 auto로 설정했으나, 100%로 변경하여 전체 영역을 차지하도록 함 */
-  display: block; /* 블록 요소로 설정하여 제대로 렌더링 되도록 함 */
 }
