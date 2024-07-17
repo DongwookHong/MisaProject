@@ -1,0 +1,38 @@
+.banner-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Add this to handle overflow when swiping */
+}
+
+.main_ban {
+  position: relative;
+  width: 80%;
+  margin-top: 100px;
+}
+
+.banner-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.ban {
+  border-radius: 5px;
+  width: 100%;
+}
+
+.slide-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 14px;
+  z-index: 1;
+}

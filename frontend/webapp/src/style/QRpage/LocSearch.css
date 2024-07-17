@@ -1,0 +1,114 @@
+/* 기존 CSS 유지 */
+.locsearch-header {
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.header-content {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.search-menu {
+  display: flex;
+  align-items: center;
+}
+
+.logo-item {
+  margin-left: -10px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.current-location {
+  color: #5d4fbb;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin-top: 16px;
+  padding: 5px 10px 5px 5px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  position: relative; /* 검색 결과 위치 지정을 위해 추가 */
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.search-icon {
+  padding-left: 8px;
+}
+
+/* 새로운 검색 결과 스타일 */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.search-result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
+}
+
+.search-result-item:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+/* 스크롤바 스타일 (옵션) */
+.search-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-results::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 10px 0;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

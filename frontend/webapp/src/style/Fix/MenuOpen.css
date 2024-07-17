@@ -1,0 +1,77 @@
+.banner {
+  border-radius: 10px; /* Add rounded corners */
+  background-color: #f5e8ff;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 20px); /* Adjust the width to account for margin */
+  margin: 3px auto; /* Add margin to center the banner horizontally */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  margin-top: 100px;
+}
+
+.banner-header {
+  font-size: 25px;
+  align-content: flex-start;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px; /* This already has rounded corners */
+}
+
+.wrap-menu {
+  background-color: #fff;
+  /* background: url(../img/back.jpg) 50% 50%; */
+  background-color: transparent;
+  background-size: cover;
+  bottom: 100px;
+  font-family: Black Han Sans, sans-serif;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 90px;
+  z-index: 999;
+}
+
+.wrap-menu,
+.wrap-menubar {
+  font-size: 100px;
+  width: 100%;
+}
+
+.wrap-menubar {
+  left: 50%;
+  max-width: 920px;
+  position: absolute;
+  top: 166px;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.menubar1 {
+  font-size: 100px;
+  padding-bottom: 40px;
+  padding-top: 30px;
+}
+
+.menubtn {
+  border-radius: 100%; /* This already has rounded corners */
+  height: 50px;
+  position: absolute;
+  right: 25px;
+  top: 5px;
+  width: 50px;
+}

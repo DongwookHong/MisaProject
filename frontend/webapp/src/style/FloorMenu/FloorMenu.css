@@ -1,0 +1,241 @@
+.container {
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
+  padding: 16px;
+  position: relative; /* Make this container relative */
+}
+.centered-image {
+  border: 2px solid black; /* 원하는 색상과 두께로 변경 가능 */
+}
+
+.flex-dong {
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+  background-color: #ffffff;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+  background-color: #faf5ff;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.mb-4 {
+  margin-bottom: 26px;
+}
+
+.space-x-4 > *:not(:last-child) {
+  margin-right: 2px;
+}
+
+.border {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rounded {
+  border-radius: 18px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.text-gray-900 {
+  color: #1a202c;
+}
+
+.bg-purple-100 {
+  background-color: #faf5ff;
+  height: 100%;
+}
+
+.bg-purple-500 {
+  background-color: #9f7aea;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-gray-500 {
+  color: #a0aec0;
+}
+
+.button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.map_button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 16px; /* Adjust as needed */
+}
+
+.map_button {
+  padding: 10px 10px;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.button-selected {
+  color: #4a5568;
+  border-bottom: 2px solid #1a202c;
+}
+
+.button-unselected {
+  color: #a0aec0;
+}
+
+.floor-container {
+  flex-basis: 25%; /* Adjust the basis to decrease width */
+  flex-grow: 0; /* Prevent it from growing */
+  height: 1000%; /* Set to 100% height */
+}
+
+.floor {
+  padding: 16px 0; /* Increase padding to make it larger */
+  text-align: center;
+  cursor: pointer;
+}
+
+.tenant-container {
+  padding: 5px;
+  width: 75%; /* 3/4 width equivalent */
+  height: 700px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+.tenant {
+  width: 100%; /* Full width */
+  height: 45px;
+  padding: 8px 0;
+  padding-left: 20px;
+  border-bottom: 3px solid #e2e8f0; /* Increased border width */
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.floor-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #1a202c;
+  background-color: #ffffff;
+  color: #1a202c;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.floor-button img {
+  margin-right: 8px;
+}
+
+.centered-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; /* Ensure it appears on top */
+}
+
+.head {
+  border-bottom: 2px solid gray;
+  padding: 10px;
+}
+
+@font-face {
+  font-family: 'BMDOHYEON-Regular';
+  /* font-weight: normal;
+  src: url('./fonts/BMDOHYEON_ttf.ttf') format('truetype'); */
+}
+
+body {
+  font-family: 'BMDOHYEON-Regular';
+}
+
+.no-wrap {
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 768px) {
+  .map_button-container {
+    justify-content: flex-end;
+  }
+
+  .map_button {
+    margin-left: 0;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .tenant-container {
+    width: 100%; /* Full width for small screens */
+    background-color: #ffffff;
+  }
+
+  .floor-container {
+    width: 100%; /* Full width for small screens */
+    display: flex;
+    flex-direction: column; /* Changed to column for smaller screens */
+    overflow-x: auto;
+  }
+
+  .floor {
+    flex: 1;
+    padding: 8px;
+  }
+
+  .no-wrap {
+    flex-wrap: wrap;
+  }
+}
