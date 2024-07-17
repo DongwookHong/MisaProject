@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/BlogPage/Slide.css';
 
-function CarouselDemo({ imageUrls }) {
+function CarouselDemo({ imageUrls, autoSlideInterval = 4000 }) {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
@@ -21,7 +21,7 @@ function CarouselDemo({ imageUrls }) {
         onSelect={handleSelect}
         controls={true}
         indicators={true}
-        interval={null}>
+        interval={autoSlideInterval}>
         {imageUrls.map((imageUrl, idx) => (
           <Carousel.Item key={idx}>
             <img
