@@ -14,9 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
-/*
-상점 이미지와 지도 이미지는 다른 폴더로 관리?
- */
+
 public class S3ImgService implements ImgService {
 
     private final AmazonS3 S3Client;

@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(origins = "https://misarodeo.com, https://www.misarodeo.com, https://api.misarodeo.com, http://api.misarodeo.com")
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 public class MisaUserController {
 

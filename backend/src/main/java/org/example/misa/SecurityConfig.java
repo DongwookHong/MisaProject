@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole("USER")
 //                        .requestMatchers(mvcMatcherBuilder.pattern("/api/*")).hasRole("USER")
                         .anyRequest().authenticated())
-                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), AuthorizationFilter.class)
+                .addFilterBefore(apiKeyFilter(), AuthorizationFilter.class)
 //                .formLogin(AbstractHttpConfigurer::disable)
         ;
         return http.build();
@@ -81,19 +81,26 @@ public class SecurityConfig {
                         .anyRequest().permitAll());
         return http.build();
     }
-
     @Bean
-    public AuthenticationManager apiAuthenticationManager() {
-
-        ApiKeyAuthProvider authenticationProvider = new ApiKeyAuthProvider();
-
-        return new ProviderManager(authenticationProvider);
+    public ApiKeyFilter apiKeyFilter() {
+        return new ApiKeyFilter();
     }
 
     @Bean
-    @Primary
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public AuthenticationManager apiAuthenticationManager() {
+        System.out.println("apiAuthenticationManager");
 
+        return new ProviderManager(apiKeyAuthProvider());
+    }
+
+    @Bean
+    public ApiKeyAuthProvider apiKeyAuthProvider() {
+        return new ApiKeyAuthProvider();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        System.out.println("authenticationManager");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FloorRepository extends JpaRepository<Floor, String> {
-    public Floor findByFloorAndBuildingName(String floor, String buildingName);
+    public Floor findByFloorAndBuildingNameAndBuildingDong(String floor, String buildingName, String buildingDong);
 }

@@ -6,30 +6,30 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
+backend/.idea/**/workspace.xml
+backend/.idea/**/tasks.xml
+backend/.idea/**/usage.statistics.xml
+backend/.idea/**/dictionaries
+backend/.idea/**/shelf
 
 # AWS User-specific
-.idea/**/aws.xml
+backend/.idea/**/aws.xml
 
 # Generated files
-.idea/**/contentModel.xml
+backend/.idea/**/contentModel.xml
 
 # Sensitive or high-churn files
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/dbnavigator.xml
+backend/.idea/**/dataSources/
+backend/.idea/**/dataSources.ids
+backend/.idea/**/dataSources.local.xml
+backend/.idea/**/sqlDataSources.xml
+backend/.idea/**/dynamic.xml
+backend/.idea/**/uiDesigner.xml
+backend/.idea/**/dbnavigator.xml
 
 # Gradle
-.idea/**/gradle.xml
-.idea/**/libraries
+backend/.idea/**/gradle.xml
+backend/.idea/**/libraries
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
@@ -48,7 +48,7 @@
 cmake-build-*/
 
 # Mongo Explorer plugin
-.idea/**/mongoSettings.xml
+backend/.idea/**/mongoSettings.xml
 
 # File-based project format
 *.iws
@@ -63,10 +63,10 @@ out/
 atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
-.idea/replstate.xml
+backend/.idea/replstate.xml
 
 # SonarLint plugin
-.idea/sonarlint/
+backend/.idea/sonarlint/
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
@@ -75,19 +75,19 @@ crashlytics-build.properties
 fabric.properties
 
 # Editor-based Rest Client
-.idea/httpRequests
+backend/.idea/httpRequests
 
 # Android studio 3.1+ serialized cache file
-.idea/caches/build_file_checksums.ser
+backend/.idea/caches/build_file_checksums.ser
 
 ### Intellij+all Patch ###
 # Ignore everything but code style settings and run configurations
 # that are supposed to be shared within teams.
 
-.idea/*
+backend/.idea/*
 
-!.idea/codeStyles
-!.idea/runConfigurations
+!backend/.idea/codeStyles
+!backend/.idea/runConfigurations
 
 ### macOS ###
 # General

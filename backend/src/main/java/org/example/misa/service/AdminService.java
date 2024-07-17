@@ -25,11 +25,11 @@ public class AdminService {
     @Autowired private StoreMemberRepository storeMemberRepository;
     @Autowired private FloorRepository floorRepository;
     @Autowired private BlockRepository blockRepository;
-    @Autowired ImgService imgService;
+    @Autowired private ImgService imgService;
 
     public Long join(StoreMemberForm form) {
-        Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName());
-        validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor); //만약 블럭도 미리 저장한다면 DB에서 블럭이 존재하는지, 그리고 자리가 비어있는지 확인하는 로직으로 변경
+        Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
+        validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
         Block block = new Block(floor, Long.parseLong(form.getBlockId()), "store");
         try {
             block = blockRepository.save(block);
@@ -51,8 +51,8 @@ public class AdminService {
         return storeMember.getId();
     }
 
-    private Floor validateExistFloorAndBuilding(String floorName, String buildingName) {
-        Floor floor = floorRepository.findByFloorAndBuildingName(floorName, buildingName);
+    private Floor validateExistFloorAndBuilding(String floorName, String buildingName, String buildingDong) {
+        Floor floor = floorRepository.findByFloorAndBuildingNameAndBuildingDong(floorName,buildingName, buildingDong);
 
         if (floor == null) {
             throw new IllegalStateException("해당 건물 혹은 층이 존재하지 않습니다.");
