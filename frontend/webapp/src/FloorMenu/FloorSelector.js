@@ -6,7 +6,7 @@ function FloorSelector() {
 
   return (
     <div className="floor-container bg-purple-100">
-      {["3F", "2F", "1F", "B1", "B2"].map((floor) => (
+      {["3F", "2F", "1F", "B1", "B2", "B3", "B4"].map((floor) => (
         <div
           key={floor}
           className={`floor ${
