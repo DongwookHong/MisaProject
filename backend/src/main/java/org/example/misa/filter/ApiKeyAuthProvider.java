@@ -16,19 +16,16 @@ import org.springframework.stereotype.Component;
 import java.security.AuthProvider;
 import java.util.Collections;
 
-@Component
 public class ApiKeyAuthProvider implements AuthenticationProvider {
 
     private static final String validApiKey = "testapikey";
-
-//    @Value("${spring.security.filter.validApiKey}")
-//    private static String validApiKey;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String apiKey = (String) authentication.getPrincipal();
 
         System.out.println("validApiKey: " + validApiKey);
+        System.out.println("apiKey: " + apiKey);
         if (apiKey != null & validApiKey.equals(apiKey)) {
             return UsernamePasswordAuthenticationToken
                     .authenticated(authentication.getPrincipal()

@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
-    public LoginController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
 
 //    @PostMapping("/login")
 //    public String loginPost(@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpSession session) {

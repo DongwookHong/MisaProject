@@ -23,27 +23,29 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
-@Component
 public class ApiKeyFilter extends OncePerRequestFilter {
 
-//    private final String apiKeyHeaderName = "x-api-key";
-
-    @Value("${spring.security.filter.apiKeyHeaderName}")
-    private String apiKeyHeaderName;
+    private final String apiKeyHeaderName = "x-api-key";
 
     private final boolean getOnly = true;
 
-    @Autowired AuthenticationManager apiAuthenticationManager;
+    AuthenticationManager apiAuthenticationManager;
+
+    public ApiKeyFilter(AuthenticationManager apiAuthenticationManager) {
+        this.apiAuthenticationManager = apiAuthenticationManager;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("apiKeyHeaderName: " + apiKeyHeaderName);
         String apiKey = request.getHeader(apiKeyHeaderName);
+        System.out.println("apiKeyHeaderName: " + apiKeyHeaderName);
+        System.out.println("request: " + request.getRequestURI());
+        System.out.println("apikey: " + apiKey);
         if (this.getOnly && !request.getMethod().equals("GET")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
         else {
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(apiKey, null);
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(apiKey, apiKey);
             authRequest.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             Authentication authentication =  apiAuthenticationManager.authenticate(authRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
