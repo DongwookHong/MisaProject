@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Advertise from '../Fix/Advertise';
 import DropDown from './DropDownMenu.js';
@@ -7,52 +9,62 @@ import MainFooter from '../Fix/MainFooter';
 import jsonData from '../qrdata.json';
 import MainHeader from '../Fix/MainHeader.js';
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 function EnterArcade() {
+  const { id } = useParams();
+
   const [building, setBuilding] = useState('');
   const [floor, setFloor] = useState('');
   const location = useLocation();
+  const [floorData, setFloorData] = useState([]);
+  const [selectedFloorData, setSelectedFloorData] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const initialBuilding = searchParams.get('building');
-    const initialFloor = searchParams.get('floor');
+    const fetchData = async () => {
+      try {
+        // const response = await axios.get('https://api.misarodeo.com/api/qr-page', {
+        const response = await axios.get('/api/qr-page', {
+          headers: {
+            accept: '*/*',
+            'x-api-key': API_KEY,
+          },
+        });
+        const parsedData = response.data.map((item) => JSON.parse(item));
+        setFloorData(parsedData);
+        setIsLoading(false);
 
-    if (initialBuilding) setBuilding(initialBuilding);
-    if (initialFloor) setFloor(initialFloor);
-  }, [location]);
+        if (id) {
+          const building =
+            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
+          const buildingName = id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트';
+          const floor = id.charAt(1);
 
-  const filteredData = useMemo(() => {
-    const allItems = jsonData.flatMap((item) => {
-      if (
-        (!building ||
-          `${item.building_name} ${item.building_dong}` === building) &&
-        (!floor || item.floor_number.toString() === floor)
-      ) {
-        return item.data;
-      }
-      return [];
-    });
+          const relevantFloorData = parsedData.find(
+            (data) =>
+              data.buildingName === buildingName &&
+              data.buildingDong === building &&
+              data.floorNumber === floor
+          );
 
-    const stores = allItems.filter((item) => item.type === 'store');
-
-    const facilitiesMap = new Map();
-    allItems.forEach((item) => {
-      if (item.type === 'facility') {
-        if (!facilitiesMap.has(item.name)) {
-          facilitiesMap.set(item.name, item);
+          if (relevantFloorData) {
+            setSelectedFloorData(relevantFloorData);
+            // 여기서 currentLocation을 id로 직접 설정합니다.
+            setCurrentLocation({ blockId: id });
+          }
         }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('데이터를 불러오는 데 실패했습니다.');
+        setIsLoading(false);
       }
-    });
-    const facilities = Array.from(facilitiesMap.values());
+    };
 
-    return [...stores, ...facilities];
-  }, [building, floor]);
-
-  // useEffect(() => {
-  //   console.log('건물:', building);
-  //   console.log('층:', floor);
-  //   console.log('필터링된 데이터:', filteredData);
-  // }, [building, floor, filteredData]);
+    fetchData();
+  }, [id]);
 
   return (
     <div>
@@ -64,7 +76,11 @@ function EnterArcade() {
         initialBuilding={building}
         initialFloor={floor}
       />
-      {/* <PinMove filteredData={filteredData} /> */}
+      <PinMove
+        floorData={floorData}
+        selectedFloorData={selectedFloorData}
+        currentLocation={currentLocation}
+      />
       <MainFooter />
     </div>
   );
