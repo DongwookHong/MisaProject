@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Guide from './Guide';
+import Guide from './Guide_demo';
 import FloorSpecific from './FloorSpecific';
 
 function PinMove({ floorData, selectedFloorData, currentLocation }) {
