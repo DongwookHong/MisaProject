@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../style/QRpage/LocSearch.css';
 import MenuBar from '../Fix/MenuBar';
 import IconLoc from '../asset/tool/locpin.png';
@@ -12,19 +12,29 @@ function LocSearch({ floorData }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const searchRef = useRef(null);
   const { id } = useParams();
   const [currentLocation, setCurrentLocation] = useState('알 수 없는 위치');
-
   const [selectedResult, setSelectedResult] = useState(null);
-  useEffect(() => {
-    console.log('Location code (id):', id);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchRef]);
+
+  useEffect(() => {
     if (id && id.length >= 2) {
       const building = parseInt(id[0]);
       const floor = parseInt(id[1]);
-      // console.log('Building:', building, 'Floor:', floor);
-
       let locationString = '';
 
       switch (building) {
@@ -45,70 +55,28 @@ function LocSearch({ floorData }) {
         locationString += ` ${floor}층`;
       }
 
-      // console.log('Location string:', locationString);
       setCurrentLocation(locationString);
     } else {
-      // console.log('No valid location code provided');
       setCurrentLocation('알 수 없는 위치');
     }
   }, [id]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowResults(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [searchRef]);
-
-  // const handleSearch = (event) => {
-  //   const value = event.target.value;
-  //   setQuery(value);
-  //   if (value) {
-  //     const cleanedValue = value.trim().replace(/\s+/g, ' ').toLowerCase();
-  //     const filteredStores = floorData.flatMap((floor) =>
-  //       floor.data.filter(
-  //         (store) =>
-  //           store.type === 'store' &&
-  //           store.name
-  //             .trim()
-  //             .replace(/\s+/g, ' ')
-  //             .toLowerCase()
-  //             .includes(cleanedValue)
-  //       )
-  //     );
-  //     setResults(filteredStores);
-  //     setShowResults(true);
-  //   } else {
-  //     setResults([]);
-  //     setShowResults(false);
-  //   }
-  // };
   const handleSearch = (event) => {
     const value = event.target.value;
     setQuery(value);
     if (value) {
       const cleanedValue = value.trim().replace(/\s+/g, ' ').toLowerCase();
-      const filteredStores = floorData.flatMap((floor) =>
-        floor.data.filter(
-          (store) =>
-            store &&
-            store.type === 'store' &&
-            store.name &&
-            store.name
-              .trim()
-              .replace(/\s+/g, ' ')
-              .toLowerCase()
-              .includes(cleanedValue)
+      const filteredStores = floorData.flatMap(floor => 
+        floor.data.filter(store => 
+          store &&
+          store.type === 'store' && 
+          store.name &&
+          store.name.trim().replace(/\s+/g, ' ').toLowerCase().includes(cleanedValue)
         )
       );
       setResults(filteredStores);
       setShowResults(true);
+      setSelectedIndex(-1);
 
       if (filteredStores.length === 1) {
         setSelectedResult(filteredStores[0]);
@@ -131,37 +99,29 @@ function LocSearch({ floorData }) {
   };
 
   const performSearch = () => {
-    console.log(
-      'Performing search. Query:',
-      query,
-      'Selected result:',
-      selectedResult
-    ); // 디버깅을 위해 추가
     if (selectedResult) {
       navigateToStore(selectedResult.name);
     } else if (results.length === 1) {
       navigateToStore(results[0].name);
     } else if (query) {
       const matchingStore = results.find(
-        (store) =>
-          store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
-          query.trim().replace(/\s+/g, ' ').toLowerCase()
+        store => store.name.trim().replace(/\s+/g, ' ').toLowerCase() === query.trim().replace(/\s+/g, ' ').toLowerCase()
       );
       if (matchingStore) {
         navigateToStore(matchingStore.name);
-      } else {
-        console.log('No exact matching store found for query:', query);
       }
-    } else {
-      console.log('No query or selected result');
     }
     setShowResults(false);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault(); // 폼 제출 방지
+      event.preventDefault();
       performSearch();
+    } else if (event.key === 'ArrowDown') {
+      setSelectedIndex(prev => (prev < results.length - 1 ? prev + 1 : prev));
+    } else if (event.key === 'ArrowUp') {
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
     }
   };
 
@@ -169,62 +129,35 @@ function LocSearch({ floorData }) {
     performSearch();
   };
 
+  const navigateToStore = (storeName) => {
+    if (storeName && typeof storeName === 'string') {
+      const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
+      const matchingStore = floorData.flatMap(floor => floor.data).find(
+        store => store.type === 'store' && 
+                 store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
+      );
+      if (matchingStore) {
+        const currentLocationInfo = {
+          buildingName: id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트',
+          buildingDong: id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : '',
+          floorNumber: id.charAt(1)
+        };
+        navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`, { 
+          state: { currentLocation: currentLocationInfo } 
+        });
+      }
+    }
+    setShowResults(false);
+  };
+
   const handleResultClick = (store) => {
-    console.log('Clicked store:', store); // 디버깅을 위해 추가
     if (store && typeof store === 'object' && store.name) {
       setQuery(store.name);
       setSelectedResult(store);
       navigateToStore(store.name);
-    } else {
-      console.log('Invalid store data:', store);
     }
   };
 
-  // JSX 부분에서 검색 결과 렌더링을 수정
-  {
-    showResults && results.length > 0 && (
-      <div className="search-results">
-        {results.map((store, index) => (
-          <div
-            key={index}
-            className="search-result-item"
-            onClick={() => handleResultClick(store)}>
-            {store.name}
-          </div>
-        ))}
-      </div>
-    );
-  }
-  // navigateToStore 함수 수정
-  const navigateToStore = (storeName) => {
-    console.log('Navigating to store:', storeName); // 디버깅을 위해 추가
-    if (storeName && typeof storeName === 'string') {
-      const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
-      const matchingStore = floorData
-        .flatMap((floor) => floor.data)
-        .find(
-          (store) =>
-            store.type === 'store' &&
-            store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
-        );
-      if (matchingStore) {
-        navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`);
-      } else {
-        console.log('No matching store found for:', cleanedName);
-      }
-    } else {
-      console.log('Invalid store name:', storeName);
-    }
-    setShowResults(false);
-  };
-  // const handleResultClick = (store) => {
-  //   if (store && store.name) {
-  //     setQuery(store.name);
-  //     navigateToStore(store.name);
-  //   } else {
-  //     console.log('Invalid store data');
-  //   }
-  // };
   return (
     <>
       <div className="locsearch-header">
@@ -249,7 +182,7 @@ function LocSearch({ floorData }) {
         <div className="search-input-bar" ref={searchRef}>
           <input
             type="text"
-            placeholder="장소 위치 찾는 곳을 입력해주세요"
+            placeholder="장소 위치를 찾는 곳을 입력해주세요"
             value={query}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}
@@ -266,10 +199,11 @@ function LocSearch({ floorData }) {
           {showResults && results.length > 0 && (
             <div className="search-results">
               {results.map((store, index) => (
-                <div
-                  key={index}
-                  className="search-result-item"
-                  onClick={() => handleResultClick(store.name)}>
+                <div 
+                  key={index} 
+                  className={`search-result-item ${index === selectedIndex ? 'selected' : ''}`}
+                  onClick={() => handleResultClick(store)}
+                >
                   {store.name}
                 </div>
               ))}

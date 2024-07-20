@@ -26,7 +26,7 @@ function MenuBar({ menuOpen, closeMenu }) {
             </Link>
           </li>
           <li className="menubar">
-            <Link to="/floor0" onClick={closeMenu} className="menu-link">
+            <Link to="/floormenu" onClick={closeMenu} className="menu-link">
               <h2>
                 <span className="border-top">층별</span> 안내
               </h2>

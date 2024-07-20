@@ -20,6 +20,7 @@ function MainComponent() {
       setError(null);
       try {
         const response = await axios.get(
+          // `https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
           `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
             wing
           )}`,

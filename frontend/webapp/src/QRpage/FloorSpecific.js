@@ -76,7 +76,7 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData, currentLoca
   }, [selectedItem, selectedFloorData, currentLocation]);
 
   return (
-    <div className="MapImage">
+    <div className="MapImage-qr">
       <canvas ref={canvasRef} className="responsive-canvas"></canvas>
     </div>
   );
