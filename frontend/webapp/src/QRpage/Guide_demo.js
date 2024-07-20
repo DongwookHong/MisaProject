@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import '../style/QRpage/Guide_demo.css';
 import locpin from '../asset/tool/locpin.png';
 
-function Guide_demo({ onIconClick, floorData }) {
+function Guide_demo({ onIconClick, floorData, selectedFacility, selectedStore }) {
   const [activeSection, setActiveSection] = useState('facility');
 
   const { facilityItems, storeItems } = useMemo(() => {
@@ -34,21 +34,29 @@ function Guide_demo({ onIconClick, floorData }) {
       </div>
       <div className="content-row">
         {activeSection === 'facility' && (
-          <FacilityContent items={facilityItems} onIconClick={onIconClick} />
+          <FacilityContent 
+            items={facilityItems} 
+            onIconClick={item => onIconClick(item, 'facility')} 
+            selectedItem={selectedFacility}
+          />
         )}
         {activeSection === 'guide' && (
-          <FacilityContent items={storeItems} onIconClick={onIconClick} />
+          <FacilityContent 
+            items={storeItems} 
+            onIconClick={item => onIconClick(item, 'store')} 
+            selectedItem={selectedStore}
+          />
         )}
       </div>
     </div>
   );
 }
 
-function FacilityContent({ items, onIconClick }) {
+function FacilityContent({ items, onIconClick, selectedItem }) {
   return (
     <div className="facility-content">
       {items.map((item, index) => (
-        <div className="facility-item" key={index}>
+        <div className={`facility-item ${item === selectedItem ? 'selected' : ''}`} key={index}>
           {item}
           <span className="logospace" onClick={() => onIconClick(item)}>
             <img src={locpin} alt="loc" width="30" height="20" />

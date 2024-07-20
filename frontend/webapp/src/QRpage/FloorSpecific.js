@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useEffect } from 'react';
 import { drawLocpin } from '../utils/drawLocpin';
 
-function FloorSpecific({ canvasRef, selectedItem, selectedFloorData, currentLocation }) {
+function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFloorData, currentLocation }) {
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
 
@@ -13,6 +13,7 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData, currentLoca
 
     const loadSvgAndDraw = async () => {
       try {
+        // ... (기존 코드 유지)
         const imageUrl = `${selectedFloorData.floorImage}`;
         console.log("Attempting to fetch from URL:", imageUrl);
 
@@ -45,35 +46,39 @@ function FloorSpecific({ canvasRef, selectedItem, selectedFloorData, currentLoca
           if (currentLocation) {
             drawLocpin(svgDoc, ctx, currentLocation, selectedFloorData, true);
           }
-          if (selectedItem) {
-            drawLocpin(svgDoc, ctx, { name: selectedItem }, selectedFloorData, false);
+          if (selectedFacility) {
+            drawSelectedFacility(ctx, svgDoc, selectedFacility, selectedFloorData);
+          }
+          if (selectedStore) {
+            drawSelectedStore(ctx, svgDoc, selectedStore, selectedFloorData);
           }
         };
-
         img.onerror = (error) => {
           console.error('Failed to load the SVG image:', error);
         };
+
+        // ... (기존 코드 유지)
       } catch (error) {
         console.error('Error fetching or parsing the SVG file:', error.message);
       }
     };
 
     loadSvgAndDraw();
-  }, [selectedFloorData, canvasRef, currentLocation]);
+  }, [selectedFloorData, canvasRef, currentLocation, selectedFacility, selectedStore]);
 
-  useEffect(() => {
-    if (svgDocRef.current && canvasRef.current && imgRef.current && selectedFloorData) {
-      const ctx = canvasRef.current.getContext('2d');
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(imgRef.current, 0, 0);
-      if (currentLocation) {
-        drawLocpin(svgDocRef.current, ctx, currentLocation, selectedFloorData, true);
-      }
-      if (selectedItem) {
-        drawLocpin(svgDocRef.current, ctx, { name: selectedItem }, selectedFloorData, false);
-      }
+  const drawSelectedFacility = (ctx, svgDoc, selectedFacility, floorData) => {
+    const facilities = floorData.data.filter(item => item.type === 'facility' && item.name === selectedFacility);
+    facilities.forEach(facility => {
+      drawLocpin(svgDoc, ctx, facility, floorData, false);
+    });
+  };
+
+  const drawSelectedStore = (ctx, svgDoc, selectedStore, floorData) => {
+    const store = floorData.data.find(item => item.type === 'store' && item.name === selectedStore);
+    if (store) {
+      drawLocpin(svgDoc, ctx, store, floorData, false);
     }
-  }, [selectedItem, selectedFloorData, currentLocation]);
+  };
 
   return (
     <div className="MapImage-qr">

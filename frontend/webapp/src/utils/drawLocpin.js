@@ -21,12 +21,27 @@ const getManualBoundingRectFromPath = (pathElement) => {
     height: yMax - yMin,
   };
 };
+
+const isFacility = (item) => {
+  if (!item) return false;
+  const facilityTypes = ['화장실', '에스컬레이터', '엘레베이터', 'facility'];
+  return facilityTypes.some(type => 
+    (item.name && item.name.includes(type)) || item.type === type
+  );
+};
+
 export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) => {
   const img = new Image();
   img.src = isQrLocation ? qrLocpin : locpin;
 
-  const width = isQrLocation ? 60 : 50;
-  const height = isQrLocation ? 60 : 50;
+  let width, height;
+  if (isQrLocation) {
+    width = height = 60;
+  } else if (isFacility(item)) {
+    width = height = 30; // 편의시설 핀 크기를 30x30으로 설정
+  } else {
+    width = height = 50; // 기타 핀 크기는 그대로 50x50
+  }
 
   img.onload = () => {
     if (!item || !floorData) {
@@ -81,7 +96,11 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
       cx = x + elementWidth / 2 - width / 2;
       cy = y + elementHeight / 2 - height / 2;
     }
-
+    if (!isFacility(item) && !isQrLocation) {
+      const offsetY = height / 2; // 핀 높이의 절반만큼 위로 이동
+      cy -= offsetY;
+    }
+    
     // 현재 위치 표시 (QR 위치)
     if (isQrLocation) {
       ctx.beginPath();

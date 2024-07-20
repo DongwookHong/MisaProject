@@ -13,6 +13,7 @@ function MainComponent() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFacility, setIsFacility] = useState(true);
 
   useEffect(() => {
     const fetchFloorData = async () => {
@@ -20,7 +21,6 @@ function MainComponent() {
       setError(null);
       try {
         const response = await axios.get(
-          // `https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
           `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
             wing
           )}`,
@@ -55,9 +55,10 @@ function MainComponent() {
     setSelectedItems([]);
   };
 
-  const handleIconClick = (blockId) => {
-    console.log("Clicked blockId:", blockId); // 디버깅을 위한 로그
-    setSelectedItems([blockId]);
+  const handleIconClick = (blockIds, isFacilityClick = true) => {
+    console.log("Clicked blockIds:", blockIds, "isFacility:", isFacilityClick);
+    setSelectedItems(Array.isArray(blockIds) ? blockIds : [blockIds]);
+    setIsFacility(isFacilityClick);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -71,6 +72,7 @@ function MainComponent() {
         selectedFloorData={selectedFloorData}
         floorData={floorData}
         onFloorChange={handleFloorChange}
+        isFacility={isFacility}
       />
       <GuideFloor
         selectedFloorData={selectedFloorData}
