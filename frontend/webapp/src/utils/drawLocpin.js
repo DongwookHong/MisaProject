@@ -21,7 +21,6 @@ const getManualBoundingRectFromPath = (pathElement) => {
     height: yMax - yMin,
   };
 };
-
 export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) => {
   const img = new Image();
   img.src = isQrLocation ? qrLocpin : locpin;
@@ -30,16 +29,31 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
   const height = isQrLocation ? 60 : 50;
 
   img.onload = () => {
-    if (!item || !floorData) return;
+    if (!item || !floorData) {
+      console.log("Item or floorData is missing:", { item, floorData });
+      return;
+    }
+
+    console.log("Drawing locpin for item:", item);
 
     let targetElement;
     if (item.blockId) {
       targetElement = svgDoc.getElementById(item.blockId);
+      console.log("Searching by blockId:", item.blockId);
     } else {
+      console.log("Searching for item by name:", item.name);
       const block = floorData.data.find(dataItem => dataItem.name === item.name);
+      console.log("Found block:", block);
       if (block) {
         targetElement = svgDoc.getElementById(block.blockId);
+        console.log("Searching by found blockId:", block.blockId);
       }
+    }
+
+    if (!targetElement) {
+      console.log("Element not found. Trying alternative search...");
+      // 대체 검색 방법: data-name 속성으로 검색
+      targetElement = svgDoc.querySelector(`[data-name="${item.name}"]`);
     }
 
     if (!targetElement) {

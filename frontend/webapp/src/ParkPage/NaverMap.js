@@ -4,7 +4,7 @@ import '../style/ParkPage/NaverMap.css';
 function NaverMap({ latitude, longitude }) {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xxx`;
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.REACT_APP_NAVER_MAP_CLIENT_ID}`;
     script.async = true;
     document.head.appendChild(script);
 

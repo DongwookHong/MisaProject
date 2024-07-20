@@ -6,11 +6,14 @@ import TenantList from "./TenantList";
 import FloorImage from "./FloorImage";
 import MainHeader from "../Fix/MainHeader.js";
 import MainFooter from "../Fix/MainFooter.js";
+import '../style/FloorMenu/FloorMenu.css';
+
 
 function FloorMenu() {
   return (
+    <>
+    <MainHeader></MainHeader>
     <AppProvider>
-      <MainHeader></MainHeader>
       <div className="bg-white text-gray-900 min-h-screen flex items-center justify-center">
         <div className="dong-container">
           <div className="text-center mb-4">
@@ -29,7 +32,9 @@ function FloorMenu() {
         </div>
       </div>
       <MainFooter></MainFooter>
+      
     </AppProvider>
+    </>
   );
 }
 export default FloorMenu;

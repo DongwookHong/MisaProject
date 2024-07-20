@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import '../style/FindSpot/FindSpot.css';
@@ -8,7 +8,8 @@ import MainFooter from '../Fix/MainFooter.js';
 import Banner from '../Fix/MenuOpen.js';
 import Ad from '../Fix/Advertise.js';
 import Blog from '../asset/logo/blog_transparent.png';
-import { drawLocpin } from '../utils/cordi.js';
+import { drawLocpin } from '../utils/drawLocpin.js';
+import locpin from "../asset/tool/locpin.png";
 
 import CurToDest from './CurToDest.js';
 
@@ -17,7 +18,9 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 function FindSpot() {
   const canvasRef = useRef(null);
   const svgContainerRef = useRef(null);
-  const { name } = useParams(); // URL 파라미터에서 상점 이름을 가져옴
+  const { name } = useParams();
+  const location = useLocation();
+  const currentLocation = location.state?.currentLocation;
 
   const [store, setStore] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +36,6 @@ function FindSpot() {
           }
         });
         
-        // Use response data directly
         const storeData = response.data;
         setStore(storeData);
         setIsLoading(false);
@@ -49,7 +51,7 @@ function FindSpot() {
 
   useEffect(() => {
     if (store) {
-      const svgPath = `/${store.floorImage}`;
+      const svgPath = `${store.floorImage}`;
       fetch(svgPath)
         .then((response) => response.text())
         .then((data) => {
@@ -78,7 +80,8 @@ function FindSpot() {
             ctx.drawImage(img, 0, 0, svgWidth, svgHeight);
             URL.revokeObjectURL(url);
 
-            drawLocpin(svgElement, ctx);
+            // 가게 위치만 그리기
+            drawLocpin(svgElement, ctx, store, { data: [store] }, false);
           };
 
           img.onerror = () => {
@@ -102,7 +105,7 @@ function FindSpot() {
       <MainHeader />
       <Ad />
       <div className="curtodest-wrapper">
-        <CurToDest currentStore={store} />
+        <CurToDest currentStore={store} currentLocation={currentLocation} />
       </div>
       <div className="ImageContainer" style={{ width: '100%', height: 'auto', position: 'relative' }}>
         <div ref={svgContainerRef} style={{ display: 'none' }}></div>
@@ -112,7 +115,9 @@ function FindSpot() {
         <Link to={`/storeinfo/${store.storeName}`} className="HomepageLink">
           <img src={Blog} alt="Blog" className="HomepageIcon" />
           <span className="BlogText">
-            <span className="find-name">{store.storeName}</span> 바로가기
+            <span className="find-name">{store.storeName}</span>
+            <br />
+            바로가기
           </span>
         </Link>
       </div>

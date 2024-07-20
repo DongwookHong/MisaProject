@@ -6,41 +6,50 @@ import "../style/FloorMenu/FloorMenu.css";
 import mapImage from "../asset/tool/mapimage.png";
 
 function BuildingSelector() {
-  const { selectedBuilding, setSelectedBuilding, setFloorData } =
-    useContext(AppContext);
+  const { selectedBuilding, setSelectedBuilding, setFloorData } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // 사용자에게 보이는 이름과 내부적으로 처리되는 이름을 매핑
   const buildingMap = {
     "힐스테이트 A동": "힐스테이트 A동",
     "힐스테이트 B동": "힐스테이트 B동",
-    롯데캐슬: "롯데캐슬 C동",
+    "롯데캐슬": "롯데캐슬",
   };
 
   const handleBuildingSelect = async (displayName) => {
     const internalName = buildingMap[displayName];
     setSelectedBuilding(internalName);
-    const [buildingName, buildingDong] = internalName.split(" ");
+    
+    let buildingName, buildingDong;
+    if (internalName === "롯데캐슬") {
+      buildingName = "롯데캐슬";
+      buildingDong = "C";
+    } else {
+      [buildingName, buildingDong] = internalName.split(" ");
+      buildingDong = buildingDong.replace("동", "");
+    }
 
     try {
-      const response = await axios.get(
-        `/api/floorspecific/building/${buildingName}/${buildingDong.replace(
-          "동",
-          ""
-        )}`
-      );
+      const response = await axios.get(`/api/floorspecific/building/${buildingName}/${buildingDong}`);
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);
     } catch (error) {
       console.error("Error fetching building data:", error);
     }
+
+    navigate(`/floormenu?building=${internalName}&floor=1`);
   };
 
   const handleFloorSpecificClick = () => {
     if (selectedBuilding) {
-      const [buildingName, buildingDong] = selectedBuilding.split(" ");
-      const dongLetter = buildingDong.replace("동", "");
-      navigate(`/floorspecific/${buildingName}/${dongLetter}`);
+      let buildingName, buildingDong;
+      if (selectedBuilding === "롯데캐슬") {
+        buildingName = "롯데캐슬";
+        buildingDong = "C";
+      } else {
+        [buildingName, buildingDong] = selectedBuilding.split(" ");
+        buildingDong = buildingDong.replace("동", "");
+      }
+      navigate(`/floorspecific/${buildingName}/${buildingDong}`);
     } else {
       console.log("건물을 선택해주세요.");
     }
@@ -63,11 +72,11 @@ function BuildingSelector() {
       ))}
       <button className="map_button" onClick={handleFloorSpecificClick}>
         <img
-          src={mapImage} // 임포트한 이미지 사용
+          src={mapImage}
           alt="Icon"
           width="30"
           height="30"
-        ></img>
+        />
         층별안내
       </button>
     </div>
