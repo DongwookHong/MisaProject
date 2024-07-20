@@ -12,10 +12,14 @@ function DropdownMenu({ floorData, onFloorSelect }) {
         floorData.map((floor) => `${floor.buildingName} ${floor.buildingDong}`)
       ),
     ];
-    return uniqueBuildings.map((building) => ({
-      value: building,
-      label: building,
-    }));
+    return uniqueBuildings.map((building) => {
+      const [name, dong] = building.split(' ');
+      const label = name === '롯데캐슬' ? '롯데캐슬' : building;
+      return {
+        value: building,
+        label: label,
+      };
+    });
   }, [floorData]);
 
   const floorOptions = useMemo(() => {

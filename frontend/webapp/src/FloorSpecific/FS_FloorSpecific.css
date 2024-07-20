@@ -16,7 +16,7 @@
   align-items: center;
   padding: 0.5em 1em;
   background-color: #fff; /* 배경색 추가 */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
 .MenuBar .back-button {
@@ -50,7 +50,7 @@
   top: 50px; /* MenuBar 아래에 위치하도록 조정 */
   left: 0;
   width: 100%;
-  background: #444;
+  background: #bdafff;
   z-index: 1001;
   display: flex;
   justify-content: space-around;
@@ -68,6 +68,8 @@
   border: none;
   cursor: pointer;
   font: inherit;
+  font-size: 22px;
+  font-weight: 800;
   margin: 0 5px;
 }
 

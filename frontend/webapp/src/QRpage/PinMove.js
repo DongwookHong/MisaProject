@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Guide_demo from './Guide_demo';
+import Guide from './Guide';
 import FloorSpecific from './FloorSpecific';
 
 function PinMove({ floorData, selectedFloorData, currentLocation }) {
@@ -13,14 +13,14 @@ function PinMove({ floorData, selectedFloorData, currentLocation }) {
 
   return (
     <div>
-      <FloorSpecific 
-        canvasRef={canvasRef} 
-        selectedItem={selectedItem} 
+      <FloorSpecific
+        canvasRef={canvasRef}
+        selectedItem={selectedItem}
         selectedFloorData={selectedFloorData}
         currentLocation={currentLocation}
       />
-      <Guide_demo 
-        onIconClick={handleIconClick} 
+      <Guide
+        onIconClick={handleIconClick}
         floorData={selectedFloorData ? [selectedFloorData] : floorData}
       />
     </div>
