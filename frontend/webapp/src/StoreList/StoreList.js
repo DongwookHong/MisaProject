@@ -18,8 +18,8 @@ function StoreList() {
     setIsLoading(true);
     setError(null);
     try {
-      // const response = await axios.get('https://api.misarodeo.com/api/menu', {
-        const response = await axios.get('/api/menu', {
+      const response = await axios.get('https://api.misarodeo.com/api/menu', {
+        // const response = await axios.get('/api/menu', {
         headers: {
           'accept': '*/*',
           'x-api-key': API_KEY
