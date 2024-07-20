@@ -21,7 +21,7 @@ function NaverMap({ latitude, longitude }) {
 
       const contentString = `
         <div style="position: relative; background: white; border: 0px solid black; padding: 5px;">
-          <div style="font-weight: bold; text-align: center;">MISA RoDeo</div>
+          <div style="font-weight: bold; text-align: center;">미사 로데오 거리</div>
           <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid black;"></div>
         </div>
       `;

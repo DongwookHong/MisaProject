@@ -25,9 +25,9 @@ function LocSearch({ floorData }) {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [searchRef]);
 
@@ -52,7 +52,7 @@ function LocSearch({ floorData }) {
       }
 
       if (!isNaN(floor)) {
-        locationString += ` ${floor}층`;
+        locationString += floor === 0 ? ' B1층' : ` ${floor}층`;
       }
 
       setCurrentLocation(locationString);
@@ -66,12 +66,17 @@ function LocSearch({ floorData }) {
     setQuery(value);
     if (value) {
       const cleanedValue = value.trim().replace(/\s+/g, ' ').toLowerCase();
-      const filteredStores = floorData.flatMap(floor => 
-        floor.data.filter(store => 
-          store &&
-          store.type === 'store' && 
-          store.name &&
-          store.name.trim().replace(/\s+/g, ' ').toLowerCase().includes(cleanedValue)
+      const filteredStores = floorData.flatMap((floor) =>
+        floor.data.filter(
+          (store) =>
+            store &&
+            store.type === 'store' &&
+            store.name &&
+            store.name
+              .trim()
+              .replace(/\s+/g, ' ')
+              .toLowerCase()
+              .includes(cleanedValue)
         )
       );
       setResults(filteredStores);
@@ -105,7 +110,9 @@ function LocSearch({ floorData }) {
       navigateToStore(results[0].name);
     } else if (query) {
       const matchingStore = results.find(
-        store => store.name.trim().replace(/\s+/g, ' ').toLowerCase() === query.trim().replace(/\s+/g, ' ').toLowerCase()
+        (store) =>
+          store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
+          query.trim().replace(/\s+/g, ' ').toLowerCase()
       );
       if (matchingStore) {
         navigateToStore(matchingStore.name);
@@ -119,9 +126,9 @@ function LocSearch({ floorData }) {
       event.preventDefault();
       performSearch();
     } else if (event.key === 'ArrowDown') {
-      setSelectedIndex(prev => (prev < results.length - 1 ? prev + 1 : prev));
+      setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
     } else if (event.key === 'ArrowUp') {
-      setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
     }
   };
 
@@ -132,18 +139,22 @@ function LocSearch({ floorData }) {
   const navigateToStore = (storeName) => {
     if (storeName && typeof storeName === 'string') {
       const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
-      const matchingStore = floorData.flatMap(floor => floor.data).find(
-        store => store.type === 'store' && 
-                 store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
-      );
+      const matchingStore = floorData
+        .flatMap((floor) => floor.data)
+        .find(
+          (store) =>
+            store.type === 'store' &&
+            store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
+        );
       if (matchingStore) {
         const currentLocationInfo = {
           buildingName: id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트',
-          buildingDong: id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : '',
-          floorNumber: id.charAt(1)
+          buildingDong:
+            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : '',
+          floorNumber: id.charAt(1),
         };
-        navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`, { 
-          state: { currentLocation: currentLocationInfo } 
+        navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`, {
+          state: { currentLocation: currentLocationInfo },
         });
       }
     }
@@ -199,11 +210,12 @@ function LocSearch({ floorData }) {
           {showResults && results.length > 0 && (
             <div className="search-results">
               {results.map((store, index) => (
-                <div 
-                  key={index} 
-                  className={`search-result-item ${index === selectedIndex ? 'selected' : ''}`}
-                  onClick={() => handleResultClick(store)}
-                >
+                <div
+                  key={index}
+                  className={`search-result-item ${
+                    index === selectedIndex ? 'selected' : ''
+                  }`}
+                  onClick={() => handleResultClick(store)}>
                   {store.name}
                 </div>
               ))}
