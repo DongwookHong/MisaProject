@@ -7,18 +7,31 @@ function DropdownMenu({ floorData, onFloorSelect }) {
   const [selectedFloor, setSelectedFloor] = useState('');
 
   const buildingOptions = useMemo(() => {
-    const uniqueBuildings = [...new Set(floorData.map(floor => `${floor.buildingName} ${floor.buildingDong}`))];
-    return uniqueBuildings.map(building => ({ value: building, label: building }));
+    const uniqueBuildings = [
+      ...new Set(
+        floorData.map((floor) => `${floor.buildingName} ${floor.buildingDong}`)
+      ),
+    ];
+    return uniqueBuildings.map((building) => ({
+      value: building,
+      label: building,
+    }));
   }, [floorData]);
 
   const floorOptions = useMemo(() => {
     if (!selectedBuilding) return [];
-    const floors = floorData.filter(floor => `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding)
-      .map(floor => ({
+    const floors = floorData
+      .filter(
+        (floor) =>
+          `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding
+      )
+      .map((floor) => ({
         value: floor.floorNumber,
         label: floor.floorNumber === '0' ? 'B1층' : `${floor.floorNumber}층`,
       }));
-    return floors.sort((a, b) => (a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)));
+    return floors.sort((a, b) =>
+      a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)
+    );
   }, [floorData, selectedBuilding]);
 
   const handleBuildingChange = (selectedOption) => {
@@ -29,7 +42,9 @@ function DropdownMenu({ floorData, onFloorSelect }) {
   const handleFloorChange = (selectedOption) => {
     setSelectedFloor(selectedOption.value);
     const selectedFloorData = floorData.find(
-      floor => `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding && floor.floorNumber === selectedOption.value
+      (floor) =>
+        `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding &&
+        floor.floorNumber === selectedOption.value
     );
     onFloorSelect(selectedFloorData);
   };
@@ -65,10 +80,12 @@ function DropdownMenu({ floorData, onFloorSelect }) {
         <Select
           id="building-select"
           options={buildingOptions}
-          value={buildingOptions.find((option) => option.value === selectedBuilding)}
+          value={buildingOptions.find(
+            (option) => option.value === selectedBuilding
+          )}
           onChange={handleBuildingChange}
           classNamePrefix="react-select"
-          placeholder="건물을 선택하세요"
+          placeholder="동 선택"
           styles={customStyles}
         />
       </div>
@@ -83,14 +100,13 @@ function DropdownMenu({ floorData, onFloorSelect }) {
           value={floorOptions.find((option) => option.value === selectedFloor)}
           onChange={handleFloorChange}
           classNamePrefix="react-select"
-          placeholder="층을 선택하세요"
+          placeholder="층 선택"
           isDisabled={!selectedBuilding}
           styles={customStyles}
         />
       </div>
     </div>
   );
-
 }
 
 export default DropdownMenu;

@@ -16,7 +16,7 @@
   align-items: center;
   padding: 0.5em 1em;
   background-color: #fff; /* 배경색 추가 */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
 .MenuBar .back-button {
@@ -78,7 +78,6 @@
 
 .MapImage {
   width: 100%;
-  max-width: 800px; /* 최대 너비 설정 */
   height: auto;
   margin-top: 20px;
   display: flex;
