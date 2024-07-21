@@ -144,7 +144,7 @@ function FS_FloorSpecific({
     <div className="FloorHeader">
       <div className="headerf">
         <div className="MenuBar">
-          <Link to="/" className="back-button">
+          <Link to="/floormenu" className="back-button">
             <span>←</span>
           </Link>
           <div className="menu-title">
