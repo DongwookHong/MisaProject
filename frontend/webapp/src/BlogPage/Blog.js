@@ -103,16 +103,16 @@ function Blog() {
       <MainHeader />
       <div className="blog-card">
         <InfoPage
-          store_name={store.storeName}
-          building_name={store.buildingName}
-          building_dong={store.buildingDong}
-          floor_number={store.floorNumber}
-          business_hour={store.storeTime}
-          store_number={store.storePhone}
-          insta_path={store.instaPath}
-          home_page_path={store.homePagePath}
-          store_info={store.storeInfo}
-          handleShare={handleShare}
+        store_name={store.storeName}
+        building_name={store.buildingName}
+        building_dong={store.buildingDong}
+        floor_number={store.floorNumber}
+        storeHours={store.storeHours}
+        store_number={store.storePhone}
+        insta_path={store.instaPath}
+        home_page_path={store.homePagePath}
+        store_info={store.storeInfo}
+        handleShare={handleShare}
         />
 
         {images.length > 0 && (

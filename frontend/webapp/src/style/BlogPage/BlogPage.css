@@ -151,3 +151,96 @@
 .store-describe {
   white-space: pre-line;
 }
+
+
+/* 기존 CSS 유지 */
+
+.business-hours-container {
+  margin-bottom: 20px;
+}
+
+.business-hours-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.business-status {
+  font-weight: bold;
+  color: #4CAF50; /* 초록색으로 '영업 중' 표시 */
+  margin-left: 15px;
+}
+
+.business-hours {
+  margin-top: 10px;
+}
+
+.business-day-info {
+  display: flex;
+  
+  margin-bottom: 5px;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.business-day-info.today {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 8px 5px;
+}
+
+.day-label {
+  width: 30px;
+  margin-right: 20px;
+}
+
+.time-info {
+  color: #333;
+}
+
+.time-info.closed {
+  color: #ff0000;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+}
+
+/* 기존 CSS 유지 */
+
+.location-info-container {
+  margin-bottom: 20px;
+  border-bottom: none; /* 추가: 하단 테두리 제거 */
+}
+
+.location-info-header {
+  display: flex;
+  align-items: center;
+  
+  cursor: pointer;
+  padding: 15px 0;
+  border-bottom: none; /* 변경: 하단 테두리 제거 */
+}
+
+.location-label {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.location-toggle {
+  font-size: 24px;
+  color: #5d4fbb;
+}
+
+.location-info {
+  margin-top: 10px;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #666;
+}
+
