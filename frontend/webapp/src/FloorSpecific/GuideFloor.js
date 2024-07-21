@@ -4,7 +4,7 @@ import locpin from "../asset/tool/locpin.png";
 
 function GuideFloor({ onIconClick, selectedFloorData }) {
   const [activeSection, setActiveSection] = useState("facility");
-  const [facilityItems, setFacilityItems] = useState([]);
+  const [facilityGroups, setFacilityGroups] = useState({});
   const [storeItems, setStoreItems] = useState([]);
 
   useEffect(() => {
@@ -15,10 +15,34 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
       const stores = selectedFloorData.data.filter(
         (item) => item.type === "store"
       );
-      setFacilityItems(facilities);
+
+      // Group facilities
+      const groups = facilities.reduce((acc, facility) => {
+        const groupName = getGroupName(facility.name);
+        if (!acc[groupName]) {
+          acc[groupName] = [];
+        }
+        acc[groupName].push(facility);
+        return acc;
+      }, {});
+
+      setFacilityGroups(groups);
       setStoreItems(stores);
     }
   }, [selectedFloorData]);
+
+  const getGroupName = (facilityName) => {
+    if (facilityName.includes("화장실")) return "화장실";
+    if (facilityName.includes("에스컬레이터")) return "에스컬레이터";
+    if (facilityName.includes("엘리베이터")) return "엘리베이터";
+    return "기타";
+  };
+
+  const handleGroupClick = (groupName) => {
+    const blockIds = facilityGroups[groupName].map((item) => item.blockId);
+    console.log(`Clicked group: ${groupName}, blockIds:`, blockIds);
+    onIconClick(blockIds, true); // true indicates it's a facility
+  };
 
   return (
     <div className="guide-container">
@@ -42,23 +66,49 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
       </div>
       <div className="content-row">
         {activeSection === "facility" && (
-          <FacilityContent items={facilityItems} onIconClick={onIconClick} />
+          <FacilityContent
+            facilityGroups={facilityGroups}
+            onGroupClick={handleGroupClick}
+          />
         )}
         {activeSection === "guide" && (
-          <FacilityContent items={storeItems} onIconClick={onIconClick} />
+          <StoreContent items={storeItems} onIconClick={onIconClick} />
         )}
       </div>
     </div>
   );
 }
 
-function FacilityContent({ items, onIconClick }) {
+function FacilityContent({ facilityGroups, onGroupClick }) {
+  return (
+    <div className="facility-content">
+      {Object.entries(facilityGroups).map(([groupName, facilities]) => (
+        <div className="facility-group" key={groupName}>
+          <div
+            className="facility-item"
+            onClick={() => onGroupClick(groupName)}
+          >
+            {groupName}
+            <span className="logospace">
+              <img src={locpin} alt="loc" width="30" height="20" />
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StoreContent({ items, onIconClick }) {
   return (
     <div className="facility-content">
       {items.map((item, index) => (
         <div className="facility-item" key={index}>
           {item.name}
-          <span className="logospace" onClick={() => onIconClick(item.blockId)}>
+          <span
+            className="logospace"
+            onClick={() => onIconClick([item.blockId], false)}
+          >
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>
         </div>

@@ -14,7 +14,7 @@ function FloorMenu() {
     <>
     <MainHeader></MainHeader>
     <AppProvider>
-      <div className="bg-white text-gray-900 min-h-screen flex items-center justify-center">
+      <div className="bg-white text-gray-900 min-h-screen flex items-center justify-center" style={{ paddingTop: '100px' }}>
         <div className="dong-container">
           <div className="text-center mb-4">
             <h1 className="head">동별 안내</h1>
@@ -32,7 +32,6 @@ function FloorMenu() {
         </div>
       </div>
       <MainFooter></MainFooter>
-      
     </AppProvider>
     </>
   );

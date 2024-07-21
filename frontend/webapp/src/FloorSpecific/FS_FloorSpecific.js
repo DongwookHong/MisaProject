@@ -12,6 +12,7 @@ function FS_FloorSpecific({
   selectedFloorData,
   floorData,
   onFloorChange,
+  isFacility,
 }) {
   const { building, wing } = useParams();
   const svgDocRef = useRef(null);
@@ -76,7 +77,19 @@ function FS_FloorSpecific({
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, width, height);
           if (selectedItems && selectedItems.length > 0) {
-            FS_drawLocpin(svgDoc, ctx, selectedItems[0], selectedFloorData);
+            console.log(
+              "Drawing initial locpins for selectedItems:",
+              selectedItems,
+              "isFacility:",
+              isFacility
+            );
+            FS_drawLocpin(
+              svgDoc,
+              ctx,
+              selectedItems,
+              selectedFloorData,
+              isFacility
+            );
           }
         };
 
@@ -89,7 +102,7 @@ function FS_FloorSpecific({
     };
 
     loadSvgAndDraw();
-  }, [selectedFloorData, canvasRef]);
+  }, [selectedFloorData, canvasRef, isFacility]);
 
   useEffect(() => {
     if (
@@ -102,15 +115,22 @@ function FS_FloorSpecific({
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(imgRef.current, 0, 0);
       if (selectedItems && selectedItems.length > 0) {
+        console.log(
+          "Drawing locpins for updated selectedItems:",
+          selectedItems,
+          "isFacility:",
+          isFacility
+        );
         FS_drawLocpin(
           svgDocRef.current,
           ctx,
-          selectedItems[0],
-          selectedFloorData
+          selectedItems,
+          selectedFloorData,
+          isFacility
         );
       }
     }
-  }, [selectedItems, selectedFloorData]);
+  }, [selectedItems, selectedFloorData, isFacility]);
 
   const floors = floorData
     .map((floor) => floor.floorNumber)

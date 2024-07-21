@@ -23,8 +23,8 @@ function Blog() {
     const fetchStoreData = async () => {
       try {
         const encodedName = encodeURIComponent(name);
-        // const response = await axios.get(`https://api.misarodeo.com/api/store/${encodedName}`, {
-          const response = await axios.get(`/api/store/${encodedName}`, {
+        const response = await axios.get(`https://api.misarodeo.com/api/store/${encodedName}`, {
+          // const response = await axios.get(`/api/store/${encodedName}`, {
           headers: {
             accept: '*/*',
             'x-api-key': API_KEY,

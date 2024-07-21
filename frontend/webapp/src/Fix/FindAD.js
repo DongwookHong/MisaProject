@@ -31,15 +31,13 @@ function FindAD() {
               <p>주목도 높은 팝업 형태의 광고</p>
             </div>
             <div className="find-ad-type">
-              <h3>스폰서 콘텐츠</h3>
-              <p>브랜드 관련 특집 기사 및 콘텐츠 제작</p>
+              <h3>홈페이지 제작</h3>
+              <p>홈페이지 제작 및 웹사이트 제작</p>
             </div>
-          
           </div>
         </div>
         <div className="find-ad-contact-us">
           <h2 className="find-ad-subtitle">광고 문의</h2>
-          <p>전화: 031-xxx-0352</p>
           <p>이메일: xxx@misarodeo.com</p>
           <button className="find-ad-contact-button">온라인 상담 신청</button>
         </div>

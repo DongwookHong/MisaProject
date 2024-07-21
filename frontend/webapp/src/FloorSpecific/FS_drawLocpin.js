@@ -47,28 +47,51 @@ const getManualBoundingRectFromPath = (pathElement) => {
   };
 };
 
-export const FS_drawLocpin = (svgDoc, ctx, selectedBlockId, floorData) => {
+export const FS_drawLocpin = (
+  svgDoc,
+  ctx,
+  selectedBlockIds,
+  floorData,
+  isFacility
+) => {
   const locpinImg = new Image();
   locpinImg.src = locpin;
 
-  const locpinWidth = 50;
-  const locpinHeight = 50;
+  const locpinWidth = isFacility ? 30 : 50;
+  const locpinHeight = isFacility ? 30 : 50;
 
   locpinImg.onload = () => {
-    if (!selectedBlockId || !svgDoc) return;
+    if (!selectedBlockIds || selectedBlockIds.length === 0 || !svgDoc) return;
 
-    const targetElement = svgDoc.getElementById(selectedBlockId);
-    if (!targetElement) {
-      console.log(`Element with ID: ${selectedBlockId} not found in SVG.`);
-      return;
-    }
+    console.log(
+      `Drawing ${isFacility ? "facility" : "store"} locpins for blockIds:`,
+      selectedBlockIds
+    );
 
-    const bbox = getBoundingBox(targetElement);
+    selectedBlockIds.forEach((blockId) => {
+      const targetElement = svgDoc.getElementById(blockId);
+      if (!targetElement) {
+        console.log(`Element with ID: ${blockId} not found in SVG.`);
+        return;
+      }
 
-    const cx = bbox.x + bbox.width / 2 - locpinWidth / 2;
-    const cy = bbox.y + bbox.height / 2 - locpinHeight / 2;
+      const bbox = getBoundingBox(targetElement);
 
-    ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
+      let cx = bbox.x + bbox.width / 2 - locpinWidth / 2;
+      let cy = bbox.y + bbox.height / 2 - locpinHeight / 2;
+
+      if (!isFacility) {
+        const offsetY = locpinHeight / 2; // 핀 높이의 절반만큼 위로 이동
+        cy -= offsetY;
+      }
+
+      ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
+      console.log(
+        `Drew ${
+          isFacility ? "facility" : "store"
+        } locpin for blockId: ${blockId} at (${cx}, ${cy}) with size ${locpinWidth}x${locpinHeight}`
+      );
+    });
   };
 
   locpinImg.onerror = () => {
