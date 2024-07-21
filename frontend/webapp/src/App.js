@@ -33,8 +33,9 @@ function App() {
           <Route path="/findspot/:name" element={<FindSpot />} />
           <Route path="/build" element={<EnterArcade />} />
           <Route path="/floormenu" element={<FloorMenu />} />
-          <Route path="/floorspecific/:building/:wing"element={<MainComponent />}/>
+          <Route path="/:building/:wing"element={<MainComponent />}/>        
           <Route path="/findad" element={<FindAD />} />
+          <Route path="/enter" element={<EnterArcade />} />
         </Routes>
       </Router>
     </div>

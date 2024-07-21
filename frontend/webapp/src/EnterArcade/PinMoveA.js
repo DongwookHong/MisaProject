@@ -1,6 +1,6 @@
 import React, { useState, useRef ,useEffect} from 'react';
-import Guide from './Guide_demo';
-import FloorSpecific from './FloorSpecific';
+import Guidecopy from './Guidecopy';
+import FloorS from './FloorS';
 
 function PinMove({ floorData, selectedFloorData, currentLocation }) {
   const [selectedFacility, setSelectedFacility] = useState(null);
@@ -27,14 +27,14 @@ function PinMove({ floorData, selectedFloorData, currentLocation }) {
 
   return (
     <div>
-      <FloorSpecific 
+      <FloorS
         canvasRef={canvasRef} 
         selectedFacility={selectedFacility}
         selectedStore={selectedStore}
         selectedFloorData={selectedFloorData}
         currentLocation={currentLocation}
       />
-      <Guide
+      <Guidecopy
         onIconClick={handleIconClick}
         floorData={selectedFloorData ? [selectedFloorData] : floorData}
         selectedFacility={selectedFacility}

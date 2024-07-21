@@ -1,5 +1,7 @@
 import locpin from "../asset/tool/locpin.png";
 import qrLocpin from "../asset/tool/locpin.png"; // QR 위치용 이미지
+import toilet  from "../asset/tool/toilet.svg"
+import elev  from "../asset/tool/elevator.svg"
 
 const getManualBoundingRectFromPath = (pathElement) => {
   const pathLength = pathElement.getTotalLength();
@@ -24,15 +26,30 @@ const getManualBoundingRectFromPath = (pathElement) => {
 
 const isFacility = (item) => {
   if (!item) return false;
-  const facilityTypes = ['화장실', '에스컬레이터', '엘레베이터', 'facility'];
+  const facilityTypes = ['화장실', '에스컬레이터', '엘리베이터', 'facility'];
   return facilityTypes.some(type => 
     (item.name && item.name.includes(type)) || item.type === type
   );
 };
 
 export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) => {
+  let imgSrc;
+  if (isQrLocation) {
+    imgSrc = qrLocpin;
+  } else if (isFacility(item)) {
+    if (item.name.includes('화장실') || item.type === '화장실') {
+      imgSrc = toilet;
+    } else if (item.name.includes('엘리베이터') || item.type === '엘리베이터') {
+      imgSrc = elev;
+    } else {
+      imgSrc = locpin; // Default to locpin for other facilities
+    }
+  } else {
+    imgSrc = locpin;
+  }
+
   const img = new Image();
-  img.src = isQrLocation ? qrLocpin : locpin;
+  img.src = imgSrc;
 
   let width, height;
   if (isQrLocation) {
@@ -96,6 +113,7 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
       cx = x + elementWidth / 2 - width / 2;
       cy = y + elementHeight / 2 - height / 2;
     }
+
     if (!isFacility(item) && !isQrLocation) {
       const offsetY = height / 2; // 핀 높이의 절반만큼 위로 이동
       cy -= offsetY;
@@ -118,6 +136,6 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
   };
 
   img.onerror = () => {
-    console.error("Failed to load the locpin image.");
+    console.error("Failed to load the image:", imgSrc);
   };
 };

@@ -29,7 +29,8 @@ function FindSpot() {
   useEffect(() => {
     const fetchStoreData = async () => {
       try {
-        const response = await axios.get(`https://api.misarodeo.com/api/find-spot/${encodeURIComponent(name)}`, {
+        // const response = await axios.get(`https://api.misarodeo.com/api/find-spot/${encodeURIComponent(name)}`, {
+          const response = await axios.get(`/api/find-spot/${encodeURIComponent(name)}`, {
           headers: {
             'accept': '*/*',
             'x-api-key': API_KEY

@@ -20,10 +20,8 @@ function MainComponent() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get(
-          `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
-            wing
-          )}`,
+        const response = await axios.get(`/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
+        // const response = await axios.get(`https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
           {
             headers: {
               accept: "*/*",

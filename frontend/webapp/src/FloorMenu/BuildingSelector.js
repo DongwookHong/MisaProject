@@ -29,7 +29,8 @@ function BuildingSelector() {
     }
 
     try {
-      const response = await axios.get(`https://api.misarodeo.com/api/floorspecific/building/${buildingName}/${buildingDong}`);
+      // const response = await axios.get(`https://api.misarodeo.com/api/building/${buildingName}/${buildingDong}`);
+      const response = await axios.get(`/api/building/${buildingName}/${buildingDong}`);
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);
     } catch (error) {
@@ -49,7 +50,7 @@ function BuildingSelector() {
         [buildingName, buildingDong] = selectedBuilding.split(" ");
         buildingDong = buildingDong.replace("동", "");
       }
-      navigate(`/floorspecific/${buildingName}/${buildingDong}`);
+      navigate(`/${buildingName}/${buildingDong}`);
     } else {
       console.log("건물을 선택해주세요.");
     }
