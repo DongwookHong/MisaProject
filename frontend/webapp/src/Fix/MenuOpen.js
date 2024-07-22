@@ -1,8 +1,8 @@
-import React from 'react';
-import '../style/Fix/MenuOpen.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { BiSolidDownArrow } from 'react-icons/bi';
+import React from "react";
+import "../style/Fix/MenuOpen.css";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { BiSolidDownArrow } from "react-icons/bi";
 
 function Banner() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,24 +10,7 @@ function Banner() {
     setMenuOpen(!menuOpen);
   };
 
-  return (
-    <div className="banner">
-      <div className="banner-header">
-        <BiSolidDownArrow />
-        힐스테이트 A동 1층
-        <img
-          className="menubtn"
-          // src={require('../img/menu.png')}
-          alt="Menu"
-          onClick={toggleMenu}
-        />
-      </div>
-      <div className="search-bar">
-        <input type="text" placeholder="Search" />
-      </div>
-      {menuOpen && <MenuContent />}
-    </div>
-  );
+  return <div>{menuOpen && <MenuContent />}</div>;
 }
 
 function MenuContent() {

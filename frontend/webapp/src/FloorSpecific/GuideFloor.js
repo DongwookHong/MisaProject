@@ -3,6 +3,13 @@ import "./GuideFloor.css";
 import locpin from "../asset/tool/locpin.png";
 
 function GuideFloor({ onIconClick, selectedFloorData }) {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 100,
+      behavior: "smooth",
+    });
+  };
+
   const [activeSection, setActiveSection] = useState("facility");
   const [facilityGroups, setFacilityGroups] = useState({});
   const [storeItems, setStoreItems] = useState([]);
@@ -42,6 +49,12 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
     const blockIds = facilityGroups[groupName].map((item) => item.blockId);
     console.log(`Clicked group: ${groupName}, blockIds:`, blockIds);
     onIconClick(blockIds, true); // true indicates it's a facility
+    scrollToTop();
+  };
+
+  const handleStoreClick = (blockId) => {
+    onIconClick([blockId], false);
+    scrollToTop(); // 스크롤을 상단으로 이동
   };
 
   return (
@@ -72,7 +85,7 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
           />
         )}
         {activeSection === "guide" && (
-          <StoreContent items={storeItems} onIconClick={onIconClick} />
+          <StoreContent items={storeItems} onIconClick={handleStoreClick} />
         )}
       </div>
     </div>
@@ -105,10 +118,7 @@ function StoreContent({ items, onIconClick }) {
       {items.map((item, index) => (
         <div className="facility-item" key={index}>
           {item.name}
-          <span
-            className="logospace"
-            onClick={() => onIconClick([item.blockId], false)}
-          >
+          <span className="logospace" onClick={() => onIconClick(item.blockId)}>
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>
         </div>

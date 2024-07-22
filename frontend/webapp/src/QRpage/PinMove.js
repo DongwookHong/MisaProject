@@ -1,6 +1,6 @@
-import React, { useState, useRef ,useEffect} from 'react';
-import Guide from './Guide_demo';
-import FloorSpecific from './FloorSpecific';
+import React, { useState, useRef, useEffect } from "react";
+import Guide from "./Guide";
+import FloorSpecific from "./FloorSpecific";
 
 function PinMove({ floorData, selectedFloorData, currentLocation }) {
   const [selectedFacility, setSelectedFacility] = useState(null);
@@ -14,11 +14,11 @@ function PinMove({ floorData, selectedFloorData, currentLocation }) {
   }, [selectedFloorData]);
 
   const handleIconClick = (item, type) => {
-    if (type === 'facility') {
+    if (type === "facility") {
       console.log(`${item} 위치를 표시합니다.`);
-      setSelectedFacility(prev => prev === item ? null : item);
+      setSelectedFacility((prev) => (prev === item ? null : item));
       setSelectedStore(null);
-    } else if (type === 'store') {
+    } else if (type === "store") {
       console.log(`${item} 매장 위치를 표시합니다.`);
       setSelectedStore(item);
       setSelectedFacility(null);
@@ -27,8 +27,8 @@ function PinMove({ floorData, selectedFloorData, currentLocation }) {
 
   return (
     <div>
-      <FloorSpecific 
-        canvasRef={canvasRef} 
+      <FloorSpecific
+        canvasRef={canvasRef}
         selectedFacility={selectedFacility}
         selectedStore={selectedStore}
         selectedFloorData={selectedFloorData}

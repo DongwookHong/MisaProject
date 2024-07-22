@@ -1,49 +1,53 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useRef } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import FS_FloorSpecific from "./FS_FloorSpecific";
 import GuideFloor from "./GuideFloor";
 import MainFooter from "../Fix/MainFooter";
 
+export async function mainComponentLoader({ params }) {
+  const { building, wing } = params;
+  try {
+    const response = await fetch(
+      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
+        wing
+      )}`,
+      {
+        headers: {
+          accept: "*/*",
+          "x-api-key": "testapikey",
+        },
+      }
+    );
+    if (response.ok) {
+      const rawData = await response.json();
+      if (rawData.length === 0) {
+        // 데이터가 비어있으면 유효하지 않은 building/wing으로 간주
+        throw new Response("Not Found", { status: 404 });
+      }
+      const parsedData = rawData.map((item) => JSON.parse(item));
+      return parsedData;
+    } else {
+      throw new Response("Not Found", { status: 404 });
+    }
+  } catch (error) {
+    throw new Response("Not Found", { status: 404 });
+  }
+}
+
 function MainComponent() {
-  const { building, wing } = useParams();
+  const floorData = useLoaderData();
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [floorData, setFloorData] = useState([]);
-  const [selectedFloorData, setSelectedFloorData] = useState(null);
+  const [selectedFloorData, setSelectedFloorData] = useState(floorData[0]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isFacility, setIsFacility] = useState(true);
 
-  useEffect(() => {
-    const fetchFloorData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get(`/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
-        // const response = await axios.get(`https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
-          {
-            headers: {
-              accept: "*/*",
-              "x-api-key": "testapikey",
-            },
-          }
-        );
-
-        const rawData = response.data;
-        const parsedData = rawData.map((item) => JSON.parse(item));
-        setFloorData(parsedData);
-        setSelectedFloorData(parsedData[0]); // Set the first floor as default
-      } catch (error) {
-        console.error("Error fetching floor data:", error);
-        setError("Failed to load floor data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchFloorData();
-  }, [building, wing]);
+  // 추가된 부분: 데이터 유효성 검사
+  React.useEffect(() => {
+    if (!floorData || floorData.length === 0) {
+      navigate("/404");
+    }
+  }, [floorData, navigate]);
 
   const handleFloorChange = (floorNumber) => {
     const newSelectedFloorData = floorData.find(
@@ -59,8 +63,10 @@ function MainComponent() {
     setIsFacility(isFacilityClick);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  // 데이터가 없으면 아무것도 렌더링하지 않음
+  if (!floorData || floorData.length === 0) {
+    return null;
+  }
 
   return (
     <div>
