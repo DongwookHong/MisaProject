@@ -1,4 +1,4 @@
-.container {
+.dong-container {
   max-width: 1000px;
   width: 100%;
   margin: auto;
@@ -101,15 +101,21 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  border: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  border-radius: 5px; /* 버튼 모서리를 약간 둥글게 */
+  transition: box-shadow 0.5s ease; /* 부드러운 그림자 변화 효과 */
 }
 
 .button-selected {
+  font-family: 'NanumSquareNeo';
   color: #4a5568;
-  border-bottom: 2px solid #1a202c;
+  border-bottom: 2px solid #bdafff;
 }
 
 .button-unselected {
   color: #a0aec0;
+  font-family: 'NanumSquareNeo';
 }
 
 .floor-container {
@@ -122,6 +128,7 @@
   padding: 16px 0; /* Increase padding to make it larger */
   text-align: center;
   cursor: pointer;
+  font-family: 'NanumSquareNeo';
 }
 
 .tenant-container {
@@ -139,6 +146,7 @@
   padding-left: 20px;
   border-bottom: 3px solid #e2e8f0; /* Increased border width */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
+  font-family: 'NanumSquareNeo';
 }
 
 .mt-4 {
@@ -189,16 +197,7 @@
 .head {
   border-bottom: 2px solid gray;
   padding: 10px;
-}
-
-@font-face {
-  font-family: 'BMDOHYEON-Regular';
-  /* font-weight: normal;
-  src: url('./fonts/BMDOHYEON_ttf.ttf') format('truetype'); */
-}
-
-body {
-  font-family: 'BMDOHYEON-Regular';
+  font-family: 'NanumSquareNeoExtraBold';
 }
 
 .no-wrap {
@@ -212,6 +211,7 @@ body {
 
   .map_button {
     margin-left: 0;
+    font-family: 'NanumSquareNeo';
   }
 
   .flex-col {
