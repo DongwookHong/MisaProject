@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import FS_FloorSpecific from "./FS_FloorSpecific";
-import GuideFloor from "./GuideFloor";
-import MainFooter from "../Fix/MainFooter";
+import React, { useState, useRef } from 'react';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import FS_FloorSpecific from './FS_FloorSpecific';
+import GuideFloor from './GuideFloor';
+import MainFooter from '../Fix/MainFooter';
 
 export async function mainComponentLoader({ params }) {
   const { building, wing } = params;
@@ -13,8 +13,8 @@ export async function mainComponentLoader({ params }) {
       )}`,
       {
         headers: {
-          accept: "*/*",
-          "x-api-key": "testapikey",
+          accept: '*/*',
+          'x-api-key': 'testapikey',
         },
       }
     );
@@ -22,15 +22,15 @@ export async function mainComponentLoader({ params }) {
       const rawData = await response.json();
       if (rawData.length === 0) {
         // 데이터가 비어있으면 유효하지 않은 building/wing으로 간주
-        throw new Response("Not Found", { status: 404 });
+        throw new Response('Not Found', { status: 404 });
       }
       const parsedData = rawData.map((item) => JSON.parse(item));
       return parsedData;
     } else {
-      throw new Response("Not Found", { status: 404 });
+      throw new Response('Not Found', { status: 404 });
     }
   } catch (error) {
-    throw new Response("Not Found", { status: 404 });
+    throw new Response('Not Found', { status: 404 });
   }
 }
 
@@ -42,10 +42,11 @@ function MainComponent() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isFacility, setIsFacility] = useState(true);
 
+  const { building, wing } = useParams();
   // 추가된 부분: 데이터 유효성 검사
   React.useEffect(() => {
     if (!floorData || floorData.length === 0) {
-      navigate("/404");
+      navigate('/404');
     }
   }, [floorData, navigate]);
 
@@ -58,7 +59,7 @@ function MainComponent() {
   };
 
   const handleIconClick = (blockIds, isFacilityClick = true) => {
-    console.log("Clicked blockIds:", blockIds, "isFacility:", isFacilityClick);
+    console.log('Clicked blockIds:', blockIds, 'isFacility:', isFacilityClick);
     setSelectedItems(Array.isArray(blockIds) ? blockIds : [blockIds]);
     setIsFacility(isFacilityClick);
   };

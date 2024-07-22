@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { AppContext } from "./AppContext";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../style/FloorMenu/FloorMenu.css";
-import mapImage from "../asset/tool/mapimage.png";
+import React, { useContext } from 'react';
+import { AppContext } from './AppContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../style/FloorMenu/FloorMenu.css';
+import mapImage from '../asset/tool/mapimage.png';
 
 function BuildingSelector() {
-  const { selectedBuilding, setSelectedBuilding, setFloorData } = useContext(AppContext);
+  const { selectedBuilding, setSelectedBuilding, setFloorData } =
+    useContext(AppContext);
   const navigate = useNavigate();
 
   const buildingMap = {
@@ -18,14 +19,14 @@ function BuildingSelector() {
   const handleBuildingSelect = async (displayName) => {
     const internalName = buildingMap[displayName];
     setSelectedBuilding(internalName);
-    
+
     let buildingName, buildingDong;
-    if (internalName === "롯데캐슬") {
-      buildingName = "롯데캐슬";
-      buildingDong = "C";
+    if (internalName === '롯데캐슬') {
+      buildingName = '롯데캐슬';
+      buildingDong = 'C';
     } else {
-      [buildingName, buildingDong] = internalName.split(" ");
-      buildingDong = buildingDong.replace("동", "");
+      [buildingName, buildingDong] = internalName.split(' ');
+      buildingDong = buildingDong.replace('동', '');
     }
 
     try {
@@ -33,7 +34,7 @@ function BuildingSelector() {
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);
     } catch (error) {
-      console.error("Error fetching building data:", error);
+      console.error('Error fetching building data:', error);
     }
 
     navigate(`/floormenu?building=${internalName}&floor=1`);
@@ -42,16 +43,16 @@ function BuildingSelector() {
   const handleFloorSpecificClick = () => {
     if (selectedBuilding) {
       let buildingName, buildingDong;
-      if (selectedBuilding === "롯데캐슬") {
-        buildingName = "롯데캐슬";
-        buildingDong = "C";
+      if (selectedBuilding === '롯데캐슬') {
+        buildingName = '롯데캐슬';
+        buildingDong = 'C';
       } else {
-        [buildingName, buildingDong] = selectedBuilding.split(" ");
-        buildingDong = buildingDong.replace("동", "");
+        [buildingName, buildingDong] = selectedBuilding.split(' ');
+        buildingDong = buildingDong.replace('동', '');
       }
       navigate(`/${buildingName}/${buildingDong}`);
     } else {
-      console.log("건물을 선택해주세요.");
+      console.log('건물을 선택해주세요.');
     }
   };
 
@@ -66,11 +67,10 @@ function BuildingSelector() {
           key={displayName}
           className={`button ${
             selectedBuilding === buildingMap[displayName]
-              ? "button-selected"
-              : "button-unselected"
+              ? 'button-selected'
+              : 'button-unselected'
           }`}
-          onClick={() => handleBuildingSelect(displayName)}
-        >
+          onClick={() => handleBuildingSelect(displayName)}>
           {displayName}
         </button>
       ))}
@@ -78,8 +78,9 @@ function BuildingSelector() {
         <img
           src={mapImage}
           alt="Icon"
-          width="30"
-          height="30"
+          width="20"
+          height="20"
+          style={{ padding: '5px' }}
         />
         층별안내
       </button>
