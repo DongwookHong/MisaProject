@@ -6,9 +6,6 @@ import '../style/MainMenu/Arcade.css';
 // import hillstateB from '../asset/logo/HillstateB.png';
 // import lotteCastle from '../asset/logo/LotteCastle.png';
 
-import hillstateA from '../asset/logo/hillA.png';
-import hillstateB from '../asset/logo/hillB.png';
-import lotteCastle from '../asset/logo/hLotte.png';
 
 import hillstateImg from '../asset/logo/Ar1.png'; // 실제 이미지 경로로 교체
 import lotteCastleImg from '../asset/logo/Ar2.png';
@@ -23,10 +20,10 @@ function Arcade() {
           <div className="text">힐스테이트</div>
           <div className="arcade-fragment">
             <Link to="/arcade" className="arcade-direction">
-              A동 바로가기 &gt;
+              12BL 바로가기 &gt;
             </Link>
             <Link to="/qr" className="arcade-direction">
-              B동 바로가기 &gt;
+              11BL 바로가기 &gt;
             </Link>
           </div>
         </div>

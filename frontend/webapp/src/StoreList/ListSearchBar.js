@@ -8,9 +8,17 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
   const [selectedDong, setSelectedDong] = useState(null);
   const [selectedCheung, setSelectedCheung] = useState(null);
 
+  const getModifiedBuildingDong = (buildingName, buildingDong) => {
+    if (buildingDong === 'A') return `${buildingName} 12BL`;
+    if (buildingDong === 'B') return `${buildingName} 11BL`;
+    return `${buildingName} ${buildingDong}`;
+  };
+
   const dongOptions = Array.from(
     new Set(
-      allStores.map((store) => `${store.buildingName} ${store.buildingDong}`)
+      allStores.map((store) => 
+        getModifiedBuildingDong(store.buildingName, store.buildingDong)
+      )
     )
   ).map((dong) => ({ value: dong, label: dong }));
 
@@ -23,34 +31,34 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
     }))
     .sort((a, b) => (a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)));
 
-    const customStyles = {
-      control: (provided) => ({
-        ...provided,
-        backgroundColor: 'white',
-        borderColor: '#f0f0ff',
-        boxShadow: 'none',
-        borderRadius: '5px',
-        height: '40px',
-        minHeight: '40px',
-        width: '160px',
-      }),
-      menu: (provided) => ({
-        ...provided,
-        backgroundColor: 'white',
-      }),
-      option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isSelected ? '#bdafff' : 'white',
-        color: 'black',
-      }),
-    };
-  
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+      borderColor: '#f0f0ff',
+      boxShadow: 'none',
+      borderRadius: '5px',
+      height: '40px',
+      minHeight: '40px',
+      width: '160px',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'white',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#bdafff' : 'white',
+      color: 'black',
+    }),
+  };
 
   const handleSearch = () => {
     const results = allStores.filter((store) => {
       const matchesSearchTerm = store.storeName.includes(searchTerm);
+      const modifiedBuildingDong = getModifiedBuildingDong(store.buildingName, store.buildingDong);
       const matchesDong = selectedDong
-        ? `${store.buildingName} ${store.buildingDong}` === selectedDong.value
+        ? modifiedBuildingDong === selectedDong.value
         : true;
       const matchesCheung = selectedCheung
         ? store.floorNumber === selectedCheung.value

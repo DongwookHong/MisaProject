@@ -62,11 +62,11 @@ function TenantList() {
 
   // Helper function to check if the selected floor is a parking lot
   const isParkingLot = (building, floor) => {
-    if (building === "힐스테이트 A동" && ["B2", "B3", "B4"].includes(floor)) {
+    if (building === "힐스테이트 12BL" && ["B2", "B3", "B4"].includes(floor)) {
       return true;
     }
     if (
-      (building === "힐스테이트 B동" || building === "롯데캐슬 C동") &&
+      (building === "힐스테이트 11BL" || building === "롯데캐슬 동") &&
       ["B1", "B2", "B3", "B4"].includes(floor)
     ) {
       return true;

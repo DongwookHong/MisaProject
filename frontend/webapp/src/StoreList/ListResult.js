@@ -28,6 +28,13 @@ const StoreCard = ({ store }) => {
       return `${floorNumber}층`;
     }
   };
+
+  const getModifiedBuildingDong = (dong) => {
+    if (dong === 'A') return '12BL';
+    if (dong === 'B') return '11BL';
+    return dong; // Return original value if not A or B
+  };
+
   return (
     <div className="store-card">
       <img
@@ -38,7 +45,7 @@ const StoreCard = ({ store }) => {
       <div className="store-section">
         <h3 className="store-name">{store.storeName}</h3>
         <p className="store-address">
-          {store.buildingName} {store.buildingDong}{' '}
+          {store.buildingName} {getModifiedBuildingDong(store.buildingDong)}{' '}
           {getFloorDisplay(store.floorNumber)}
         </p>
       </div>
