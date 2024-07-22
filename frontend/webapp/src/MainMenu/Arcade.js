@@ -20,10 +20,10 @@ function Arcade() {
           <div className="text">힐스테이트</div>
           <div className="arcade-fragment">
             <Link to="/floormenu?building=힐스테이트 A동&floor=1" className="arcade-direction">
-              A동 바로가기 &gt;
+              12BL 바로가기 &gt;
             </Link>
             <Link to="/floormenu?building=힐스테이트 B동&floor=1" className="arcade-direction">
-              B동 바로가기 &gt;
+              11BL 바로가기 &gt;
             </Link>
           </div>
         </div>

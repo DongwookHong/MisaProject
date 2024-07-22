@@ -10,8 +10,8 @@ function BuildingSelector() {
   const navigate = useNavigate();
 
   const buildingMap = {
-    "힐스테이트 A동": "힐스테이트 A동",
-    "힐스테이트 B동": "힐스테이트 B동",
+    "힐스테이트 12BL": "힐스테이트 A동",
+    "힐스테이트 11BL": "힐스테이트 B동",
     "롯데캐슬": "롯데캐슬",
   };
 
@@ -29,7 +29,6 @@ function BuildingSelector() {
     }
 
     try {
-      // const response = await axios.get(`https://api.misarodeo.com/api/building/${buildingName}/${buildingDong}`);
       const response = await axios.get(`/api/building/${buildingName}/${buildingDong}`);
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);
@@ -54,6 +53,10 @@ function BuildingSelector() {
     } else {
       console.log("건물을 선택해주세요.");
     }
+  };
+
+  const getDisplayName = (internalName) => {
+    return Object.entries(buildingMap).find(([key, value]) => value === internalName)?.[0] || internalName;
   };
 
   return (

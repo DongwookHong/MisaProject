@@ -39,10 +39,10 @@ function LocSearch({ floorData }) {
 
       switch (building) {
         case 1:
-          locationString = '힐스테이트 A동';
+          locationString = '힐스테이트 12BL';
           break;
         case 2:
-          locationString = '힐스테이트 B동';
+          locationString = '힐스테이트 11BL';
           break;
         case 3:
           locationString = '롯데캐슬';

@@ -6,7 +6,7 @@ function MainFooter() {
     <div className="footer">
       <div className="info">
         <p className="main-name">HANAM MISA RODEO STREET</p>
-        <p>힐스테이트미사역 그랑파사쥬 A B | 롯데 캐슬</p>
+        <p>힐스테이트미사역 그랑파사쥬 11BL 12BL | 롯데 캐슬</p>
         <p>경기도 하남시 미사강변동로 95</p>
         <p>그랑파사쥬 관리사무소</p>
         <p>031-794-0352</p>

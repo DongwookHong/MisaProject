@@ -27,6 +27,14 @@ function FS_FloorSpecific({
     setMenuOpen(false);
   };
 
+  // 수정된 함수: wing을 BL로 변환하고 롯데캐슬 처리
+  const convertWingToBL = (building, wing) => {
+    if (building === "롯데캐슬") return "";
+    if (wing === "A") return "12BL";
+    if (wing === "B") return "11BL";
+    return wing;
+  };
+
   useLayoutEffect(() => {
     if (!selectedFloorData) return;
 
@@ -148,7 +156,7 @@ function FS_FloorSpecific({
             <span>←</span>
           </Link>
           <div className="menu-title">
-            층별 안내 - {building} {wing}동
+            층별 안내 - {building} {convertWingToBL(building, wing)}
           </div>
           <div className="menu-icon" onClick={handleMenuClick}>
             <img src={Menu} alt="menu-bar" width="30" height="30" />
