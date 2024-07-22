@@ -98,6 +98,13 @@ function InfoPage({
 
   const businessStatus = getCurrentBusinessStatus();
 
+  // Modified to change building_dong display
+  const getModifiedBuildingDong = (dong) => {
+    if (dong === 'A') return '12BL';
+    if (dong === 'B') return '11BL';
+    return dong; // Return original value if not A or B
+  };
+
   return (
     <>
       <div className="info-page">
@@ -107,7 +114,7 @@ function InfoPage({
           </div>
           <div className="title-subsection">
             <h6 className="info_floor">
-              {building_name} {building_dong} {getFloorDisplay(floor_number)}
+              {building_name} {getModifiedBuildingDong(building_dong)} {getFloorDisplay(floor_number)}
             </h6>
             <div className="share-button" onClick={handleShare}>
               <LuShare />
@@ -141,28 +148,6 @@ function InfoPage({
             </a>
           </p>
           <hr className="light-line-full" />
-          {/* <div className="location-info-container">
-            <div className="location-info-header" onClick={() => setIsLocationExpanded(!isLocationExpanded)}>
-              <span className="location-label">위치 정보</span>
-              <span className="location-toggle">
-                {isLocationExpanded ? <LuChevronUp size={24} /> : <LuChevronDown size={24} />}
-              </span>
-            </div>
-            {isLocationExpanded && (
-              <div className="location-info">
-                {floorImage && (
-                  <img 
-                    src={floorImage} 
-                    alt="Floor plan" 
-                    className="floor-image"
-                    style={{ width: '100%', marginBottom: '10px' }}
-                  />
-                )}
-                <p>{location_info}</p>
-              </div>
-            )}
-          </div> */}
-          {/* <hr className="light-line-full" /> */}
         </div>
         <div className="store-describe" style={{ whiteSpace: 'pre-line' }}>
           {store_info}

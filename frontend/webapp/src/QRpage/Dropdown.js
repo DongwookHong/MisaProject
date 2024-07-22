@@ -14,7 +14,16 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     ];
     return uniqueBuildings.map((building) => {
       const [name, dong] = building.split(' ');
-      const label = name === '롯데캐슬' ? '롯데캐슬' : building;
+      let label;
+      if (name === '롯데캐슬') {
+        label = '롯데캐슬';
+      } else if (name === '힐스테이트' && dong === 'A') {
+        label = '힐스테이트 12BL';
+      } else if (name === '힐스테이트' && dong === 'B') {
+        label = '힐스테이트 11BL';
+      } else {
+        label = building;
+      }
       return {
         value: building,
         label: label,
