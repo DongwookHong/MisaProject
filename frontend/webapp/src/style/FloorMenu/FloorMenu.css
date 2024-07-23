@@ -1,18 +1,51 @@
 .dong-container {
-  max-width: 1000px;
-  width: 100%;
-  margin: auto;
+  width: 90%;
+  width: 90%;
   padding: 16px;
   position: relative; /* Make this container relative */
 }
+.dong-announce-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.dong-announce-head {
+  padding-bottom: 5px;
+  /* border-bottom: 2px solid gray; */
+  /* padding: 10px; */
+  font-family: 'Freesentation-9Black';
+  width: 100%;
+  /* align-items: center; */
+  text-align: center;
+  font-size: 2em;
+  /* justify-content: center; */
+}
+
+.dong-announce-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.dong-announce-head {
+  padding-bottom: 5px;
+  /* border-bottom: 2px solid gray; */
+  /* padding: 10px; */
+  font-family: 'Freesentation-9Black';
+  width: 100%;
+  /* align-items: center; */
+  text-align: center;
+  font-size: 2em;
+  /* justify-content: center; */
+}
+
 .centered-image {
-  border: 2px solid black; /* 원하는 색상과 두께로 변경 가능 */
+  border: 1px solid gray; /* 원하는 색상과 두께로 변경 가능 */
+  border: 1px solid gray; /* 원하는 색상과 두께로 변경 가능 */
 }
 
 .flex-dong {
   display: flex;
   flex-direction: row;
-  padding: 0px;
   background-color: #ffffff;
 }
 
@@ -73,6 +106,8 @@
 
 .text-white {
   color: #ffffff;
+  font-weight: bold;
+  font-weight: bold;
 }
 
 .text-gray-500 {
@@ -91,62 +126,70 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-bottom: 16px; /* Adjust as needed */
+  margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .map_button {
-  padding: 10px 10px;
+  /* padding: 10px ; */
+  /* padding: 10px ; */
   background: none;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
   border: none;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  border-radius: 5px; /* 버튼 모서리를 약간 둥글게 */
-  transition: box-shadow 0.5s ease; /* 부드러운 그림자 변화 효과 */
+  font-weight: bold;
+
+  /* border-radius: 5px;  */
+}
+
+.map_button:focus,
+.map_button:active {
+  outline: none;
 }
 
 .button-selected {
-  font-family: 'NanumSquareNeo';
   color: #4a5568;
   border-bottom: 2px solid #bdafff;
 }
 
 .button-unselected {
   color: #a0aec0;
-  font-family: 'NanumSquareNeo';
 }
 
 .floor-container {
   flex-basis: 25%; /* Adjust the basis to decrease width */
   flex-grow: 0; /* Prevent it from growing */
-  height: 1000%; /* Set to 100% height */
+  height: 100%; /* Set to 100% height */
+  height: 100%; /* Set to 100% height */
 }
 
 .floor {
   padding: 16px 0; /* Increase padding to make it larger */
   text-align: center;
   cursor: pointer;
-  font-family: 'NanumSquareNeo';
 }
 
 .tenant-container {
   padding: 5px;
-  width: 75%; /* 3/4 width equivalent */
-  height: 700px;
+  width: 75%;
+  /* height: 700px; */
+  width: 75%;
+  /* height: 700px; */
   overflow-y: auto;
   background-color: #ffffff;
 }
 
 .tenant {
-  width: 100%; /* Full width */
+  width: 90%; /* Full width */
+  width: 90%; /* Full width */
   height: 45px;
   padding: 8px 0;
   padding-left: 20px;
-  border-bottom: 3px solid #e2e8f0; /* Increased border width */
+  border-bottom: 1px dashed hsl(260, 3%, 77%); /* Increased border width */
+  border-bottom: 1px dashed hsl(260, 3%, 77%); /* Increased border width */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
-  font-family: 'NanumSquareNeo';
 }
 
 .mt-4 {
@@ -194,48 +237,97 @@
   z-index: 10; /* Ensure it appears on top */
 }
 
-.head {
-  border-bottom: 2px solid gray;
-  padding: 10px;
-  font-family: 'NanumSquareNeoExtraBold';
-}
-
 .no-wrap {
   flex-wrap: nowrap;
 }
 
 @media (max-width: 768px) {
-  .map_button-container {
+  .dong-container {
+    display: flex;
+    flex-direction: column;
+  .dong-container {
+    display: flex;
+    flex-direction: column;
     justify-content: flex-end;
+    width: 100%;
+    padding: 5px;
+  }
+
+  .flex-dong {
+    margin-bottom: 3px;
+    /* font-size: 25px; */
+    padding: 5px;
+  }
+
+  .map_button-container {
+    order: 1; /* flex-dong 다음에 오도록 설정 */
+    width: 100%;
+    margin-bottom: 16px;
+    justify-content: center; /* 중앙 정렬 */
+    width: 100%;
+    padding: 5px;
+  }
+
+  .flex-dong {
+    margin-bottom: 3px;
+    /* font-size: 25px; */
+    padding: 5px;
+  }
+
+  .map_button-container {
+    order: 1; /* flex-dong 다음에 오도록 설정 */
+    width: 100%;
+    margin-bottom: 16px;
+    justify-content: center; /* 중앙 정렬 */
   }
 
   .map_button {
-    margin-left: 0;
-    font-family: 'NanumSquareNeo';
+    padding: 5px 10px;
+    font-size: 16px;
+    justify-content: flex-end;
+    color: #5d4fbb;
+    width: 90%;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 16px;
+    justify-content: flex-end;
+    color: #5d4fbb;
+    width: 90%;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
   }
 
-  .flex-col {
-    flex-direction: column;
+  .floor-container,
+  .tenant-container {
+    min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
+  .floor-container,
+  .tenant-container {
+    min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
   }
 
   .tenant-container {
-    width: 100%; /* Full width for small screens */
-    background-color: #ffffff;
+    width: 100%; /* 모바일에서는 전체 너비 사용 */
+    height: auto; /* 높이 자동 조정 */
+    max-height: 500px; /* 최대 높이 설정 (필요시 조정) */
   }
 
-  .floor-container {
-    width: 100%; /* Full width for small screens */
-    display: flex;
-    flex-direction: column; /* Changed to column for smaller screens */
-    overflow-x: auto;
+  .flex-dong .button {
+    padding: 8px 12px;
+    font-size: 15px;
+    width: 100%; /* 모바일에서는 전체 너비 사용 */
+    height: auto; /* 높이 자동 조정 */
+    max-height: 500px; /* 최대 높이 설정 (필요시 조정) */
   }
 
-  .floor {
-    flex: 1;
-    padding: 8px;
+  .flex-dong .button {
+    padding: 8px 12px;
+    font-size: 15px;
   }
 
-  .no-wrap {
-    flex-wrap: wrap;
+  .space-x-4 > *:not(:last-child) {
+    margin-right: 2px; /* 버튼 간 간격 유지 */
+  .space-x-4 > *:not(:last-child) {
+    margin-right: 2px; /* 버튼 간 간격 유지 */
   }
 }
