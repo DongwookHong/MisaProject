@@ -30,6 +30,7 @@ function BuildingSelector() {
     }
 
     try {
+      // const response = await axios.get(`https://api.misarodeo.com/api/building/${buildingName}/${buildingDong}`);
       const response = await axios.get(`/api/building/${buildingName}/${buildingDong}`);
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);

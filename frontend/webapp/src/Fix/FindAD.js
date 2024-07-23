@@ -38,7 +38,7 @@ function FindAD() {
           </div>
           <div className="find-ad-contact-us">
             <h2 className="find-ad-subtitle">광고 문의</h2>
-            <p>이메일: xxx@misarodeo.com</p>
+            <p>이메일: misarodeo@gmail.com</p>
             <a href="https://open.kakao.com/o/sNyXo9Dg" target="_blank" rel="noopener noreferrer" className="find-ad-contact-button">
               카카오톡 오픈채팅 상담
             </a>

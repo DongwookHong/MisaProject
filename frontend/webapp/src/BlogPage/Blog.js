@@ -15,6 +15,7 @@ export async function blogLoader({ params }) {
   try {
     const encodedName = encodeURIComponent(name);
     const response = await fetch(`/api/store/${encodedName}`, {
+      // const response = await fetch(`https://api.misarodeo.com/api/store/${encodedName}`, {    
       headers: {
         accept: "*/*",
         "x-api-key": API_KEY,
@@ -55,6 +56,9 @@ function Blog() {
   React.useEffect(() => {
     if (!store) {
       navigate("/404");
+    } else {
+      // 페이지 로드 시 스크롤 위치를 상단으로 이동
+      window.scrollTo(0, 0);
     }
   }, [store, navigate]);
 

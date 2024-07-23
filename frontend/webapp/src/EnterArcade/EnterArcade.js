@@ -23,6 +23,7 @@ function EnterArcade() {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/qr-page', {
+        // const response = await axios.get('https://api.misarodeo.com/api/qr-page', {
           headers: {
             'accept': '*/*',
             'x-api-key': API_KEY

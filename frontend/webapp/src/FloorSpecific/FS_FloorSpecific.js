@@ -61,6 +61,7 @@ function FS_FloorSpecific({
     },
     [building, wing]
   );
+
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
   };
@@ -69,12 +70,13 @@ function FS_FloorSpecific({
     setMenuOpen(false);
   };
 
-  // 수정된 함수: wing을 BL로 변환하고 롯데캐슬 처리
-  const convertWingToBL = (building, wing) => {
-    if (building === "롯데캐슬") return "";
-    if (wing === "A") return "12BL";
-    if (wing === "B") return "11BL";
-    return wing;
+  const getBuildingDisplay = (building, wing) => {
+    if (building === "힐스테이트") {
+      if (wing === "A") return "힐스테이트 12BL";
+      if (wing === "B") return "힐스테이트 11BL";
+    }
+    if (building === "롯데캐슬") return "롯데캐슬";
+    return `${building} ${wing}동`;  // 기본 케이스
   };
 
   useLayoutEffect(() => {
@@ -191,8 +193,7 @@ function FS_FloorSpecific({
     });
 
   const handleBackClick = () => {
-    navigate(-1); // This navigates back to the previous page
-    // navigate('./floormenu');
+    navigate('/floormenu');
   };
 
   return (
@@ -204,7 +205,7 @@ function FS_FloorSpecific({
           </div>
           <div className="menu-title-container">
             <div className="menu-title">
-              {building} {wing !== 'C' && wing + '동'}
+              {getBuildingDisplay(building, wing)}
             </div>
             <div
               className="wing-toggle"
@@ -226,7 +227,7 @@ function FS_FloorSpecific({
               <div
                 key={`${optBuilding}-${optWing}`}
                 onClick={() => handleWingChange(optBuilding, optWing)}>
-                {optBuilding} {optWing !== 'C' && optWing + '동'}
+                {getBuildingDisplay(optBuilding, optWing)}
               </div>
             ))}
           </div>

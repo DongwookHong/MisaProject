@@ -22,6 +22,7 @@ function InfoPage({
   useEffect(() => {
     const fetchFloorImage = async () => {
       try {
+        // const response = await fetch(`https://api.misarodeo.com/api/find-spot/${blockId}`);
         const response = await fetch(`/api/find-spot/${blockId}`);
         const data = await response.json();
         if (data && data.floorImage) {
