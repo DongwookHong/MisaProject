@@ -14,53 +14,70 @@ export async function blogLoader({ params }) {
   const { name } = params;
   try {
     const encodedName = encodeURIComponent(name);
-    const response = await fetch(`/api/store/${encodedName}`, {
-      // const response = await fetch(`https://api.misarodeo.com/api/store/${encodedName}`, {    
+    
+    // Fetch store data
+    const storeResponse = await fetch(`/api/store/${encodedName}`, {
       headers: {
         accept: "*/*",
         "x-api-key": API_KEY,
       },
     });
 
-    if (!response.ok) {
-      throw new Response("Not Found", { status: 404 });
+    if (!storeResponse.ok) {
+      throw new Response("Store Not Found", { status: 404 });
     }
 
-    const data = await response.json();
+    const storeData = await storeResponse.json();
+
+    // Fetch floor data
+    const floorResponse = await fetch(`/api/find-spot/${encodedName}`, {
+      headers: {
+        accept: "*/*",
+        "x-api-key": API_KEY,
+      },
+    });
+
+    if (!floorResponse.ok) {
+      throw new Response("Floor data not found", { status: 404 });
+    }
+
+    const floorData = await floorResponse.json();
 
     let images = [];
-    if (data.storeImage) {
-      const url = data.storeImage.startsWith("http")
-        ? data.storeImage
-        : `https://${data.storeImage}`;
+    if (storeData.storeImage) {
+      const url = storeData.storeImage.startsWith("http")
+        ? storeData.storeImage
+        : `https://${storeData.storeImage}`;
       images = [url];
-    } else if (Array.isArray(data.storeImages)) {
-      images = data.storeImages
+    } else if (Array.isArray(storeData.storeImages)) {
+      images = storeData.storeImages
         .filter((url) => typeof url === "string")
         .map((url) => (url.startsWith("http") ? url : `https://${url}`));
     }
 
-    return { ...data, images };
+    return { 
+      storeData: { ...storeData, images },
+      floorData
+    };
   } catch (error) {
-    console.error("Error fetching store data:", error);
-    throw new Response("Error loading store data", { status: 500 });
+    console.error("Error fetching data:", error);
+    throw new Response("Error loading data", { status: 500 });
   }
 }
 
 function Blog() {
-  const store = useLoaderData();
+  const { storeData, floorData } = useLoaderData();
   const [showModal, setShowModal] = React.useState(false);
   const [shareData, setShareData] = React.useState({});
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!store) {
+    if (!storeData) {
       navigate("/404");
     } else {
-      // 페이지 로드 시 스크롤 위치를 상단으로 이동
       window.scrollTo(0, 0);
     }
-  }, [store, navigate]);
+  }, [storeData, navigate]);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -68,8 +85,8 @@ function Blog() {
   const handleShare = async () => {
     const currentUrl = window.location.href;
     const shareData = {
-      title: store.storeName,
-      text: `Check out this amazing place: ${store.storeInfo}`,
+      title: storeData.storeName,
+      text: `Check out this amazing place: ${storeData.storeInfo}`,
       url: currentUrl,
     };
 
@@ -85,7 +102,7 @@ function Blog() {
     }
   };
 
-  if (!store) {
+  if (!storeData) {
     return null;
   }
 
@@ -94,19 +111,21 @@ function Blog() {
       <MainHeader />
       <div className="blog-card">
         <InfoPage
-          store_name={store.storeName}
-          building_name={store.buildingName}
-          building_dong={store.buildingDong}
-          floor_number={store.floorNumber}
-          storeHours={store.storeHours}
-          store_number={store.storePhone}
-          insta_path={store.instaPath}
-          home_page_path={store.homePagePath}
-          store_info={store.storeInfo}
+          store_name={storeData.storeName}
+          building_name={storeData.buildingName}
+          building_dong={storeData.buildingDong}
+          floor_number={storeData.floorNumber}
+          storeHours={storeData.storeHours}
+          store_number={storeData.storePhone}
+          insta_path={storeData.instaPath}
+          home_page_path={storeData.homePagePath}
+          store_info={storeData.storeInfo}
           handleShare={handleShare}
+          floor_image={floorData.floorImage}
+          block_id={floorData.blockId}
         />
 
-        {store.images.length > 0 && <Slide imageUrls={store.images} />}
+        {storeData.images.length > 0 && <Slide imageUrls={storeData.images} />}
         <ShareModal
           show={showModal}
           handleClose={handleCloseModal}
