@@ -70,10 +70,18 @@
 
 .select-container {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* 중앙 정렬 */
   align-items: center;
   gap: 10px;
   margin-top: 20px;
+  width: 100%; /* 전체 너비 사용 */
+  max-width: 400px; /* 최대 너비 설정 */
+  margin-left: auto; /* 좌우 마진 자동 설정으로 중앙 정렬 */
+  margin-right: auto;
+}
+
+.select-box {
+  width: 100%; /* Select 컴포넌트가 컨테이너의 전체 너비를 사용하도록 설정 */
 }
 
 .custom-select__control {
@@ -83,7 +91,7 @@
   border-radius: 25px; /* 동글한 느낌 */
   height: 40px; /* 높이 조정 */
   min-height: 40px; /* 최소 높이 조정 */
-  width: 150px;
+  width: 100%;
 }
 
 .custom-select__control:hover {
@@ -101,4 +109,41 @@
 
 .custom-select__option--is-focused {
   background-color: #d8b9f7;
+}
+
+@media (max-width: 768px) {
+  .select-container {
+    flex-direction: row; /* 화면이 좁아져도 드롭다운을 가로로 배치 */
+    gap: 10px; /* 드롭다운 간격 줄이기 */
+  }
+
+  .select-container {
+    min-width: 180px; /* 작은 화면에서도 최소 너비 유지 */
+    max-width: 350px; /* 작은 화면에서도 최대 너비 유지 */
+    width: 80%; /* 작은 화면에서도 전체 너비 사용 */
+  }
+  .select-box {
+    min-width: 180px; /* 작은 화면에서도 최소 너비 유지 */
+    max-width: 350px; /* 작은 화면에서도 최대 너비 유지 */
+    width: 80%; /* 작은 화면에서도 전체 너비 사용 */
+  }
+
+  .react-select__control {
+    min-width: 180px; /* 작은 화면에서도 최소 너비 유지 */
+    max-width: 350px; /* 작은 화면에서도 최대 너비 유지 */
+  }
+}
+
+@media (min-width: 769px) {
+  .select-container {
+    min-width: 250px; /* 큰 화면에서는 최소 너비 설정 */
+    max-width: 450px; /* 큰 화면에서는 최대 너비 설정 */
+    width: 80%; /* 작은 화면에서도 전체 너비 사용 */
+  }
+
+  .react-select__control {
+    min-width: 250px;
+    max-width: 450px;
+    width: 80%; /* 작은 화면에서도 전체 너비 사용 */
+  }
 }

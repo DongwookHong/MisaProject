@@ -16,7 +16,7 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
 
   const dongOptions = Array.from(
     new Set(
-      allStores.map((store) => 
+      allStores.map((store) =>
         getModifiedBuildingDong(store.buildingName, store.buildingDong)
       )
     )
@@ -29,7 +29,9 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
       value: cheung,
       label: cheung === '0' ? 'B1층' : `${cheung}층`,
     }))
-    .sort((a, b) => (a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)));
+    .sort((a, b) =>
+      a.value === '0' ? -1 : parseInt(a.value) - parseInt(b.value)
+    );
 
   const customStyles = {
     control: (provided) => ({
@@ -56,7 +58,10 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
   const handleSearch = () => {
     const results = allStores.filter((store) => {
       const matchesSearchTerm = store.storeName.includes(searchTerm);
-      const modifiedBuildingDong = getModifiedBuildingDong(store.buildingName, store.buildingDong);
+      const modifiedBuildingDong = getModifiedBuildingDong(
+        store.buildingName,
+        store.buildingDong
+      );
       const matchesDong = selectedDong
         ? modifiedBuildingDong === selectedDong.value
         : true;
@@ -104,11 +109,12 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
       </div>
       <div className="select-container">
         <Select
+          id="building-select"
           value={selectedDong}
           onChange={setSelectedDong}
           options={dongOptions}
           placeholder="구역선택"
-          classNamePrefix="custom-select"
+          classNamePrefix="react-select"
           className="select-box"
           styles={customStyles}
         />
@@ -117,7 +123,7 @@ const ListSearchBar = ({ setFilteredStores, allStores }) => {
           onChange={setSelectedCheung}
           options={cheungOptions}
           placeholder="층 선택"
-          classNamePrefix="custom-select"
+          classNamePrefix="react-select"
           className="select-box"
           styles={customStyles}
         />
