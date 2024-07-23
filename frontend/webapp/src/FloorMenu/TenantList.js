@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function TenantList() {
   const { selectedBuilding, selectedFloor } = useContext(AppContext);
   const [tenants, setTenants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFloorData = async () => {
@@ -20,8 +22,7 @@ function TenantList() {
           return;
         }
 
-        // const response = await axios.get("https://api.misarodeo.com/api/floor", {
-          const response = await axios.get("/api/floor", {
+        const response = await axios.get("/api/floor", {
           headers: {
             accept: "*/*",
             "x-api-key": "testapikey",
@@ -81,6 +82,10 @@ function TenantList() {
     return floor.replace("F", "");
   };
 
+  const handleTenantClick = (tenant) => {
+    navigate(`/storeinfo/${encodeURIComponent(tenant)}`);
+  };
+
   if (isLoading) return <div></div>;
   if (error) return <div>{error}</div>;
 
@@ -88,7 +93,12 @@ function TenantList() {
     <div className="tenant-container">
       {tenants.length > 0 ? (
         tenants.map((tenant, index) => (
-          <div key={index} className="tenant">
+          <div
+            key={index}
+            className="tenant"
+            onClick={() => handleTenantClick(tenant)}
+            style={{ cursor: "pointer" }}
+          >
             {tenant}
           </div>
         ))

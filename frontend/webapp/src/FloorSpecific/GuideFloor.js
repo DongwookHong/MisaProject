@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./GuideFloor.css";
 import locpin from "../asset/tool/locpin.png";
 
 function GuideFloor({ onIconClick, selectedFloorData }) {
   const scrollToTop = () => {
     window.scrollTo({
-      top: 100,
+      top: 0,
       behavior: "smooth",
     });
   };
@@ -34,7 +35,7 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
       }, {});
 
       setFacilityGroups(groups);
-      setStoreItems(stores);
+      setStoreItems(stores.sort((a, b) => a.name.localeCompare(b.name, "ko")));
     }
   }, [selectedFloorData]);
 
@@ -45,16 +46,27 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
     return "기타";
   };
 
-  const handleGroupClick = (groupName) => {
-    const blockIds = facilityGroups[groupName].map((item) => item.blockId);
-    console.log(`Clicked group: ${groupName}, blockIds:`, blockIds);
+  const handleFacilityGroupClick = (facilities) => {
+    const blockIds = facilities.map((facility) => facility.blockId);
     onIconClick(blockIds, true); // true indicates it's a facility
     scrollToTop();
   };
 
-  const handleStoreClick = (blockId) => {
+  const handleStoreIconClick = (blockId) => {
     onIconClick([blockId], false);
-    scrollToTop(); // 스크롤을 상단으로 이동
+    scrollToTop();
+  };
+
+  const sortedFacilityGroups = () => {
+    const order = ["화장실", "에스컬레이터", "엘리베이터"];
+    return Object.entries(facilityGroups).sort((a, b) => {
+      const indexA = order.indexOf(a[0]);
+      const indexB = order.indexOf(b[0]);
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return a[0].localeCompare(b[0], "ko");
+    });
   };
 
   return (
@@ -80,29 +92,26 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
       <div className="content-row">
         {activeSection === "facility" && (
           <FacilityContent
-            facilityGroups={facilityGroups}
-            onGroupClick={handleGroupClick}
+            facilityGroups={sortedFacilityGroups()}
+            onIconClick={handleFacilityGroupClick}
           />
         )}
         {activeSection === "guide" && (
-          <StoreContent items={storeItems} onIconClick={handleStoreClick} />
+          <StoreContent items={storeItems} onIconClick={handleStoreIconClick} />
         )}
       </div>
     </div>
   );
 }
 
-function FacilityContent({ facilityGroups, onGroupClick }) {
+function FacilityContent({ facilityGroups, onIconClick }) {
   return (
     <div className="facility-content">
-      {Object.entries(facilityGroups).map(([groupName, facilities]) => (
+      {facilityGroups.map(([groupName, facilities]) => (
         <div className="facility-group" key={groupName}>
-          <div
-            className="facility-item"
-            onClick={() => onGroupClick(groupName)}
-          >
-            {groupName}
-            <span className="logospace">
+          <div className="facility-item">
+            <span>{groupName}</span>
+            <span className="logospace" onClick={() => onIconClick(facilities)}>
               <img src={locpin} alt="loc" width="30" height="20" />
             </span>
           </div>
@@ -117,7 +126,9 @@ function StoreContent({ items, onIconClick }) {
     <div className="facility-content">
       {items.map((item, index) => (
         <div className="facility-item" key={index}>
-          {item.name}
+          <Link to={`/storeinfo/${encodeURIComponent(item.name)}`}>
+            {item.name}
+          </Link>
           <span className="logospace" onClick={() => onIconClick(item.blockId)}>
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>
