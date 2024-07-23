@@ -4,9 +4,9 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-} from "react";
-import { LuShare, LuChevronDown, LuChevronUp } from "react-icons/lu";
-import qrLocpin from "../asset/tool/locpin.png";
+} from 'react';
+import { LuShare, LuChevronDown, LuChevronUp } from 'react-icons/lu';
+import qrLocpin from '../asset/tool/locpin.png';
 
 const getManualBoundingRectFromPath = (pathElement) => {
   const pathLength = pathElement.getTotalLength();
@@ -33,16 +33,18 @@ const drawLocpin = (svgDoc, ctx, blockId, scale) => {
   const img = new Image();
   img.src = qrLocpin;
 
-  const width = 60 * scale;
-  const height = 60 * scale;
+  const baseWidth = 60;
+  const baseHeight = 60;
+  const width = baseWidth * scale;
+  const height = baseHeight * scale;
 
   img.onload = () => {
     if (!blockId) {
-      console.log("BlockId is missing");
+      console.log('BlockId is missing');
       return;
     }
 
-    console.log("Drawing locpin for blockId:", blockId);
+    console.log('Drawing locpin for blockId:', blockId);
 
     const targetElement = svgDoc.getElementById(blockId);
 
@@ -53,36 +55,46 @@ const drawLocpin = (svgDoc, ctx, blockId, scale) => {
 
     let cx, cy;
 
-    if (targetElement.tagName.toLowerCase() === "path") {
+    if (targetElement.tagName.toLowerCase() === 'path') {
       const rect = getManualBoundingRectFromPath(targetElement);
-      cx = rect.x + rect.width / 2 - width / 2;
-      cy = rect.y + rect.height / 2 - height / 2;
+      cx = rect.x + rect.width / 2;
+      cy = rect.y + rect.height / 2;
     } else {
-      const x = parseFloat(targetElement.getAttribute("x")) || 0;
-      const y = parseFloat(targetElement.getAttribute("y")) || 0;
-      const elementWidth = parseFloat(targetElement.getAttribute("width"));
-      const elementHeight = parseFloat(targetElement.getAttribute("height"));
+      const x = parseFloat(targetElement.getAttribute('x')) || 0;
+      const y = parseFloat(targetElement.getAttribute('y')) || 0;
+      const elementWidth = parseFloat(targetElement.getAttribute('width'));
+      const elementHeight = parseFloat(targetElement.getAttribute('height'));
 
       if (elementWidth === 0 || elementHeight === 0) {
         console.log(`Element has invalid dimensions:`, targetElement);
         return;
       }
 
-      cx = x + elementWidth / 2 - width / 2;
-      cy = y + elementHeight / 2 - height / 2;
+      cx = x + elementWidth / 2;
+      cy = y + elementHeight / 2;
     }
 
-    const offsetY = height / 2;
+    const offsetY = baseHeight / 2;
     cy -= offsetY;
 
-    ctx.drawImage(img, cx, cy, width, height);
+    ctx.drawImage(
+      img,
+      cx * scale - width / 2,
+      cy * scale - height / 2,
+      width,
+      height
+    );
 
     console.log(`Drawing locpin for element:`, targetElement);
-    console.log(`Locpin position: (${cx}, ${cy}), size: ${width}x${height}`);
+    console.log(
+      `Locpin position: (${cx * scale}, ${
+        cy * scale
+      }), size: ${width}x${height}`
+    );
   };
 
   img.onerror = () => {
-    console.error("Failed to load the image:", qrLocpin);
+    console.error('Failed to load the image:', qrLocpin);
   };
 };
 
@@ -104,13 +116,14 @@ function InfoPage({
   const [isLocationExpanded, setIsLocationExpanded] = useState(false);
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const imgRef = useRef(null);
   const [scale, setScale] = useState(1);
 
   const handleResize = useCallback(() => {
-    if (containerRef.current && canvasRef.current) {
+    if (containerRef.current && imgRef.current) {
       const containerWidth = containerRef.current.clientWidth;
-      const canvasWidth = canvasRef.current.width;
-      const newScale = containerWidth / canvasWidth;
+      const imgWidth = imgRef.current.width;
+      const newScale = containerWidth / imgWidth;
       setScale(newScale);
     }
   }, []);
@@ -122,36 +135,55 @@ function InfoPage({
           const response = await fetch(floor_image);
           const svgText = await response.text();
           const parser = new DOMParser();
-          const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+          const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
           const svgElement = svgDoc.documentElement;
 
-          const canvas = canvasRef.current;
-          const ctx = canvas.getContext("2d");
-
-          const viewBox = svgElement.getAttribute("viewBox").split(" ");
+          const viewBox = svgElement.getAttribute('viewBox').split(' ');
           const width = parseFloat(viewBox[2]);
           const height = parseFloat(viewBox[3]);
 
-          const dpr = window.devicePixelRatio || 1;
-          canvas.width = width * dpr;
-          canvas.height = height * dpr;
-          canvas.style.width = `${width}px`;
-          canvas.style.height = `${height}px`;
-          ctx.scale(dpr, dpr);
-
-          handleResize();
-          window.addEventListener("resize", handleResize);
-
           const img = new Image();
-          img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, width, height);
+          imgRef.current = img;
+          img.src =
+            'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
 
-            drawLocpin(svgDoc, ctx, block_id, scale);
+          img.onload = () => {
+            handleResize();
+            window.addEventListener('resize', handleResize);
+
+            const drawCanvas = () => {
+              const canvas = canvasRef.current;
+              const ctx = canvas.getContext('2d');
+
+              const dpr = window.devicePixelRatio || 1;
+              const scaledWidth = width * scale;
+              const scaledHeight = height * scale;
+
+              canvas.style.width = `${scaledWidth}px`;
+              canvas.style.height = `${scaledHeight}px`;
+              canvas.width = scaledWidth * dpr;
+              canvas.height = scaledHeight * dpr;
+
+              ctx.scale(dpr, dpr);
+
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              ctx.imageSmoothingEnabled = true;
+              ctx.imageSmoothingQuality = 'high';
+
+              ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+
+              drawLocpin(svgDoc, ctx, block_id, scale);
+            };
+
+            drawCanvas();
           };
-          img.src = "data:image/svg+xml;base64," + btoa(svgText);
+
+          img.onerror = (error) => {
+            console.error('Failed to load the SVG image:', error);
+          };
         } catch (error) {
-          console.error("Error fetching SVG content:", error);
+          console.error('Error fetching SVG content:', error);
         }
       }
     };
@@ -159,20 +191,20 @@ function InfoPage({
     fetchSvgContent();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [floor_image, isLocationExpanded, block_id, scale, handleResize]);
 
   const getFloorDisplay = (floorNum) => {
     const num = Number(floorNum);
-    return num === 0 ? "B1F" : `${num}F`;
+    return num === 0 ? 'B1F' : `${num}F`;
   };
 
   const formatTime = (time) => {
-    return time === "00:00" ? "24:00" : time;
+    return time === '00:00' ? '24:00' : time;
   };
 
-  const daysOrder = ["일", "월", "화", "수", "목", "금", "토"];
+  const daysOrder = ['일', '월', '화', '수', '목', '금', '토'];
 
   const sortedStoreHours = useMemo(() => {
     const today = new Date().getDay();
@@ -191,9 +223,8 @@ function InfoPage({
       <p
         key={day.dayOfWeek}
         className={`business-day-info ${
-          day.dayOfWeek === todayKorean ? "today" : ""
-        }`}
-      >
+          day.dayOfWeek === todayKorean ? 'today' : ''
+        }`}>
         <span className="day-label">{day.dayOfWeek}</span>
         {day.isOpen ? (
           <span className="time-info">
@@ -211,30 +242,30 @@ function InfoPage({
     const todayKorean = daysOrder[now.getDay()];
     const todayHours = storeHours.find((day) => day.dayOfWeek === todayKorean);
 
-    if (!todayHours || !todayHours.isOpen) return "영업 종료";
+    if (!todayHours || !todayHours.isOpen) return '영업 종료';
 
     const currentTime = now.getHours() * 60 + now.getMinutes();
     const openTime =
-      parseInt(todayHours.openTime.split(":")[0]) * 60 +
-      parseInt(todayHours.openTime.split(":")[1]);
+      parseInt(todayHours.openTime.split(':')[0]) * 60 +
+      parseInt(todayHours.openTime.split(':')[1]);
     const closeTime =
-      parseInt(todayHours.closeTime.split(":")[0]) * 60 +
-      parseInt(todayHours.closeTime.split(":")[1]);
+      parseInt(todayHours.closeTime.split(':')[0]) * 60 +
+      parseInt(todayHours.closeTime.split(':')[1]);
 
     if (closeTime < openTime) {
-      if (currentTime >= openTime || currentTime < closeTime) return "영업 중";
+      if (currentTime >= openTime || currentTime < closeTime) return '영업 중';
     } else {
-      if (currentTime >= openTime && currentTime < closeTime) return "영업 중";
+      if (currentTime >= openTime && currentTime < closeTime) return '영업 중';
     }
 
-    return "영업 종료";
+    return '영업 종료';
   };
 
   const businessStatus = getCurrentBusinessStatus();
 
   const getModifiedBuildingDong = (dong) => {
-    if (dong === "A") return "12BL";
-    if (dong === "B") return "11BL";
+    if (dong === 'A') return '12BL';
+    if (dong === 'B') return '11BL';
     return dong;
   };
 
@@ -247,7 +278,7 @@ function InfoPage({
           </div>
           <div className="title-subsection">
             <h6 className="info_floor">
-              {building_name} {getModifiedBuildingDong(building_dong)}{" "}
+              {building_name} {getModifiedBuildingDong(building_dong)}{' '}
               {getFloorDisplay(floor_number)}
             </h6>
             <div className="share-button" onClick={handleShare}>
@@ -260,8 +291,7 @@ function InfoPage({
           <div className="business-hours-container">
             <div
               className="business-hours-header"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
+              onClick={() => setIsExpanded(!isExpanded)}>
               <span className="label">영업시간</span>
               <span className="business-status">{businessStatus}</span>
               {isExpanded ? <LuChevronUp /> : <LuChevronDown />}
@@ -282,8 +312,7 @@ function InfoPage({
               href={home_page_path || insta_path}
               className="homepage-link"
               target="_blank"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               홈페이지 바로가기
             </a>
           </p>
@@ -292,8 +321,7 @@ function InfoPage({
         <div className="location-info-container" ref={containerRef}>
           <div
             className="location-info-header"
-            onClick={() => setIsLocationExpanded(!isLocationExpanded)}
-          >
+            onClick={() => setIsLocationExpanded(!isLocationExpanded)}>
             <span className="location-label">위치 정보</span>
             <span className="location-toggle">
               {isLocationExpanded ? <LuChevronUp /> : <LuChevronDown />}
@@ -303,13 +331,13 @@ function InfoPage({
             <div className="location-info">
               <canvas
                 ref={canvasRef}
-                style={{ width: "100%", height: "auto", marginBottom: "10px" }}
+                style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
               />
             </div>
           )}
         </div>
         <hr className="light-line-full" />
-        <div className="store-describe" style={{ whiteSpace: "pre-line" }}>
+        <div className="store-describe" style={{ whiteSpace: 'pre-line' }}>
           {store_info}
         </div>
         <hr className="light-line-full" />
