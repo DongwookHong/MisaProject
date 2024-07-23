@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import "../style/QRpage/Guide_demo.css";
 import locpin from "../asset/tool/locpin.png";
 
@@ -9,6 +10,7 @@ function Guide_demo({
   selectedStore,
 }) {
   const [activeSection, setActiveSection] = useState("facility");
+  const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -22,6 +24,12 @@ function Guide_demo({
     scrollToTop();
   };
 
+  const handleItemClick = (item, type) => {
+    if (type === "store") {
+      navigate(`/storeinfo/${encodeURIComponent(item)}`);
+    }
+  };
+
   const { facilityItems, storeItems } = useMemo(() => {
     const facilities = floorData.flatMap((floor) =>
       floor.data
@@ -33,8 +41,19 @@ function Guide_demo({
         .filter((item) => item.type === "store")
         .map((item) => item.name)
     );
+
+    const priorityOrder = ["화장실", "에스컬레이터", "엘리베이터"];
+    const sortedFacilities = [...new Set(facilities)].sort((a, b) => {
+      const indexA = priorityOrder.indexOf(a);
+      const indexB = priorityOrder.indexOf(b);
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return a.localeCompare(b, 'ko');
+    });
+
     return {
-      facilityItems: [...new Set(facilities)].sort((a, b) => a.localeCompare(b, 'ko')),
+      facilityItems: sortedFacilities,
       storeItems: [...new Set(stores)].sort((a, b) => a.localeCompare(b, 'ko')),
     };
   }, [floorData]);
@@ -64,14 +83,18 @@ function Guide_demo({
           <FacilityContent
             items={facilityItems}
             onIconClick={(item) => handleIconClick(item, "facility")}
+            onItemClick={(item) => handleItemClick(item, "facility")}
             selectedItem={selectedFacility}
+            type="facility"
           />
         )}
         {activeSection === "guide" && (
           <FacilityContent
             items={storeItems}
             onIconClick={(item) => handleIconClick(item, "store")}
+            onItemClick={(item) => handleItemClick(item, "store")}
             selectedItem={selectedStore}
+            type="store"
           />
         )}
       </div>
@@ -79,7 +102,7 @@ function Guide_demo({
   );
 }
 
-function FacilityContent({ items, onIconClick, selectedItem }) {
+function FacilityContent({ items, onIconClick, onItemClick, selectedItem, type }) {
   return (
     <div className="facility-content">
       {items.map((item, index) => (
@@ -87,7 +110,13 @@ function FacilityContent({ items, onIconClick, selectedItem }) {
           className={`facility-item ${item === selectedItem ? "selected" : ""}`}
           key={index}
         >
-          {item}
+          <span 
+            className="item-name"
+            onClick={() => onItemClick(item)}
+            style={{ cursor: type === "store" ? "pointer" : "default" }}
+          >
+            {item}
+          </span>
           <span className="logospace" onClick={() => onIconClick(item)}>
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>

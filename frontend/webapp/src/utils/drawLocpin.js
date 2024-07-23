@@ -2,6 +2,7 @@ import locpin from "../asset/tool/locpin.png";
 import qrLocpin from "../asset/tool/locpin.png"; // QR 위치용 이미지
 import toilet  from "../asset/tool/toilet.svg"
 import elev  from "../asset/tool/elevator.svg"
+import escal  from "../asset/tool/escal.svg"
 
 const getManualBoundingRectFromPath = (pathElement) => {
   const pathLength = pathElement.getTotalLength();
@@ -37,12 +38,10 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
   if (isQrLocation) {
     imgSrc = qrLocpin;
   } else if (isFacility(item)) {
-    if (item.name.includes('화장실') || item.type === '화장실') {
-      imgSrc = toilet;
-    } else if (item.name.includes('엘리베이터') || item.type === '엘리베이터') {
+    if (item.name.includes('엘리베이터') || item.type === '엘리베이터') {
       imgSrc = elev;
     } else {
-      imgSrc = locpin; // Default to locpin for other facilities
+      imgSrc = locpin; // 화장실과 에스컬레이터를 포함한 다른 모든 시설물에 대해 locpin 사용
     }
   } else {
     imgSrc = locpin;
