@@ -57,8 +57,8 @@ export const FS_drawLocpin = (
   const elevImg = new Image();
   elevImg.src = elev;
 
-  const locpinWidth = isFacility ? 40 : 60;
-  const locpinHeight = isFacility ? 40 : 60;
+  const locpinWidth = isFacility ? 50 : 60;
+  const locpinHeight = isFacility ? 50 : 60;
 
   const drawImages = () => {
     if (!selectedBlockIds || selectedBlockIds.length === 0 || !svgDoc) return;

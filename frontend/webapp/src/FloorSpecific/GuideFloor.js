@@ -14,6 +14,7 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
   const [activeSection, setActiveSection] = useState("facility");
   const [facilityGroups, setFacilityGroups] = useState({});
   const [storeItems, setStoreItems] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   useEffect(() => {
     if (selectedFloorData) {
@@ -47,13 +48,21 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
   };
 
   const handleGroupClick = (groupName) => {
-    const blockIds = facilityGroups[groupName].map((item) => item.blockId);
-    console.log(`Clicked group: ${groupName}, blockIds:`, blockIds);
-    onIconClick(blockIds, true); // true indicates it's a facility
+    if (selectedGroup === groupName) {
+      // If the same group is clicked again, clear the selection
+      setSelectedGroup(null);
+      onIconClick([], true);
+    } else {
+      // Select the new group
+      setSelectedGroup(groupName);
+      const blockIds = facilityGroups[groupName].map((item) => item.blockId);
+      onIconClick(blockIds, true);
+    }
     scrollToTop();
   };
 
   const handleStoreIconClick = (blockId) => {
+    setSelectedGroup(null);
     onIconClick([blockId], false);
     scrollToTop();
   };
@@ -95,6 +104,7 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
           <FacilityContent
             facilityGroups={sortedFacilityGroups()}
             onGroupClick={handleGroupClick}
+            selectedGroup={selectedGroup}
           />
         )}
         {activeSection === "guide" && (
@@ -105,12 +115,12 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
   );
 }
 
-function FacilityContent({ facilityGroups, onGroupClick }) {
+function FacilityContent({ facilityGroups, onGroupClick, selectedGroup }) {
   return (
     <div className="facility-content">
       {facilityGroups.map(([groupName, facilities]) => (
         <div 
-          className="facility-group" 
+          className={`facility-group ${selectedGroup === groupName ? 'selected' : ''}`}
           key={groupName}
           onClick={() => onGroupClick(groupName)}
         >
