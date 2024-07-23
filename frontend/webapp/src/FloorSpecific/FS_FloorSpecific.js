@@ -76,13 +76,15 @@ function FS_FloorSpecific({
     if (wing === 'A') return '12BL';
     if (wing === 'B') return '11BL';
     return wing;
+  };
+
   const getBuildingDisplay = (building, wing) => {
-    if (building === "힐스테이트") {
-      if (wing === "A") return "힐스테이트 12BL";
-      if (wing === "B") return "힐스테이트 11BL";
+    if (building === '힐스테이트') {
+      if (wing === 'A') return '힐스테이트 12BL';
+      if (wing === 'B') return '힐스테이트 11BL';
     }
-    if (building === "롯데캐슬") return "롯데캐슬";
-    return `${building} ${wing}동`;  // 기본 케이스
+    if (building === '롯데캐슬') return '롯데캐슬';
+    return `${building} ${wing}동`; // 기본 케이스
   };
 
   useLayoutEffect(() => {
@@ -207,7 +209,7 @@ function FS_FloorSpecific({
       <div className="combined-nav">
         <div className="MenuBar">
           <div className="back-button" onClick={handleBackClick}>
-            <LuArrowLeft style={{ fontSize: '24px', color: '#5d4fbb' }} />
+            <LuArrowLeft className="arrow-icon" />
           </div>
           <div className="menu-title-container">
             <div className="menu-title">
@@ -217,9 +219,9 @@ function FS_FloorSpecific({
               className="wing-toggle"
               onClick={() => setIsToggleOpen(!isToggleOpen)}>
               {isToggleOpen ? (
-                <LuChevronUp style={{ fontSize: '24px', color: '#5d4fbb' }} />
+                <LuChevronUp className="arrow-icon" />
               ) : (
-                <LuChevronDown style={{ fontSize: '24px', color: '#5d4fbb' }} />
+                <LuChevronDown className="arrow-icon" />
               )}
             </div>
           </div>
