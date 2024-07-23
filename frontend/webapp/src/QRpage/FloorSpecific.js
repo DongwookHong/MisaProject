@@ -1,9 +1,26 @@
 import React, { useLayoutEffect, useRef, useEffect, useState } from 'react';
 import { drawLocpin } from '../utils/drawLocpin';
 
-function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFloorData, currentLocation }) {
+function FloorSpecific({
+  canvasRef,
+  selectedFacility,
+  selectedStore,
+  selectedFloorData,
+  currentLocation,
+}) {
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  const handleResize = () => {
+    if (containerRef.current && imgRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const imgWidth = imgRef.current.width;
+      const newScale = containerWidth / imgWidth;
+      setScale(newScale);
+    }
+  };
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -20,7 +37,7 @@ function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFlo
     if (!selectedFloorData) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     const loadSvgAndDraw = async () => {
       try {
@@ -34,12 +51,12 @@ function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFlo
         const svgText = await response.text();
 
         const parser = new DOMParser();
-        const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
         svgDocRef.current = svgDoc;
 
-        const svgElement = svgDoc.querySelector('svg');
+        const svgElement = svgDoc.querySelector("svg");
         if (!svgElement) {
-          throw new Error('SVG element not found in the document');
+          throw new Error("SVG element not found in the document");
         }
 
         // Get the SVG dimensions
@@ -47,7 +64,8 @@ function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFlo
         const height = parseFloat(svgElement.getAttribute('height') || svgElement.viewBox.baseVal.height);
 
         const img = new Image();
-        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+        img.src =
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
         imgRef.current = img;
 
         img.onload = () => {
@@ -90,10 +108,10 @@ function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFlo
           drawCanvas();
         };
         img.onerror = (error) => {
-          console.error('Failed to load the SVG image:', error);
+          console.error("Failed to load the SVG image:", error);
         };
       } catch (error) {
-        console.error('Error fetching or parsing the SVG file:', error.message);
+        console.error("Error fetching or parsing the SVG file:", error.message);
       }
     };
 
@@ -115,10 +133,12 @@ function FloorSpecific({ canvasRef, selectedFacility, selectedStore, selectedFlo
     const store = floorData.data.find(item => item.type === 'store' && item.name === selectedStore);
     if (store) {
       drawLocpin(svgDoc, ctx, store, floorData, false, scale);
+      drawLocpin(svgDoc, ctx, store, floorData, false, scale);
     }
   };
 
   return (
+    <div ref={containerRef} className="MapImage-qr">
     <div ref={containerRef} className="MapImage-qr">
       <canvas ref={canvasRef} className="responsive-canvas"></canvas>
     </div>

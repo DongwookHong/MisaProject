@@ -1,4 +1,10 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { LuShare, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import qrLocpin from "../asset/tool/locpin.png";
 
@@ -23,12 +29,12 @@ const getManualBoundingRectFromPath = (pathElement) => {
   };
 };
 
-const drawLocpin = (svgDoc, ctx, blockId) => {
+const drawLocpin = (svgDoc, ctx, blockId, scale) => {
   const img = new Image();
   img.src = qrLocpin;
 
-  const width = 60;
-  const height = 60;
+  const width = 60 * scale;
+  const height = 60 * scale;
 
   img.onload = () => {
     if (!blockId) {
@@ -97,6 +103,17 @@ function InfoPage({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLocationExpanded, setIsLocationExpanded] = useState(false);
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  const handleResize = useCallback(() => {
+    if (containerRef.current && canvasRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const canvasWidth = canvasRef.current.width;
+      const newScale = containerWidth / canvasWidth;
+      setScale(newScale);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchSvgContent = async () => {
@@ -112,15 +129,25 @@ function InfoPage({
           const ctx = canvas.getContext("2d");
 
           const viewBox = svgElement.getAttribute("viewBox").split(" ");
-          canvas.width = parseFloat(viewBox[2]);
-          canvas.height = parseFloat(viewBox[3]);
+          const width = parseFloat(viewBox[2]);
+          const height = parseFloat(viewBox[3]);
+
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          canvas.style.width = `${width}px`;
+          canvas.style.height = `${height}px`;
+          ctx.scale(dpr, dpr);
+
+          handleResize();
+          window.addEventListener("resize", handleResize);
 
           const img = new Image();
           img.onload = () => {
-            ctx.drawImage(img, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, width, height);
 
-            // Draw pin for the current store
-            drawLocpin(svgDoc, ctx, block_id);
+            drawLocpin(svgDoc, ctx, block_id, scale);
           };
           img.src = "data:image/svg+xml;base64," + btoa(svgText);
         } catch (error) {
@@ -130,7 +157,11 @@ function InfoPage({
     };
 
     fetchSvgContent();
-  }, [floor_image, isLocationExpanded, block_id]);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [floor_image, isLocationExpanded, block_id, scale, handleResize]);
 
   const getFloorDisplay = (floorNum) => {
     const num = Number(floorNum);
@@ -258,21 +289,21 @@ function InfoPage({
           </p>
           <hr className="light-line-full" />
         </div>
-        <div className="location-info-container">
+        <div className="location-info-container" ref={containerRef}>
           <div
             className="location-info-header"
             onClick={() => setIsLocationExpanded(!isLocationExpanded)}
           >
             <span className="location-label">위치 정보</span>
             <span className="location-toggle">
-              {isExpanded ? <LuChevronUp /> : <LuChevronDown />}
+              {isLocationExpanded ? <LuChevronUp /> : <LuChevronDown />}
             </span>
           </div>
           {isLocationExpanded && (
             <div className="location-info">
               <canvas
                 ref={canvasRef}
-                style={{ width: "100%", marginBottom: "10px" }}
+                style={{ width: "100%", height: "auto", marginBottom: "10px" }}
               />
             </div>
           )}
