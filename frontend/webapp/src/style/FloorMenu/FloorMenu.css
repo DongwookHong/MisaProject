@@ -1,5 +1,6 @@
 .dong-container {
   width: 90%;
+  width: 90%;
   padding: 16px;
   position: relative; /* Make this container relative */
 }
@@ -20,7 +21,25 @@
   /* justify-content: center; */
 }
 
+.dong-announce-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.dong-announce-head {
+  padding-bottom: 5px;
+  /* border-bottom: 2px solid gray; */
+  /* padding: 10px; */
+  font-family: 'Freesentation-9Black';
+  width: 100%;
+  /* align-items: center; */
+  text-align: center;
+  font-size: 2em;
+  /* justify-content: center; */
+}
+
 .centered-image {
+  border: 1px solid gray; /* 원하는 색상과 두께로 변경 가능 */
   border: 1px solid gray; /* 원하는 색상과 두께로 변경 가능 */
 }
 
@@ -88,6 +107,7 @@
 .text-white {
   color: #ffffff;
   font-weight: bold;
+  font-weight: bold;
 }
 
 .text-gray-500 {
@@ -107,9 +127,11 @@
   justify-content: flex-end;
   width: 100%;
   margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .map_button {
+  /* padding: 10px ; */
   /* padding: 10px ; */
   background: none;
   cursor: pointer;
@@ -140,6 +162,7 @@
   flex-basis: 25%; /* Adjust the basis to decrease width */
   flex-grow: 0; /* Prevent it from growing */
   height: 100%; /* Set to 100% height */
+  height: 100%; /* Set to 100% height */
 }
 
 .floor {
@@ -152,15 +175,19 @@
   padding: 5px;
   width: 75%;
   /* height: 700px; */
+  width: 75%;
+  /* height: 700px; */
   overflow-y: auto;
   background-color: #ffffff;
 }
 
 .tenant {
   width: 90%; /* Full width */
+  width: 90%; /* Full width */
   height: 45px;
   padding: 8px 0;
   padding-left: 20px;
+  border-bottom: 1px dashed hsl(260, 3%, 77%); /* Increased border width */
   border-bottom: 1px dashed hsl(260, 3%, 77%); /* Increased border width */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
@@ -218,7 +245,25 @@
   .dong-container {
     display: flex;
     flex-direction: column;
+  .dong-container {
+    display: flex;
+    flex-direction: column;
     justify-content: flex-end;
+    width: 100%;
+    padding: 5px;
+  }
+
+  .flex-dong {
+    margin-bottom: 3px;
+    /* font-size: 25px; */
+    padding: 5px;
+  }
+
+  .map_button-container {
+    order: 1; /* flex-dong 다음에 오도록 설정 */
+    width: 100%;
+    margin-bottom: 16px;
+    justify-content: center; /* 중앙 정렬 */
     width: 100%;
     padding: 5px;
   }
@@ -244,8 +289,18 @@
     width: 90%;
     box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.15);
     border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 16px;
+    justify-content: flex-end;
+    color: #5d4fbb;
+    width: 90%;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
   }
 
+  .floor-container,
+  .tenant-container {
+    min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
   .floor-container,
   .tenant-container {
     min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
@@ -260,8 +315,18 @@
   .flex-dong .button {
     padding: 8px 12px;
     font-size: 15px;
+    width: 100%; /* 모바일에서는 전체 너비 사용 */
+    height: auto; /* 높이 자동 조정 */
+    max-height: 500px; /* 최대 높이 설정 (필요시 조정) */
   }
 
+  .flex-dong .button {
+    padding: 8px 12px;
+    font-size: 15px;
+  }
+
+  .space-x-4 > *:not(:last-child) {
+    margin-right: 2px; /* 버튼 간 간격 유지 */
   .space-x-4 > *:not(:last-child) {
     margin-right: 2px; /* 버튼 간 간격 유지 */
   }

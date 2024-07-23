@@ -17,6 +17,9 @@ function BuildingSelector() {
     '힐스테이트 12BL': '힐스테이트 A동',
     '힐스테이트 11BL': '힐스테이트 B동',
     롯데캐슬: '롯데캐슬',
+    '힐스테이트 12BL': '힐스테이트 A동',
+    '힐스테이트 11BL': '힐스테이트 B동',
+    롯데캐슬: '롯데캐슬',
   };
 
   const handleBuildingSelect = async (displayName) => {
@@ -74,9 +77,41 @@ function BuildingSelector() {
         ([key, value]) => value === internalName
       )?.[0] || internalName
     );
+    return (
+      Object.entries(buildingMap).find(
+        ([key, value]) => value === internalName
+      )?.[0] || internalName
+    );
   };
 
   return (
+    <div className="dong-container">
+      <div className="flex-dong justify-center mb-4 space-x-4">
+        {Object.keys(buildingMap).map((displayName) => (
+          <button
+            key={displayName}
+            className={`button ${
+              selectedBuilding === buildingMap[displayName]
+                ? 'button-selected'
+                : 'button-unselected'
+            }`}
+            onClick={() => handleBuildingSelect(displayName)}>
+            {displayName}
+          </button>
+        ))}
+      </div>
+      <div className="map_button-container">
+        <button className="map_button" onClick={handleFloorSpecificClick}>
+          <img
+            src={mapImage}
+            alt="Icon"
+            width="25"
+            height="25"
+            style={{ padding: '5px' }}
+          />
+          층별안내 {'   '}
+        </button>
+      </div>
     <div className="dong-container">
       <div className="flex-dong justify-center mb-4 space-x-4">
         {Object.keys(buildingMap).map((displayName) => (
