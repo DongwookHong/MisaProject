@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { drawLocpin } from '../utils/drawLocpin';
 
 function FloorSpecific({
@@ -10,17 +10,6 @@ function FloorSpecific({
 }) {
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
-  const containerRef = useRef(null);
-  const [scale, setScale] = useState(1);
-
-  const handleResize = () => {
-    if (containerRef.current && imgRef.current) {
-      const containerWidth = containerRef.current.clientWidth;
-      const imgWidth = imgRef.current.width;
-      const newScale = containerWidth / imgWidth;
-      setScale(newScale);
-    }
-  };
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -64,8 +53,7 @@ function FloorSpecific({
         const height = parseFloat(svgElement.getAttribute('height') || svgElement.viewBox.baseVal.height);
 
         const img = new Image();
-        img.src =
-          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
+        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
         imgRef.current = img;
 
         img.onload = () => {
@@ -133,12 +121,10 @@ function FloorSpecific({
     const store = floorData.data.find(item => item.type === 'store' && item.name === selectedStore);
     if (store) {
       drawLocpin(svgDoc, ctx, store, floorData, false, scale);
-      drawLocpin(svgDoc, ctx, store, floorData, false, scale);
     }
   };
 
   return (
-    <div ref={containerRef} className="MapImage-qr">
     <div ref={containerRef} className="MapImage-qr">
       <canvas ref={canvasRef} className="responsive-canvas"></canvas>
     </div>
