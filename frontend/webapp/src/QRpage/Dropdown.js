@@ -36,7 +36,8 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     const floors = floorData
       .filter(
         (floor) =>
-          `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding.value
+          `${floor.buildingName} ${floor.buildingDong}` ===
+          selectedBuilding.value
       )
       .map((floor) => ({
         value: floor.floorNumber,
@@ -64,8 +65,8 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     setSelectedFloor(selectedOption);
     const selectedFloorData = floorData.find(
       (floor) =>
-        `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding.value &&
-        floor.floorNumber === selectedOption.value
+        `${floor.buildingName} ${floor.buildingDong}` ===
+          selectedBuilding.value && floor.floorNumber === selectedOption.value
     );
     onFloorSelect(selectedFloorData);
   };
@@ -108,7 +109,6 @@ function DropdownMenu({ floorData, onFloorSelect }) {
           styles={customStyles}
         />
       </div>
-
       <div className="dropdown">
         <label className="announce" htmlFor="floor-select">
           층별 안내

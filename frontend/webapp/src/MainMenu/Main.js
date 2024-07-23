@@ -1,8 +1,7 @@
-import Card_tmp from './Card_tmp';
 import MainHeader from '../Fix/MainHeader.js';
 import MainFooter from '../Fix/MainFooter.js';
 import Arcade from './Arcade.js';
-
+import NewLink from './newLink.js';
 import Ad from '../Fix/Advertise.js';
 
 function Main() {
@@ -10,8 +9,8 @@ function Main() {
     <>
       <MainHeader />
       <Ad />
-      {/* <Card_tmp /> */}
       <Arcade />
+
       <MainFooter />
     </>
   );

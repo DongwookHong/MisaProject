@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+:root {
+  --main-color: #bdafff;
+  --text-color: #333;
+  --bg-color: #f8f9fa;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-color);
+}
+
+.renew-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* min-height: 100vh; */
+  padding: 40px;
+  background-image: url('./newimage.jpg');
+}
+
+.renew-content {
+  width: 100%;
+  /* max-width: 1200px; */
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.renew-title {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.renew-brand {
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--text-color);
+  letter-spacing: 10px;
+  position: relative;
+  padding-left: 20px;
+  transition: all 0.5s ease;
+}
+
+.renew-brand::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background-color: var(--main-color);
+}
+
+.renew-brand:hover {
+  transform: translateX(10px);
+  color: var(--main-color);
+}
+
+.renew-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.renew-link {
+  text-decoration: none;
+  padding: 30px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.renew-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--main-color), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.renew-link:hover::before {
+  opacity: 0.1;
+}
+
+.renew-link:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(189, 175, 255, 0.2);
+}
+
+.renew-link-text {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text-color);
+  position: relative;
+  z-index: 1;
+}
+
+.renew-link-icon {
+  font-size: 2rem;
+  color: var(--main-color);
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.renew-link:hover .renew-link-icon {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .renew-brand {
+    font-size: 2.5rem;
+  }
+
+  .renew-link {
+    padding: 20px;
+  }
+
+  .renew-link-text {
+    font-size: 1.2rem;
+  }
+}

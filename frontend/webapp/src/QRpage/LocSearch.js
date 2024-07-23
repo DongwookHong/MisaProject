@@ -183,7 +183,7 @@ function LocSearch({ floorData }) {
             />
           </div>
           <div className="title">
-            현재 위치는{' '}
+            현재 위치{' '}
             <span className="current-location">{currentLocation}</span>
           </div>
           <div className="menu-icon" onClick={handleMenuClick}>
@@ -204,7 +204,7 @@ function LocSearch({ floorData }) {
             src={SearchBtn}
             onClick={handleIconClick}
             alt="search-bar"
-            width="32"
+            width="30"
             height="32"
           />
           {showResults && results.length > 0 && (
