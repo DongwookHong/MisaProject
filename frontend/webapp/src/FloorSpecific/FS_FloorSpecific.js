@@ -70,6 +70,12 @@ function FS_FloorSpecific({
     setMenuOpen(false);
   };
 
+  // 수정된 함수: wing을 BL로 변환하고 롯데캐슬 처리
+  const convertWingToBL = (building, wing) => {
+    if (building === '롯데캐슬') return '';
+    if (wing === 'A') return '12BL';
+    if (wing === 'B') return '11BL';
+    return wing;
   const getBuildingDisplay = (building, wing) => {
     if (building === "힐스테이트") {
       if (wing === "A") return "힐스테이트 12BL";
