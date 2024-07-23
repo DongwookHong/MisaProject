@@ -54,7 +54,7 @@ export const drawLocpin = (svgDoc, ctx, item, floorData, isQrLocation = false) =
   if (isQrLocation) {
     width = height = 70;
   } else if (isFacility(item)) {
-    width = height = 40; // 편의시설 핀 크기를 30x30으로 설정
+    width = height = 50; // 편의시설 핀 크기를 30x30으로 설정
   } else {
     width = height = 60; // 기타 핀 크기는 그대로 50x50
   }

@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useEffect, useState } from "react";
-import { drawLocpin } from "../utils/drawLocpin";
+import React, { useLayoutEffect, useRef, useEffect, useState } from 'react';
+import { drawLocpin } from '../utils/drawLocpin';
 
 function FloorSpecific({
   canvasRef,
@@ -10,6 +10,17 @@ function FloorSpecific({
 }) {
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  const handleResize = () => {
+    if (containerRef.current && imgRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const imgWidth = imgRef.current.width;
+      const newScale = containerWidth / imgWidth;
+      setScale(newScale);
+    }
+  };
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -49,12 +60,8 @@ function FloorSpecific({
         }
 
         // Get the SVG dimensions
-        const width = parseFloat(
-          svgElement.getAttribute("width") || svgElement.viewBox.baseVal.width
-        );
-        const height = parseFloat(
-          svgElement.getAttribute("height") || svgElement.viewBox.baseVal.height
-        );
+        const width = parseFloat(svgElement.getAttribute('width') || svgElement.viewBox.baseVal.width);
+        const height = parseFloat(svgElement.getAttribute('height') || svgElement.viewBox.baseVal.height);
 
         const img = new Image();
         img.src =
@@ -66,7 +73,7 @@ function FloorSpecific({
           handleResize();
 
           // Add resize event listener
-          window.addEventListener("resize", handleResize);
+          window.addEventListener('resize', handleResize);
 
           const drawCanvas = () => {
             const dpr = window.devicePixelRatio || 1;
@@ -81,39 +88,20 @@ function FloorSpecific({
             ctx.scale(dpr * scale, dpr * scale);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+            
             ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = "high";
+            ctx.imageSmoothingQuality = 'high';
 
             ctx.drawImage(img, 0, 0, width, height);
 
             if (currentLocation) {
-              drawLocpin(
-                svgDoc,
-                ctx,
-                currentLocation,
-                selectedFloorData,
-                true,
-                scale
-              );
+              drawLocpin(svgDoc, ctx, currentLocation, selectedFloorData, true, scale);
             }
             if (selectedFacility) {
-              drawSelectedFacility(
-                ctx,
-                svgDoc,
-                selectedFacility,
-                selectedFloorData,
-                scale
-              );
+              drawSelectedFacility(ctx, svgDoc, selectedFacility, selectedFloorData, scale);
             }
             if (selectedStore) {
-              drawSelectedStore(
-                ctx,
-                svgDoc,
-                selectedStore,
-                selectedFloorData,
-                scale
-              );
+              drawSelectedStore(ctx, svgDoc, selectedStore, selectedFloorData, scale);
             }
           };
 
@@ -130,42 +118,27 @@ function FloorSpecific({
     loadSvgAndDraw();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [
-    selectedFloorData,
-    canvasRef,
-    currentLocation,
-    selectedFacility,
-    selectedStore,
-    scale,
-  ]);
+  }, [selectedFloorData, canvasRef, currentLocation, selectedFacility, selectedStore, scale]);
 
-  const drawSelectedFacility = (
-    ctx,
-    svgDoc,
-    selectedFacility,
-    floorData,
-    scale
-  ) => {
-    const facilities = floorData.data.filter(
-      (item) => item.type === "facility" && item.name === selectedFacility
-    );
-    facilities.forEach((facility) => {
+  const drawSelectedFacility = (ctx, svgDoc, selectedFacility, floorData, scale) => {
+    const facilities = floorData.data.filter(item => item.type === 'facility' && item.name === selectedFacility);
+    facilities.forEach(facility => {
       drawLocpin(svgDoc, ctx, facility, floorData, false, scale);
     });
   };
 
   const drawSelectedStore = (ctx, svgDoc, selectedStore, floorData, scale) => {
-    const store = floorData.data.find(
-      (item) => item.type === "store" && item.name === selectedStore
-    );
+    const store = floorData.data.find(item => item.type === 'store' && item.name === selectedStore);
     if (store) {
+      drawLocpin(svgDoc, ctx, store, floorData, false, scale);
       drawLocpin(svgDoc, ctx, store, floorData, false, scale);
     }
   };
 
   return (
+    <div ref={containerRef} className="MapImage-qr">
     <div ref={containerRef} className="MapImage-qr">
       <canvas ref={canvasRef} className="responsive-canvas"></canvas>
     </div>

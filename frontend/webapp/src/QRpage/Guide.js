@@ -27,6 +27,8 @@ function Guide_demo({
   const handleItemClick = (item, type) => {
     if (type === "store") {
       navigate(`/storeinfo/${encodeURIComponent(item)}`);
+    } else if (type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item)) {
+      handleIconClick(item, type);
     }
   };
 
@@ -103,21 +105,37 @@ function Guide_demo({
 }
 
 function FacilityContent({ items, onIconClick, onItemClick, selectedItem, type }) {
+  const navigate = useNavigate();
+
   return (
     <div className="facility-content">
       {items.map((item, index) => (
         <div
           className={`facility-item ${item === selectedItem ? "selected" : ""}`}
           key={index}
+          onClick={() => type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item) ? onItemClick(item, type) : null}
+          style={{ cursor: type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item) ? "pointer" : "default" }}
         >
           <span 
             className="item-name"
-            onClick={() => onItemClick(item)}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (type === "store") {
+                navigate(`/storeinfo/${encodeURIComponent(item)}`);
+              }
+            }}
             style={{ cursor: type === "store" ? "pointer" : "default" }}
           >
             {item}
           </span>
-          <span className="logospace" onClick={() => onIconClick(item)}>
+          <span 
+            className="logospace" 
+            onClick={(e) => {
+              e.stopPropagation();
+              onIconClick(item, type);
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <img src={locpin} alt="loc" width="30" height="20" />
           </span>
         </div>
