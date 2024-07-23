@@ -14,6 +14,8 @@
   display: inline-block;
   width: 250px;
   font-size: 12px;
+  white-space: nowrap; /* 추가된 부분 */
+
 }
 
 .main-name {
