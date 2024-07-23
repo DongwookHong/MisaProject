@@ -4,20 +4,20 @@ import React, {
   useEffect,
   useState,
   useCallback,
-} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { FS_drawLocpin } from './FS_drawLocpin';
-import MenuBar from '../Fix/MenuBar';
-import Menu from '../asset/tool/menu.png';
-import './FS_FloorSpecific.css';
+} from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FS_drawLocpin } from "./FS_drawLocpin";
+import MenuBar from "../Fix/MenuBar";
+import Menu from "../asset/tool/menu.png";
+import "./FS_FloorSpecific.css";
 import {
   LuShare,
   LuChevronDown,
   LuChevronUp,
   LuMapPin,
   LuArrowLeft,
-} from 'react-icons/lu';
+} from "react-icons/lu";
 
 function FS_FloorSpecific({
   canvasRef,
@@ -30,14 +30,15 @@ function FS_FloorSpecific({
   const { building, wing } = useParams();
   const svgDocRef = useRef(null);
   const imgRef = useRef(null);
+  const containerRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [isToggleOpen, setIsToggleOpen] = useState(false);
+  const [scale, setScale] = useState(1);
   const navigate = useNavigate();
 
   const allOptions = {
-    힐스테이트: ['A', 'B'],
-    롯데캐슬: ['C'],
+    힐스테이트: ["A", "B"],
+    롯데캐슬: ["C"],
   };
 
   const otherOptions = Object.entries(allOptions)
@@ -47,6 +48,15 @@ function FS_FloorSpecific({
     .filter(
       (option) => !(option.building === building && option.wing === wing)
     );
+
+  const handleResize = useCallback(() => {
+    if (containerRef.current && imgRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const imgWidth = imgRef.current.width;
+      const newScale = containerWidth / imgWidth;
+      setScale(newScale);
+    }
+  }, []);
 
   const handleWingChange = useCallback(
     (newBuilding, newWing) => {
@@ -70,33 +80,32 @@ function FS_FloorSpecific({
     setMenuOpen(false);
   };
 
-  // 수정된 함수: wing을 BL로 변환하고 롯데캐슬 처리
   const convertWingToBL = (building, wing) => {
-    if (building === '롯데캐슬') return '';
-    if (wing === 'A') return '12BL';
-    if (wing === 'B') return '11BL';
+    if (building === "롯데캐슬") return "";
+    if (wing === "A") return "12BL";
+    if (wing === "B") return "11BL";
     return wing;
   };
 
   const getBuildingDisplay = (building, wing) => {
-    if (building === '힐스테이트') {
-      if (wing === 'A') return '힐스테이트 12BL';
-      if (wing === 'B') return '힐스테이트 11BL';
+    if (building === "힐스테이트") {
+      if (wing === "A") return "힐스테이트 12BL";
+      if (wing === "B") return "힐스테이트 11BL";
     }
-    if (building === '롯데캐슬') return '롯데캐슬';
-    return `${building} ${wing}동`; // 기본 케이스
+    if (building === "롯데캐슬") return "롯데캐슬";
+    return `${building} ${wing}동`;
   };
 
   useLayoutEffect(() => {
     if (!selectedFloorData) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     const loadSvgAndDraw = async () => {
       try {
         const imageUrl = selectedFloorData.floorImage;
-        console.log('Attempting to fetch from URL:', imageUrl);
+        console.log("Attempting to fetch from URL:", imageUrl);
 
         const response = await fetch(imageUrl);
         if (!response.ok) {
@@ -104,104 +113,103 @@ function FS_FloorSpecific({
         }
         const svgText = await response.text();
 
-        const viewBoxMatch = svgText.match(/viewBox="([^"]+)"/);
-        const viewBox = viewBoxMatch
-          ? viewBoxMatch[1].split(' ').map(Number)
-          : null;
-
         const parser = new DOMParser();
-        const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
         svgDocRef.current = svgDoc;
 
-        const svgElement = svgDoc.querySelector('svg');
+        const svgElement = svgDoc.querySelector("svg");
         if (!svgElement) {
-          throw new Error('SVG element not found in the document');
+          throw new Error("SVG element not found in the document");
         }
 
-        let width, height;
-        if (viewBox) {
-          [, , width, height] = viewBox;
-        } else {
-          width = parseFloat(svgElement.getAttribute('width'));
-          height = parseFloat(svgElement.getAttribute('height'));
-        }
+        const width = parseFloat(
+          svgElement.getAttribute("width") || svgElement.viewBox.baseVal.width
+        );
+        const height = parseFloat(
+          svgElement.getAttribute("height") || svgElement.viewBox.baseVal.height
+        );
 
         const img = new Image();
         img.src =
-          'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
         imgRef.current = img;
 
         img.onload = () => {
-          canvas.width = width;
-          canvas.height = height;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0, width, height);
-          if (selectedItems && selectedItems.length > 0) {
-            console.log(
-              'Drawing initial locpins for selectedItems:',
-              selectedItems,
-              'isFacility:',
-              isFacility
-            );
-            FS_drawLocpin(
-              svgDoc,
-              ctx,
-              selectedItems,
-              selectedFloorData,
-              isFacility
-            );
-          }
+          handleResize();
+          window.addEventListener("resize", handleResize);
+
+          const drawCanvas = () => {
+            const dpr = window.devicePixelRatio || 1;
+            const scaledWidth = width * scale;
+            const scaledHeight = height * scale;
+
+            canvas.style.width = `${scaledWidth}px`;
+            canvas.style.height = `${scaledHeight}px`;
+            canvas.width = scaledWidth * dpr;
+            canvas.height = scaledHeight * dpr;
+
+            ctx.scale(dpr * scale, dpr * scale);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            if (selectedItems && selectedItems.length > 0) {
+              console.log(
+                "Drawing locpins for updated selectedItems:",
+                selectedItems,
+                "isFacility:",
+                isFacility
+              );
+              FS_drawLocpin(
+                svgDoc,
+                ctx,
+                selectedItems,
+                selectedFloorData,
+                isFacility,
+                scale
+              );
+            }
+          };
+
+          drawCanvas();
         };
 
         img.onerror = (error) => {
-          console.error('Failed to load the SVG image:', error);
+          console.error("Failed to load the SVG image:", error);
         };
       } catch (error) {
-        console.error('Error fetching or parsing the SVG file:', error.message);
+        console.error("Error fetching or parsing the SVG file:", error.message);
       }
     };
 
     loadSvgAndDraw();
-  }, [selectedFloorData, canvasRef, isFacility]);
 
-  useEffect(() => {
-    if (
-      svgDocRef.current &&
-      canvasRef.current &&
-      imgRef.current &&
-      selectedFloorData
-    ) {
-      const ctx = canvasRef.current.getContext('2d');
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(imgRef.current, 0, 0);
-      if (selectedItems && selectedItems.length > 0) {
-        console.log(
-          'Drawing locpins for updated selectedItems:',
-          selectedItems,
-          'isFacility:',
-          isFacility
-        );
-        FS_drawLocpin(
-          svgDocRef.current,
-          ctx,
-          selectedItems,
-          selectedFloorData,
-          isFacility
-        );
-      }
-    }
-  }, [selectedItems, selectedFloorData, isFacility]);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [
+    selectedFloorData,
+    canvasRef,
+    selectedItems,
+    isFacility,
+    scale,
+    handleResize,
+  ]);
 
   const floors = floorData
     .map((floor) => floor.floorNumber)
     .sort((a, b) => {
-      if (a === '0') return -1;
-      if (b === '0') return 1;
+      if (a === "0") return -1;
+      if (b === "0") return 1;
       return parseInt(a) - parseInt(b);
     });
 
   const handleBackClick = () => {
-    navigate('/floormenu');
+    navigate("/floormenu");
   };
 
   return (
@@ -217,7 +225,8 @@ function FS_FloorSpecific({
             </div>
             <div
               className="wing-toggle"
-              onClick={() => setIsToggleOpen(!isToggleOpen)}>
+              onClick={() => setIsToggleOpen(!isToggleOpen)}
+            >
               {isToggleOpen ? (
                 <LuChevronUp className="arrow-icon" />
               ) : (
@@ -234,7 +243,8 @@ function FS_FloorSpecific({
             {otherOptions.map(({ building: optBuilding, wing: optWing }) => (
               <div
                 key={`${optBuilding}-${optWing}`}
-                onClick={() => handleWingChange(optBuilding, optWing)}>
+                onClick={() => handleWingChange(optBuilding, optWing)}
+              >
                 {getBuildingDisplay(optBuilding, optWing)}
               </div>
             ))}
@@ -245,17 +255,18 @@ function FS_FloorSpecific({
               <button
                 key={floor}
                 className={
-                  selectedFloorData.floorNumber === floor ? 'is-current' : ''
+                  selectedFloorData.floorNumber === floor ? "is-current" : ""
                 }
-                onClick={() => onFloorChange(floor)}>
-                {floor === '0' ? 'B1' : `${floor}F`}
+                onClick={() => onFloorChange(floor)}
+              >
+                {floor === "0" ? "B1" : `${floor}F`}
               </button>
             ))}
           </nav>
         )}
       </div>
       <MenuBar menuOpen={menuOpen} closeMenu={closeMenu} />
-      <div className="MapImage">
+      <div ref={containerRef} className="MapImage">
         <canvas ref={canvasRef} className="responsive-canvas"></canvas>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -16,7 +16,9 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 function FindSpot() {
   const canvasRef = useRef(null);
-  const svgContainerRef = useRef(null);
+  const containerRef = useRef(null);
+  const svgDocRef = useRef(null);
+  const imgRef = useRef(null);
   const { name } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ function FindSpot() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scale, setScale] = useState(1);
 
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
@@ -35,11 +38,20 @@ function FindSpot() {
     setMenuOpen(false);
   };
 
+  const handleResize = useCallback(() => {
+    if (containerRef.current && imgRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const imgWidth = imgRef.current.width;
+      const newScale = containerWidth / imgWidth;
+      setScale(newScale);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchStoreData = async () => {
       try {
-        const response = await axios.get(`/api/find-spot/${encodeURIComponent(name)}`,
-        // const response = await axios.get(`https://api.misarodeo.com/api/find-spot/${encodeURIComponent(name)}`,
+        const response = await axios.get(
+          `/api/find-spot/${encodeURIComponent(name)}`,
           {
             headers: {
               accept: "*/*",
@@ -75,49 +87,82 @@ function FindSpot() {
       const svgPath = `${store.floorImage}`;
       fetch(svgPath)
         .then((response) => response.text())
-        .then((data) => {
+        .then((svgText) => {
           const parser = new DOMParser();
-          const svgDoc = parser.parseFromString(data, "image/svg+xml");
+          const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+          svgDocRef.current = svgDoc;
+
           const svgElement = svgDoc.documentElement;
+          if (!svgElement) {
+            throw new Error("SVG element not found in the document");
+          }
 
-          svgContainerRef.current.innerHTML = "";
-          svgContainerRef.current.appendChild(svgElement);
-
-          const canvas = canvasRef.current;
-          const ctx = canvas.getContext("2d");
-
-          const svgWidth = parseInt(svgElement.getAttribute("width")) || 400;
-          const svgHeight = parseInt(svgElement.getAttribute("height")) || 400;
-          canvas.width = svgWidth;
-          canvas.height = svgHeight;
-
-          const svgString = new XMLSerializer().serializeToString(svgElement);
-          const svgBlob = new Blob([svgString], {
-            type: "image/svg+xml;charset=utf-8",
-          });
-          const url = URL.createObjectURL(svgBlob);
+          const width = parseFloat(
+            svgElement.getAttribute("width") || svgElement.viewBox.baseVal.width
+          );
+          const height = parseFloat(
+            svgElement.getAttribute("height") ||
+              svgElement.viewBox.baseVal.height
+          );
 
           const img = new Image();
+          img.src =
+            "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
+          imgRef.current = img;
+
           img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, svgWidth, svgHeight);
-            URL.revokeObjectURL(url);
+            handleResize();
+            window.addEventListener("resize", handleResize);
 
-            // 가게 위치만 그리기
-            drawLocpin(svgElement, ctx, store, { data: [store] }, false);
+            const drawCanvas = () => {
+              const canvas = canvasRef.current;
+              const ctx = canvas.getContext("2d");
+
+              const dpr = window.devicePixelRatio || 1;
+              const scaledWidth = width * scale;
+              const scaledHeight = height * scale;
+
+              canvas.style.width = `${scaledWidth}px`;
+              canvas.style.height = `${scaledHeight}px`;
+              canvas.width = scaledWidth * dpr;
+              canvas.height = scaledHeight * dpr;
+
+              ctx.scale(dpr * scale, dpr * scale);
+
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              ctx.imageSmoothingEnabled = true;
+              ctx.imageSmoothingQuality = "high";
+
+              ctx.drawImage(img, 0, 0, width, height);
+
+              // 가게 위치만 그리기
+              drawLocpin(
+                svgElement,
+                ctx,
+                store,
+                { data: [store] },
+                false,
+                scale
+              );
+            };
+
+            drawCanvas();
           };
 
-          img.onerror = () => {
-            console.error("Failed to load the image.");
+          img.onerror = (error) => {
+            console.error("Failed to load the SVG image:", error);
           };
-
-          img.src = url;
         })
         .catch((error) => {
           console.error("Error fetching or parsing the SVG file:", error);
         });
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
     }
-  }, [store]);
+  }, [store, scale, handleResize]);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
@@ -132,10 +177,10 @@ function FindSpot() {
         <CurToDest currentStore={store} currentLocation={currentLocation} />
       </div>
       <div
+        ref={containerRef}
         className="ImageContainer"
         style={{ width: "100%", height: "auto", position: "relative" }}
       >
-        <div ref={svgContainerRef} style={{ display: "none" }}></div>
         <canvas
           ref={canvasRef}
           className="HomepageIcon"
