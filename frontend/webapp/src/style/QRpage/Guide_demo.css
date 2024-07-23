@@ -4,7 +4,7 @@
   align-items: center;
   padding: 20px;
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   font-family: 'Arial', sans-serif;
 }
@@ -50,7 +50,7 @@
 
 .facility-content {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
 }
 
@@ -93,6 +93,7 @@
 
 .logospace:hover {
   background-color: #e0e0e0;
+  transform: scale(1.1);
 }
 
 .logospace img {
@@ -101,7 +102,24 @@
   object-fit: contain;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .guide-container {
+    padding: 10px;
+  }
+
+  .title-row {
+    width: 100%;
+  }
+
+  .facility-title,
+  .guide-title {
+    padding: 8px;
+  }
+
+  .content-row {
+    width: 100%;
+  }
+
   .facility-content {
     grid-template-columns: 1fr;
   }

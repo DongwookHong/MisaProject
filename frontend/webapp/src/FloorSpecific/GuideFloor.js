@@ -46,8 +46,9 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
     return "기타";
   };
 
-  const handleFacilityGroupClick = (facilities) => {
-    const blockIds = facilities.map((facility) => facility.blockId);
+  const handleGroupClick = (groupName) => {
+    const blockIds = facilityGroups[groupName].map((item) => item.blockId);
+    console.log(`Clicked group: ${groupName}, blockIds:`, blockIds);
     onIconClick(blockIds, true); // true indicates it's a facility
     scrollToTop();
   };
@@ -93,7 +94,7 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
         {activeSection === "facility" && (
           <FacilityContent
             facilityGroups={sortedFacilityGroups()}
-            onIconClick={handleFacilityGroupClick}
+            onGroupClick={handleGroupClick}
           />
         )}
         {activeSection === "guide" && (
@@ -104,14 +105,18 @@ function GuideFloor({ onIconClick, selectedFloorData }) {
   );
 }
 
-function FacilityContent({ facilityGroups, onIconClick }) {
+function FacilityContent({ facilityGroups, onGroupClick }) {
   return (
     <div className="facility-content">
       {facilityGroups.map(([groupName, facilities]) => (
-        <div className="facility-group" key={groupName}>
+        <div 
+          className="facility-group" 
+          key={groupName}
+          onClick={() => onGroupClick(groupName)}
+        >
           <div className="facility-item">
             <span>{groupName}</span>
-            <span className="logospace" onClick={() => onIconClick(facilities)}>
+            <span className="logospace">
               <img src={locpin} alt="loc" width="30" height="20" />
             </span>
           </div>
