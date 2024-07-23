@@ -245,9 +245,6 @@
   .dong-container {
     display: flex;
     flex-direction: column;
-  .dong-container {
-    display: flex;
-    flex-direction: column;
     justify-content: flex-end;
     width: 100%;
     padding: 5px;
@@ -298,9 +295,9 @@
     border-radius: 3px;
   }
 
-  .floor-container,
   .tenant-container {
     min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
+  }
   .floor-container,
   .tenant-container {
     min-width: 0; /* flex item이 너무 작아지는 것을 방지 */
@@ -325,8 +322,6 @@
     font-size: 15px;
   }
 
-  .space-x-4 > *:not(:last-child) {
-    margin-right: 2px; /* 버튼 간 간격 유지 */
   .space-x-4 > *:not(:last-child) {
     margin-right: 2px; /* 버튼 간 간격 유지 */
   }
