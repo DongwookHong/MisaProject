@@ -34,8 +34,8 @@ function Guide_demo({
         .map((item) => item.name)
     );
     return {
-      facilityItems: [...new Set(facilities)],
-      storeItems: [...new Set(stores)],
+      facilityItems: [...new Set(facilities)].sort((a, b) => a.localeCompare(b, 'ko')),
+      storeItems: [...new Set(stores)].sort((a, b) => a.localeCompare(b, 'ko')),
     };
   }, [floorData]);
 

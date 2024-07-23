@@ -12,30 +12,28 @@ function InfoPage({
   home_page_path,
   store_info,
   handleShare,
-  location_info,
-  blockId,
+  floor_image,
+  block_id,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLocationExpanded, setIsLocationExpanded] = useState(false);
-  const [floorImage, setFloorImage] = useState(null);
+  const [svgContent, setSvgContent] = useState(null);
 
   useEffect(() => {
-    const fetchFloorImage = async () => {
-      try {
-        const response = await fetch(`/api/find-spot/${blockId}`);
-        const data = await response.json();
-        if (data && data.floorImage) {
-          setFloorImage(data.floorImage);
+    const fetchSvgContent = async () => {
+      if (floor_image) {
+        try {
+          const response = await fetch(floor_image);
+          const svgText = await response.text();
+          setSvgContent(svgText);
+        } catch (error) {
+          console.error('Error fetching SVG content:', error);
         }
-      } catch (error) {
-        console.error('Error fetching floor image:', error);
       }
     };
 
-    if (blockId) {
-      fetchFloorImage();
-    }
-  }, [blockId]);
+    fetchSvgContent();
+  }, [floor_image]);
 
   const getFloorDisplay = (floorNum) => {
     const num = Number(floorNum);
@@ -98,11 +96,10 @@ function InfoPage({
 
   const businessStatus = getCurrentBusinessStatus();
 
-  // Modified to change building_dong display
   const getModifiedBuildingDong = (dong) => {
     if (dong === 'A') return '12BL';
     if (dong === 'B') return '11BL';
-    return dong; // Return original value if not A or B
+    return dong;
   };
 
   return (
@@ -149,6 +146,27 @@ function InfoPage({
           </p>
           <hr className="light-line-full" />
         </div>
+        <div className="location-info-container">
+          <div className="location-info-header" onClick={() => setIsLocationExpanded(!isLocationExpanded)}>
+            <span className="location-label">위치 정보</span>
+            <span className="location-toggle">
+              {isLocationExpanded ? <LuChevronUp size={24} /> : <LuChevronDown size={24} />}
+            </span>
+          </div>
+          {isLocationExpanded && (
+            <div className="location-info">
+              {svgContent && (
+                <div 
+                  dangerouslySetInnerHTML={{ __html: svgContent }} 
+                  className="floor-image"
+                  style={{ width: '100%', marginBottom: '10px' }}
+                />
+              )}
+        
+            </div>
+          )}
+        </div>
+        <hr className="light-line-full" />
         <div className="store-describe" style={{ whiteSpace: 'pre-line' }}>
           {store_info}
         </div>

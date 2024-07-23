@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Select from 'react-select';
 import '../style/QRpage/Dropdown.css';
 
 function DropdownMenu({ floorData, onFloorSelect }) {
-  const [selectedBuilding, setSelectedBuilding] = useState('');
-  const [selectedFloor, setSelectedFloor] = useState('');
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [selectedFloor, setSelectedFloor] = useState(null);
 
   const buildingOptions = useMemo(() => {
     const uniqueBuildings = [
@@ -36,7 +36,7 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     const floors = floorData
       .filter(
         (floor) =>
-          `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding
+          `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding.value
       )
       .map((floor) => ({
         value: floor.floorNumber,
@@ -47,16 +47,24 @@ function DropdownMenu({ floorData, onFloorSelect }) {
     );
   }, [floorData, selectedBuilding]);
 
+  useEffect(() => {
+    // 선택된 동이 변경될 때마다 층 선택 초기화
+    setSelectedFloor(null);
+  }, [selectedBuilding]);
+
   const handleBuildingChange = (selectedOption) => {
-    setSelectedBuilding(selectedOption.value);
-    setSelectedFloor('');
+    setSelectedBuilding(selectedOption);
+    // 층 선택 초기화
+    setSelectedFloor(null);
+    // 층 선택이 초기화되었으므로 onFloorSelect를 null로 호출
+    onFloorSelect(null);
   };
 
   const handleFloorChange = (selectedOption) => {
-    setSelectedFloor(selectedOption.value);
+    setSelectedFloor(selectedOption);
     const selectedFloorData = floorData.find(
       (floor) =>
-        `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding &&
+        `${floor.buildingName} ${floor.buildingDong}` === selectedBuilding.value &&
         floor.floorNumber === selectedOption.value
     );
     onFloorSelect(selectedFloorData);
@@ -93,9 +101,7 @@ function DropdownMenu({ floorData, onFloorSelect }) {
         <Select
           id="building-select"
           options={buildingOptions}
-          value={buildingOptions.find(
-            (option) => option.value === selectedBuilding
-          )}
+          value={selectedBuilding}
           onChange={handleBuildingChange}
           classNamePrefix="react-select"
           placeholder="동 선택"
@@ -110,7 +116,7 @@ function DropdownMenu({ floorData, onFloorSelect }) {
         <Select
           id="floor-select"
           options={floorOptions}
-          value={floorOptions.find((option) => option.value === selectedFloor)}
+          value={selectedFloor}
           onChange={handleFloorChange}
           classNamePrefix="react-select"
           placeholder="층 선택"
