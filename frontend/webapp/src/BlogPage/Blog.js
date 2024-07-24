@@ -17,9 +17,7 @@ export async function blogLoader({ params }) {
 
     // Fetch store data
     const storeResponse = await fetch(
-      // `https://api.misarodeo.com/api/store/${encodedName}`,
-      `/api/store/${encodedName}`,
-
+      `/api/stores/${encodedName}`,
       {
         headers: {
           accept: '*/*',
@@ -33,25 +31,6 @@ export async function blogLoader({ params }) {
     }
 
     const storeData = await storeResponse.json();
-
-    // Fetch floor data
-    const floorResponse = await fetch(
-      `/api/find-spot/${encodedName}`,
-
-      // `https://api.misarodeo.com/api/find-spot/${encodedName}`,
-      {
-        headers: {
-          accept: '*/*',
-          'x-api-key': API_KEY,
-        },
-      }
-    );
-
-    if (!floorResponse.ok) {
-      throw new Response('Floor data not found', { status: 404 });
-    }
-
-    const floorData = await floorResponse.json();
 
     let images = [];
     if (storeData.storeImage) {
@@ -67,7 +46,6 @@ export async function blogLoader({ params }) {
 
     return {
       storeData: { ...storeData, images },
-      floorData,
     };
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -76,7 +54,7 @@ export async function blogLoader({ params }) {
 }
 
 function Blog() {
-  const { storeData, floorData } = useLoaderData();
+  const { storeData } = useLoaderData();
   const [showModal, setShowModal] = React.useState(false);
   const [shareData, setShareData] = React.useState({});
   const navigate = useNavigate();
@@ -131,8 +109,8 @@ function Blog() {
           home_page_path={storeData.homePagePath}
           store_info={storeData.storeInfo}
           handleShare={handleShare}
-          floor_image={floorData.floorImage}
-          block_id={floorData.blockId}
+          floor_image={storeData.floorImage}
+          block_id={storeData.blockId}
         />
 
         {storeData.images.length > 0 && <Slide imageUrls={storeData.images} />}
