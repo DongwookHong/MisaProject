@@ -37,7 +37,8 @@ const AdminPage = () => {
   const fetchStores = async () => {
     try {
       //https://api.misarodeo.com/
-      const response = await axios.get('/api/store', {
+      // const response = await axios.get('https://api.misarodeo.com/api/store', {
+        const response = await axios.get('/api/store', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
         },

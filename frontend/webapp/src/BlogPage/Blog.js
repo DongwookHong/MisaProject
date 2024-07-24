@@ -16,8 +16,8 @@ export async function blogLoader({ params }) {
     const encodedName = encodeURIComponent(name);
 
     // Fetch store data
-    const storeResponse = await fetch(
-      `/api/stores/${encodedName}`,
+    // const storeResponse = await fetch(`https://api.misarodeo.com/api/stores/${encodedName}`,
+    const storeResponse = await fetch(`/api/stores/${encodedName}`,
       {
         headers: {
           accept: '*/*',

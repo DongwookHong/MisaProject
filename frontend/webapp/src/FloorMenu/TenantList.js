@@ -23,8 +23,8 @@ function TenantList() {
         }
         const response = await axios.get('/api/floor', {
           // const response = await axios.get(
-          //   'https://api.misarodeo.com/api/floor',
-          //   {
+            // 'https://api.misarodeo.com/api/floor',
+            // {
           headers: {
             accept: '*/*',
             'x-api-key': 'testapikey',
