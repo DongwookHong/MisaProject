@@ -14,6 +14,7 @@ import StoreList from "./StoreList/StoreList.js";
 import EnterArcade from "./EnterArcade/EnterArcade.js";
 import FindAD from "./Fix/FindAD.js";
 import NotFound from "./Static/NotFound.js";
+import Adminlogin from "./Admin/LoginPage.js"
 
 const router = createBrowserRouter([
   { path: "/", element: <Main /> },
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
   },
   { path: "/findad", element: <FindAD /> },
   { path: "/enter", element: <EnterArcade /> },
+  { path: "/admin", element: <Adminlogin /> },
   { path: "*", element: <NotFound /> },
 ]);
 
