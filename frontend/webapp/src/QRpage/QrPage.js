@@ -20,26 +20,30 @@ function QrPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get('https://api.misarodeo.com/api/qr-page', {
-          const response = await axios.get('/api/qr-page', {
+        // const response = await axios.get(
+        //   'https://api.misarodeo.com/api/qr-page',
+        //   {
+        const response = await axios.get('/api/qr-page', {
           headers: {
-            'accept': '*/*',
-            'x-api-key': API_KEY
-          }
+            accept: '*/*',
+            'x-api-key': API_KEY,
+          },
         });
-        const parsedData = response.data.map(item => JSON.parse(item));
+        const parsedData = response.data.map((item) => JSON.parse(item));
         setFloorData(parsedData);
         setIsLoading(false);
 
         if (id) {
-          const building = id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
+          const building =
+            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
           const buildingName = id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트';
           const floor = id.charAt(1);
 
-          const relevantFloorData = parsedData.find(data => 
-            data.buildingName === buildingName && 
-            data.buildingDong === building && 
-            data.floorNumber === floor
+          const relevantFloorData = parsedData.find(
+            (data) =>
+              data.buildingName === buildingName &&
+              data.buildingDong === building &&
+              data.floorNumber === floor
           );
 
           if (relevantFloorData) {
@@ -70,9 +74,9 @@ function QrPage() {
       <LocSearch floorData={floorData} />
       <AdvertiseQR />
       <DropDown floorData={floorData} onFloorSelect={handleFloorSelect} />
-      <PinMove 
-        floorData={floorData} 
-        selectedFloorData={selectedFloorData} 
+      <PinMove
+        floorData={floorData}
+        selectedFloorData={selectedFloorData}
         currentLocation={currentLocation}
       />
       <MainFooter />
