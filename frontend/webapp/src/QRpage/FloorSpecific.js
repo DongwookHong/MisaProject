@@ -26,12 +26,12 @@ function FloorSpecific({
     if (!selectedFloorData) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
 
     const loadSvgAndDraw = async () => {
       try {
         const imageUrl = `${selectedFloorData.floorImage}`;
-        console.log("Attempting to fetch from URL:", imageUrl);
+        console.log('Attempting to fetch from URL:', imageUrl);
 
         const response = await fetch(imageUrl);
         if (!response.ok) {
@@ -40,20 +40,25 @@ function FloorSpecific({
         const svgText = await response.text();
 
         const parser = new DOMParser();
-        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+        const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
         svgDocRef.current = svgDoc;
 
-        const svgElement = svgDoc.querySelector("svg");
+        const svgElement = svgDoc.querySelector('svg');
         if (!svgElement) {
-          throw new Error("SVG element not found in the document");
+          throw new Error('SVG element not found in the document');
         }
 
         // Get the SVG dimensions
-        const width = parseFloat(svgElement.getAttribute('width') || svgElement.viewBox.baseVal.width);
-        const height = parseFloat(svgElement.getAttribute('height') || svgElement.viewBox.baseVal.height);
+        const width = parseFloat(
+          svgElement.getAttribute('width') || svgElement.viewBox.baseVal.width
+        );
+        const height = parseFloat(
+          svgElement.getAttribute('height') || svgElement.viewBox.baseVal.height
+        );
 
         const img = new Image();
-        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
+        img.src =
+          'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
         imgRef.current = img;
 
         img.onload = () => {
@@ -76,30 +81,49 @@ function FloorSpecific({
             ctx.scale(dpr * scale, dpr * scale);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
 
             ctx.drawImage(img, 0, 0, width, height);
 
             if (currentLocation) {
-              drawLocpin(svgDoc, ctx, currentLocation, selectedFloorData, true, scale);
+              drawLocpin(
+                svgDoc,
+                ctx,
+                currentLocation,
+                selectedFloorData,
+                true,
+                scale
+              );
             }
             if (selectedFacility) {
-              drawSelectedFacility(ctx, svgDoc, selectedFacility, selectedFloorData, scale);
+              drawSelectedFacility(
+                ctx,
+                svgDoc,
+                selectedFacility,
+                selectedFloorData,
+                scale
+              );
             }
             if (selectedStore) {
-              drawSelectedStore(ctx, svgDoc, selectedStore, selectedFloorData, scale);
+              drawSelectedStore(
+                ctx,
+                svgDoc,
+                selectedStore,
+                selectedFloorData,
+                scale
+              );
             }
           };
 
           drawCanvas();
         };
         img.onerror = (error) => {
-          console.error("Failed to load the SVG image:", error);
+          console.error('Failed to load the SVG image:', error);
         };
       } catch (error) {
-        console.error("Error fetching or parsing the SVG file:", error.message);
+        console.error('Error fetching or parsing the SVG file:', error.message);
       }
     };
 
@@ -108,17 +132,34 @@ function FloorSpecific({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [selectedFloorData, canvasRef, currentLocation, selectedFacility, selectedStore, scale]);
+  }, [
+    selectedFloorData,
+    canvasRef,
+    currentLocation,
+    selectedFacility,
+    selectedStore,
+    scale,
+  ]);
 
-  const drawSelectedFacility = (ctx, svgDoc, selectedFacility, floorData, scale) => {
-    const facilities = floorData.data.filter(item => item.type === 'facility' && item.name === selectedFacility);
-    facilities.forEach(facility => {
+  const drawSelectedFacility = (
+    ctx,
+    svgDoc,
+    selectedFacility,
+    floorData,
+    scale
+  ) => {
+    const facilities = floorData.data.filter(
+      (item) => item.type === 'facility' && item.name === selectedFacility
+    );
+    facilities.forEach((facility) => {
       drawLocpin(svgDoc, ctx, facility, floorData, false, scale);
     });
   };
 
   const drawSelectedStore = (ctx, svgDoc, selectedStore, floorData, scale) => {
-    const store = floorData.data.find(item => item.type === 'store' && item.name === selectedStore);
+    const store = floorData.data.find(
+      (item) => item.type === 'store' && item.name === selectedStore
+    );
     if (store) {
       drawLocpin(svgDoc, ctx, store, floorData, false, scale);
     }

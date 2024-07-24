@@ -36,8 +36,11 @@ const AdminPage = () => {
 
   const fetchStores = async () => {
     try {
+      //https://api.misarodeo.com/
       const response = await axios.get('/api/store', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+        },
       });
       setStores(response.data);
     } catch (error) {
@@ -49,7 +52,9 @@ const AdminPage = () => {
   const handleAddStore = async (newStore) => {
     try {
       await axios.post('/api/store', newStore, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+        },
       });
       fetchStores();
     } catch (error) {
@@ -61,7 +66,9 @@ const AdminPage = () => {
   const handleUpdateStore = async (updatedStore) => {
     try {
       await axios.put(`/api/store/${updatedStore.id}`, updatedStore, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+        },
       });
       setEditingStore(null);
       fetchStores();
@@ -74,7 +81,9 @@ const AdminPage = () => {
   const handleDeleteStore = async (storeId) => {
     try {
       await axios.delete(`/api/store/${storeId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
+        },
       });
       fetchStores();
     } catch (error) {
@@ -91,16 +100,16 @@ const AdminPage = () => {
     <div className="admin-page">
       <h1>관리자 페이지</h1>
       {error && <p className="admin-error">{error}</p>}
-      <AdminShopList 
-        stores={stores} 
-        onEdit={setEditingStore} 
-        onDelete={handleDeleteStore} 
+      <AdminShopList
+        stores={stores}
+        onEdit={setEditingStore}
+        onDelete={handleDeleteStore}
       />
       {editingStore ? (
-        <AdminFixShop 
-          shop={editingStore} 
-          onUpdate={handleUpdateStore} 
-          onCancel={() => setEditingStore(null)} 
+        <AdminFixShop
+          shop={editingStore}
+          onUpdate={handleUpdateStore}
+          onCancel={() => setEditingStore(null)}
         />
       ) : (
         <AdminAddShop onAdd={handleAddStore} />

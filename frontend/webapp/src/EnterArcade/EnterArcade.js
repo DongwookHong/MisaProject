@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import AdvertiseQR from '../Fix/AdvertiseQR';
 import DropDownMenu from './DropDownMenu';
-import PinMove from './PinMoveA'
+import PinMove from './PinMoveA';
 import MainFooter from '../Fix/MainFooter';
 import MainHeader from '../Fix/MainHeader';
 
@@ -22,21 +22,26 @@ function EnterArcade() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/qr-page', {
-        // const response = await axios.get('https://api.misarodeo.com/api/qr-page', {
-          headers: {
-            'accept': '*/*',
-            'x-api-key': API_KEY
+        const response = await axios.get(
+          '/api/qr-page',
+          // const response = await axios.get(
+          //   'https://api.misarodeo.com/api/qr-page',
+          {
+            headers: {
+              accept: '*/*',
+              'x-api-key': API_KEY,
+            },
           }
-        });
-        const parsedData = response.data.map(item => JSON.parse(item));
+        );
+        const parsedData = response.data.map((item) => JSON.parse(item));
         setFloorData(parsedData);
         setIsLoading(false);
 
         let buildingName, buildingDong, floorNumber;
 
         if (id) {
-          buildingDong = id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
+          buildingDong =
+            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
           buildingName = id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트';
           floorNumber = id.charAt(1);
         } else {
@@ -49,10 +54,11 @@ function EnterArcade() {
         setBuilding(`${buildingName} ${buildingDong}`);
         setFloor(floorNumber);
 
-        const relevantFloorData = parsedData.find(data => 
-          data.buildingName === buildingName && 
-          data.buildingDong === buildingDong && 
-          data.floorNumber === floorNumber
+        const relevantFloorData = parsedData.find(
+          (data) =>
+            data.buildingName === buildingName &&
+            data.buildingDong === buildingDong &&
+            data.floorNumber === floorNumber
         );
 
         if (relevantFloorData) {
@@ -83,17 +89,17 @@ function EnterArcade() {
       <MainHeader />
       <div style={{ padding: '100px 0' }}>
         <AdvertiseQR />
-        <DropDownMenu 
-          floorData={floorData} 
+        <DropDownMenu
+          floorData={floorData}
           onFloorSelect={handleFloorSelect}
           setBuilding={setBuilding}
           setFloor={setFloor}
           initialBuilding={building}
           initialFloor={floor}
         />
-        <PinMove 
-          floorData={floorData} 
-          selectedFloorData={selectedFloorData} 
+        <PinMove
+          floorData={floorData}
+          selectedFloorData={selectedFloorData}
           currentLocation={currentLocation}
         />
       </div>
