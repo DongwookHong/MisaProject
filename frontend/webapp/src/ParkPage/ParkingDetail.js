@@ -22,15 +22,10 @@ function ParkingDetail() {
         {activeIndex === 0 && (
           <div className="accordion-content">
             <h3>주차요금</h3>
-            <p className="custom-p">본관:</p>
             <ul>
               <li>최초 1시간 무료 (매 10분 당 1,000원)</li>
             </ul>
-            <p className="custom-p">공영주차장:</p>
-            <ul>
-              <li>최초 1시간 무료 (추가 10분당 300원)</li>
-            </ul>
-            <h3>상품금액별 무료 주차 안내</h3>
+            <h3>매장 이용시 무료 주차 안내</h3>
             <ul>
               <li>매장이용시 1시간 반</li>
               <li>매장이용시 최대 3시간</li>
