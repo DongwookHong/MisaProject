@@ -1,0 +1,126 @@
+.enroll-container {
+  /* padding: 20px; */
+  /* background-color: #f8f9fa; */
+}
+
+.enroll-header {
+  text-align: left;
+  margin-top: 20px;
+  font-family: 'Freesentation-9Black';
+  border-bottom: 1px solid gray;
+}
+
+.enroll-items {
+  text-align: left;
+  margin-top: 4em;
+}
+
+.enroll-item {
+  margin-top: 2em;
+}
+
+.enroll-input {
+  width: 50%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-left: 10px;
+}
+
+.enroll-select {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-right: 10px;
+  margin-left: 7px;
+}
+
+.enroll-select-option {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  /* margin-right: 10px; */
+}
+
+.enroll-select-option-floor {
+  width: 8%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-right: 10px;
+}
+
+.enroll-input:focus,
+.enroll-select:focus {
+  border-color: #5d4fbb;
+  box-shadow: 0 0 5px rgba(93, 79, 187, 0.5);
+  outline: none;
+}
+
+.enroll-select option,
+.enroll-select-floor option {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.submit-button {
+  background-color: #5d4fbb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.submit-button:hover {
+  background-color: #4c3ba7;
+}
+
+.enrollselect-container {
+  display: flex;
+  align-items: baseline;
+  gap: 13em;
+}
+
+.enroll-operationdata {
+  display: flex;
+  gap: 10px; /* 간격 추가 */
+  align-items: center;
+}
+
+.operation-data {
+  border: 1px solid #ccc;
+  padding: 10px; /* 내부 여백 추가 */
+  border-radius: 4px; /* 모서리를 둥글게 */
+  cursor: pointer; /* 커서를 포인터로 변경 */
+  flex: 1; /* 모든 항목이 동일한 너비를 가지도록 설정 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-right: 30px;
+  margin-top: 20px;
+}
+
+.operation-data:hover {
+  background-color: #bdafff; /* 마우스를 올렸을 때 배경색 변경 */
+}

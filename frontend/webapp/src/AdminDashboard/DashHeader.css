@@ -1,0 +1,126 @@
+.dashheader-container {
+  width: calc(100% - 75px);
+  margin-left: 75px; /* 사이드바 너비만큼 왼쪽 마진 */
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+.dashheader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #f8f9fa;
+  box-shadow: none;
+  height: 50px;
+  border-radius: 1px;
+}
+
+.dashheader-left {
+  display: flex;
+  align-items: center;
+}
+
+.dash-logo {
+  font-family: 'PartialSansKR-Regular';
+  font-size: 1.2rem;
+  color: #5d4fbb;
+  text-align: center;
+}
+
+.dashheader-right {
+  display: flex;
+  align-items: center;
+}
+
+.dash-navmenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.dash-navmenu li {
+  margin-right: 20px;
+}
+
+.dash-navmenu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.dash-navmenu a:hover {
+  color: #007bff;
+}
+
+/* .dashheader-search {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-right: 20px;
+} */
+
+.dashheader-search {
+  position: relative; /* 부모 요소를 기준으로 자식 요소를 배치하기 위해 position을 relative로 설정 */
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-right: 20px;
+}
+
+.findicon-image {
+  position: absolute;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.dashheader-actions {
+  display: flex;
+  align-items: center;
+}
+
+.dashsearch-input {
+  border: none;
+  outline: none;
+  padding: 7px;
+  border-radius: 20px;
+}
+
+.dashsearch-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #007bff;
+}
+
+.dashsearch-button i {
+  font-size: 1rem;
+}
+
+.dashuser-profile {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.dashuser-profile a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dashuser-profile a:hover {
+  color: #007bff;
+}
+
+.dashaccount-image {
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+}
