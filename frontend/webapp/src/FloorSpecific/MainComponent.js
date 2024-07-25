@@ -8,11 +8,8 @@ export async function mainComponentLoader({ params }) {
   const { building, wing } = params;
   try {
     const response = await fetch(
-      // `https://api.misarodeo.com/api/building/${encodeURIComponent(
-      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
-        // `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
-        wing
-      )}`,
+      // `https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
+      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
       {
         headers: {
           accept: '*/*',

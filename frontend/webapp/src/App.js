@@ -7,6 +7,7 @@ import FindSpot from './FindSpot/FindSpot.js';
 import FloorMenu from './FloorMenu/FloorMenu.js';
 import MainComponent, {
   mainComponentLoader,
+
 } from './FloorSpecific/MainComponent.js';
 import Main from './MainMenu/Main.js';
 import BlogPage, { blogLoader } from './BlogPage/Blog';
@@ -14,7 +15,6 @@ import StoreList from './StoreList/StoreList.js';
 import EnterArcade from './EnterArcade/EnterArcade.js';
 import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
-
 import Admin from './Admin/AdminPage.js';
 import AddShop from './AdminDashboard/AdminAddShop.js';
 
@@ -44,7 +44,6 @@ const router = createBrowserRouter([
   { path: '/findad', element: <FindAD /> },
   { path: '/enter', element: <EnterArcade /> },
   { path: '*', element: <NotFound /> },
-]);
 
 function App() {
   return (
