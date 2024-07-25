@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminPage.css';
 import AdminShopList from './AdminShopList';
-import AdminAddShop from './AdminAddShop';
+import AdminAddShop from '../AdminDashboard/AdminAddShop';
 import AdminFixShop from './AdminUpdateShop';
 import LoginPage from './LoginPage';
 

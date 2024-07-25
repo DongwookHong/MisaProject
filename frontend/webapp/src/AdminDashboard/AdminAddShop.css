@@ -1,0 +1,13 @@
+.admin-dashboard {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 120px;
+  margin-top: 60px;
+  /* padding: 20px 2px 20px 5px; */
+  /* background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  /* border-radius: 8px; */
+}
