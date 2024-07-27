@@ -69,14 +69,6 @@ public class StoreMember {
     public void setImgPaths(List<ImgPath> imgPaths) {
         if (imgPaths == null) return;
         this.imgPaths = imgPaths;
-
-//        if (this.imgPaths != null) {
-//            this.removeAllImgPaths();
-//        }
-//
-//        for (ImgPath imgPath : imgPaths) {
-//            this.addImgPath(imgPath);
-//        }
     }
 
     public void removeAllImgPaths() {
@@ -104,8 +96,6 @@ public class StoreMember {
             }
         }
     }
-
-
 
     public void setBlock(Block block) {
         this.block = block;

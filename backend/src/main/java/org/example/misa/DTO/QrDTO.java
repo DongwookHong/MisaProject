@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.misa.domain.Block;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,24 +54,14 @@ public class QrDTO {
         }
 
         public static Data from(Block block) {
-            String type = block.getType();
-            String name = "";
-            if (Objects.equals(type, "facility")) {
-                name = block.getFacility().getFacilityName();
-            }
-            else if (Objects.equals(type, "store") && !Objects.isNull(block.getStoreMember())) {
-                name = block.getStoreMember().getStoreName();
-            }
-            if (Objects.isNull(name)) {
-                name = "";
-            }
-            return new Data(block.getArea().toString(), type, name);
+            return new Data(block.getArea().toString(), block.getType(), block.getName());
         }
 
         public static List<Data> dataList(List<Block> blocks) {
             List<Data> dataList = new ArrayList<>();
             for (Block block : blocks) {
-                dataList.add(from(block));
+                if (block.getStoreMember() != null || block.getFacility() != null)
+                    dataList.add(from(block));
             }
             return dataList;
         }

@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,8 +55,7 @@ public class AdminService {
             throw new IllegalStateException("Store does not exist");
         }
 
-
-        storeMember.update(form); // storehours 수정
+        storeMember.update(form);
         storeMember.setBlock(block);
 
         if (!files.isEmpty()) {
@@ -73,16 +69,15 @@ public class AdminService {
             imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
             throw new IllegalStateException("Could not save storeMember", e);
         }
-        System.out.println("update: " + storeMember);
-        return storeName;
+        return storeMember.getStoreName();
     }
 
     public String join(StoreMemberForm form, List<MultipartFile> files) {
+        validateDuplicateStoreMember(form.getStoreName());
         Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
         Block block = validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
 
         StoreMember storeMember = StoreMember.create(form);
-        validateDuplicateStoreMember(storeMember);
         storeMember.setBlock(block);
         saveImgPaths(files, storeMember);
 
@@ -131,9 +126,8 @@ public class AdminService {
         return block;
     }
 
-    private void validateDuplicateStoreMember(StoreMember storeMember) {
-        storeMember = storeMemberRepository.findByStoreName(storeMember.getStoreName());
-        if (storeMember != null) {
+    private void validateDuplicateStoreMember(String storeName) {
+        if (storeMemberRepository.findByStoreName(storeName) != null) {
             throw new IllegalStateException("이미 존재하는 상점입니다.");
         }
     }

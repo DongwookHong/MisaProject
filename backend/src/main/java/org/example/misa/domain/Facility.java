@@ -1,7 +1,9 @@
 package org.example.misa.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "facility")
 public class Facility {
@@ -16,29 +18,8 @@ public class Facility {
     @Column(nullable = false)
     private String facilityName;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Block getBlock() {
-        return block;
-    }
-
     public void setBlock(Block block) {
         this.block = block;
         this.block.setFacility(this);
-    }
-
-    public String getFacilityName() {
-        return facilityName;
-    }
-
-    public void setFacilityName(String facilityName) {
-        this.facilityName = facilityName;
     }
 }

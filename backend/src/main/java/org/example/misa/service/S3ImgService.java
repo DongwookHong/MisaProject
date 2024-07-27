@@ -34,7 +34,7 @@ public class S3ImgService implements ImgService {
 
     @Override
     public List<String> upload(List<MultipartFile> files) {
-        if (Objects.isNull(files) || files.isEmpty()) {
+        if (files == null || files.isEmpty()) {
             throw new IllegalStateException("Empty or invalid file name");
         }
         return this.uploadImg(files);

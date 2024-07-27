@@ -61,7 +61,7 @@ public class StoresDTO {
         public static List<StoresDTO.Data> dataList(List<Block> blocks) {
             List<StoresDTO.Data> dataList = new ArrayList<>();
             for (Block block : blocks) {
-                if (!Objects.isNull(block.getStoreMember())) {
+                if (block.getStoreMember() != null) {
                     dataList.add(Data.from(block));
                 }
             }

@@ -54,10 +54,10 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/stores/{name}")// 상점의 모든 정보, store -> stores로 변경
+    @GetMapping("/api/stores/{name}")
     public String store(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "";
+        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
         if (storeMember != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -70,7 +70,7 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/menu") // 건물, 층, 상점 이름, 상점 사진
+    @GetMapping("/api/menu")
     public List<String> menu() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
@@ -89,7 +89,7 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/qr-page") // 건물, 층, 상점 이름, 상점 위치 (추후 작업)
+    @GetMapping("/api/qr-page")
     public List<String> qrPage() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
@@ -109,11 +109,10 @@ public class MisaUserController {
         return jsonSet;
     }
 
-
     @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
     public String findSpot(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "";
+        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
         if (storeMember != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -126,7 +125,7 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/floor") //floor -> floors
+    @GetMapping("/api/floor")
     public List<String> floor() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();

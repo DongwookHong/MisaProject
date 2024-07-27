@@ -1,13 +1,22 @@
 package org.example.misa.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "block")
+@Table
+@NoArgsConstructor
 public class Block {
 
+    @Setter(AccessLevel.NONE)
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "floor_id", nullable = false)
+    private Floor floor;
 
     @Column(name = "area", nullable = false)
     private Long area;
@@ -21,59 +30,10 @@ public class Block {
     @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
     private Facility facility;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "floor_id", nullable = false)
-    private Floor floor;
-
-    //constructor
-
     public Block(Floor floor, Long area, String type) {
-        this.setFloor(floor);
-        this.area = area;
-        this.type = type;
-    }
-
-    public Block() {
-
-    }
-
-    //getter && setter
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getArea() {
-        return area;
-    }
-
-    public void setArea(Long area) {
-        this.area = area;
-    }
-
-    public StoreMember getStoreMember() {
-        return storeMember;
-    }
-
-    public void setStoreMember(StoreMember storeMember) {
-        this.storeMember = storeMember;
-    }
-
-    public Facility getFacility() {
-        return facility;
-    }
-
-    public void setFacility(Facility facility) {
-        this.facility = facility;
-    }
-
-    public Floor getFloor() {
-        return floor;
+        setFloor(floor);
+        setArea(area);
+        setType(type);
     }
 
     public void setFloor(Floor floor) {
@@ -84,12 +44,11 @@ public class Block {
         this.floor.getBlocks().add(this);
     }
 
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public String getName() {
+        if (this.storeMember != null) {
+            return this.getStoreMember().getStoreName();
+        }
+        return this.getFacility().getFacilityName();
     }
 }
+

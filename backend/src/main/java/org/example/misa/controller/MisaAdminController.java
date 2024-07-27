@@ -24,7 +24,7 @@ public class MisaAdminController {
 
     @PostMapping(value = "/api/stores", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String postStore(@RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) throws IOException, JsonProcessingException {
-        System.out.println("postStore");
+
         String storeName = adminService.join(storeMemberForm, files);
         return "new store: " + storeName;
     }
@@ -32,14 +32,13 @@ public class MisaAdminController {
     @PutMapping(value = "/api/stores/{name}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateStore(@PathVariable("name") String name, @RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) {
 
-        System.out.println("updateStore");
         String storeName = adminService.update(name, storeMemberForm, files);
         return "update store: " + storeName;
     }
 
     @DeleteMapping("/api/stores/{name}")
     public String deleteStore(@PathVariable("name") String name) {
-        System.out.println("delete store");
+
         String storeName = adminService.delete(name);
         return "delete store: " + storeName;
     }
