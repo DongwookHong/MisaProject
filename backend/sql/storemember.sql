@@ -1,2 +1,2 @@
-INSERT INTO Misa.storemember (block_id, store_name, info, business_hour, homepage_path, insta_path, store_number) VALUES (1, 'Misa', '', '', '', '', '');
-INSERT INTO Misa.storemember (block_id, store_name, info, business_hour, homepage_path, insta_path, store_number) VALUES (2, 'YongYong', '', '', '', '', '');
+INSERT INTO Misa.store_member (block_id, store_name, info, business_hour, homepage_path, insta_path, store_number) VALUES (1, 'Misa', '', '', '', '', '');
+INSERT INTO Misa.store_member (block_id, store_name, info, business_hour, homepage_path, insta_path, store_number) VALUES (2, 'YongYong', '', '', '', '', '');

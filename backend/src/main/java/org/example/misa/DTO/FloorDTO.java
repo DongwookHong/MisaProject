@@ -31,7 +31,7 @@ public class FloorDTO {
         List<String> storeNames = new ArrayList<>();
         List<Block> blocks = floor.getBlocks();
         for (Block block : blocks) {
-            if (Objects.equals(block.getType(), "store")) {
+            if (Objects.equals(block.getType(), "store") && !Objects.isNull(block.getStoreMember())) {
                 storeNames.add(block.getStoreMember().getStoreName());
             }
         }

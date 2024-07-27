@@ -3,7 +3,7 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "imgpath")
+@Table
 public class ImgPath {
 
     @Id
@@ -34,9 +34,6 @@ public class ImgPath {
 
     public void setStoreMember(StoreMember storeMember) {
         this.storeMember = storeMember;
-        if(!this.storeMember.getImgPaths().contains(this)) {
-            this.storeMember.getImgPaths().add(this);
-        }
     }
 
     public String getImgPath() {
@@ -44,6 +41,10 @@ public class ImgPath {
     }
 
     public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public void update(String imgPath) {
         this.imgPath = imgPath;
     }
 

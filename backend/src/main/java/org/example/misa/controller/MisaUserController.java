@@ -2,14 +2,18 @@ package org.example.misa.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import org.example.misa.DTO.*;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,8 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "https://misarodeo.com, https://www.misarodeo.com, https://api.misarodeo.com, http://api.misarodeo.com")
-//@CrossOrigin(origins = "http://localhost:8080")
-@RestController
+@RestController("/api")
 public class MisaUserController {
 
     private final UserService userService;
@@ -29,7 +32,29 @@ public class MisaUserController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/store/{name}")// 상점의 모든 정보
+    @GetMapping("/api/stores")
+    public List<String> getStores() {
+        List<Floor> floors = userService.findFloors();
+        List<String> jsonSet = new ArrayList<>();
+
+        if (!floors.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            for (Floor floor : floors) {
+                try {
+
+                    String json = mapper.writeValueAsString(StoresDTO.from(floor, StoresDTO.Data.dataList(floor.getBlocks())));
+                    jsonSet.add(json);
+
+                } catch (IOException e) {
+                    throw new IllegalStateException("Failed to serialize building", e);
+                }
+            }
+            return jsonSet;
+        }
+        return jsonSet;
+    }
+
+    @GetMapping("/api/stores/{name}")// 상점의 모든 정보, store -> stores로 변경
     public String store(@PathVariable("name") String name) {
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "";

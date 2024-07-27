@@ -1,5 +1,6 @@
 package org.example.misa.filter;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,12 +21,13 @@ public class ApiKeyAuthProvider implements AuthenticationProvider {
 
     private static final String validApiKey = "testapikey";
 
+//    @Value("${apiKey.validApiKey}")
+//    private String validApiKey;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String apiKey = (String) authentication.getPrincipal();
 
-        System.out.println("validApiKey: " + validApiKey);
-        System.out.println("apiKey: " + apiKey);
         if (apiKey != null & validApiKey.equals(apiKey)) {
             return UsernamePasswordAuthenticationToken
                     .authenticated(authentication.getPrincipal()
@@ -39,9 +41,6 @@ public class ApiKeyAuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        System.out.println("supports: " + authentication.getName());
-//        System.out.println("supports: " + authentication.);
-
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 

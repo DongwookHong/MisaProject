@@ -58,7 +58,7 @@ public class QrDTO {
             if (Objects.equals(type, "facility")) {
                 name = block.getFacility().getFacilityName();
             }
-            else if (Objects.equals(type, "store")) {
+            else if (Objects.equals(type, "store") && !Objects.isNull(block.getStoreMember())) {
                 name = block.getStoreMember().getStoreName();
             }
             if (Objects.isNull(name)) {
