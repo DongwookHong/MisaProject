@@ -6,7 +6,7 @@ import '../style/FloorMenu/FloorMenu.css';
 import mapImage from '../asset/tool/mapimage.png';
 
 function BuildingSelector() {
-  const { selectedBuilding, setSelectedBuilding, setFloorData } =
+  const { selectedBuilding, setSelectedBuilding, setFloorData, selectedFloor } =
     useContext(AppContext);
   const navigate = useNavigate();
 
@@ -14,6 +14,12 @@ function BuildingSelector() {
     '힐스테이트 12BL': '힐스테이트 A동',
     '힐스테이트 11BL': '힐스테이트 B동',
     롯데캐슬: '롯데캐슬',
+  };
+
+  const availableFloors = {
+    '힐스테이트 12BL': ['B1', '1F', '2F', '3F'],
+    '힐스테이트 11BL': ['1F', '2F', '3F'],
+    롯데캐슬: ['1F', '2F', '3F'],
   };
 
   const handleBuildingSelect = async (displayName) => {
@@ -30,11 +36,7 @@ function BuildingSelector() {
     }
 
     try {
-      const response = await axios.get(
-        // `https://api.misarodeo.com/api/building/${buildingName}/${buildingDong}`
-        `/api/building/${buildingName}/${buildingDong}`
-      );
-
+      const response = await axios.get(`/api/building/${buildingName}/${buildingDong}`);
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);
     } catch (error) {
@@ -54,18 +56,24 @@ function BuildingSelector() {
         [buildingName, buildingDong] = selectedBuilding.split(' ');
         buildingDong = buildingDong.replace('동', '');
       }
-      navigate(`/${buildingName}/${buildingDong}`);
+
+      const displayName = Object.keys(buildingMap).find(key => buildingMap[key] === selectedBuilding);
+      const validFloors = availableFloors[displayName];
+      
+      let floorToShow = selectedFloor.replace('F', '');
+      if (floorToShow === 'B1') floorToShow = '0';
+      if (!validFloors.includes(selectedFloor)) {
+        floorToShow = '1';
+      }
+
+      navigate(`/${buildingName}/${buildingDong}?floor=${floorToShow}`);
     } else {
       console.log('건물을 선택해주세요.');
     }
   };
 
   const getDisplayName = (internalName) => {
-    return (
-      Object.entries(buildingMap).find(
-        ([key, value]) => value === internalName
-      )?.[0] || internalName
-    );
+    return Object.entries(buildingMap).find(([key, value]) => value === internalName)?.[0] || internalName;
   };
 
   return (
