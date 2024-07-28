@@ -96,11 +96,52 @@ function FS_FloorSpecific({
     return `${building} ${wing}동`;
   };
 
-  useLayoutEffect(() => {
-    if (!selectedFloorData) return;
+  const drawCanvas = useCallback(() => {
+    if (!imgRef.current || !canvasRef.current || !svgDocRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    const img = imgRef.current;
+    const svgDoc = svgDocRef.current;
+
+    const dpr = window.devicePixelRatio || 1;
+    const scaledWidth = img.width * scale;
+    const scaledHeight = img.height * scale;
+
+    canvas.style.width = `${scaledWidth}px`;
+    canvas.style.height = `${scaledHeight}px`;
+    canvas.width = scaledWidth * dpr;
+    canvas.height = scaledHeight * dpr;
+
+    ctx.scale(dpr * scale, dpr * scale);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    if (selectedItems && selectedItems.length > 0) {
+      console.log(
+        "Drawing locpins for updated selectedItems:",
+        selectedItems,
+        "isFacility:",
+        isFacility
+      );
+      FS_drawLocpin(
+        svgDoc,
+        ctx,
+        selectedItems,
+        selectedFloorData,
+        isFacility,
+        scale
+      );
+    }
+  }, [scale, selectedItems, isFacility, selectedFloorData]);
+
+  useLayoutEffect(() => {
+    if (!selectedFloorData) return;
 
     const loadSvgAndDraw = async () => {
       try {
@@ -122,13 +163,6 @@ function FS_FloorSpecific({
           throw new Error("SVG element not found in the document");
         }
 
-        const width = parseFloat(
-          svgElement.getAttribute("width") || svgElement.viewBox.baseVal.width
-        );
-        const height = parseFloat(
-          svgElement.getAttribute("height") || svgElement.viewBox.baseVal.height
-        );
-
         const img = new Image();
         img.src =
           "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
@@ -136,45 +170,6 @@ function FS_FloorSpecific({
 
         img.onload = () => {
           handleResize();
-          window.addEventListener("resize", handleResize);
-
-          const drawCanvas = () => {
-            const dpr = window.devicePixelRatio || 1;
-            const scaledWidth = width * scale;
-            const scaledHeight = height * scale;
-
-            canvas.style.width = `${scaledWidth}px`;
-            canvas.style.height = `${scaledHeight}px`;
-            canvas.width = scaledWidth * dpr;
-            canvas.height = scaledHeight * dpr;
-
-            ctx.scale(dpr * scale, dpr * scale);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = "high";
-
-            ctx.drawImage(img, 0, 0, width, height);
-
-            if (selectedItems && selectedItems.length > 0) {
-              console.log(
-                "Drawing locpins for updated selectedItems:",
-                selectedItems,
-                "isFacility:",
-                isFacility
-              );
-              FS_drawLocpin(
-                svgDoc,
-                ctx,
-                selectedItems,
-                selectedFloorData,
-                isFacility,
-                scale
-              );
-            }
-          };
-
           drawCanvas();
         };
 
@@ -188,17 +183,15 @@ function FS_FloorSpecific({
 
     loadSvgAndDraw();
 
+    window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [
-    selectedFloorData,
-    canvasRef,
-    selectedItems,
-    isFacility,
-    scale,
-    handleResize,
-  ]);
+  }, [selectedFloorData, handleResize, drawCanvas]);
+
+  useEffect(() => {
+    drawCanvas();
+  }, [drawCanvas, selectedItems, isFacility]);
 
   const floors = floorData
     .map((floor) => floor.floorNumber)

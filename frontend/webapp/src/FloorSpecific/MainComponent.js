@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import FS_FloorSpecific from './FS_FloorSpecific';
 import GuideFloor from './GuideFloor';
@@ -8,7 +8,6 @@ export async function mainComponentLoader({ params }) {
   const { building, wing } = params;
   try {
     const response = await fetch(
-      // `https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
       `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
       {
         headers: {
@@ -20,7 +19,6 @@ export async function mainComponentLoader({ params }) {
     if (response.ok) {
       const rawData = await response.json();
       if (rawData.length === 0) {
-        // 데이터가 비어있으면 유효하지 않은 building/wing으로 간주
         throw new Response('Not Found', { status: 404 });
       }
       const parsedData = rawData.map((item) => JSON.parse(item));
@@ -42,28 +40,31 @@ function MainComponent() {
   const [isFacility, setIsFacility] = useState(true);
 
   const { building, wing } = useParams();
-  // 추가된 부분: 데이터 유효성 검사
+
   React.useEffect(() => {
     if (!floorData || floorData.length === 0) {
       navigate('/404');
     }
   }, [floorData, navigate]);
 
-  const handleFloorChange = (floorNumber) => {
+  const handleFloorChange = useCallback((floorNumber) => {
     const newSelectedFloorData = floorData.find(
       (floor) => floor.floorNumber === floorNumber
     );
-    setSelectedFloorData(newSelectedFloorData);
-    setSelectedItems([]);
-  };
+    if (newSelectedFloorData && newSelectedFloorData !== selectedFloorData) {
+      console.log("Changing floor to:", floorNumber);
+      console.log("New floor data:", newSelectedFloorData);
+      setSelectedFloorData(newSelectedFloorData);
+      setSelectedItems([]);
+    }
+  }, [floorData, selectedFloorData]);
 
-  const handleIconClick = (blockIds, isFacilityClick = true) => {
+  const handleIconClick = useCallback((blockIds, isFacilityClick = true) => {
     console.log('Clicked blockIds:', blockIds, 'isFacility:', isFacilityClick);
     setSelectedItems(Array.isArray(blockIds) ? blockIds : [blockIds]);
     setIsFacility(isFacilityClick);
-  };
+  }, []);
 
-  // 데이터가 없으면 아무것도 렌더링하지 않음
   if (!floorData || floorData.length === 0) {
     return null;
   }

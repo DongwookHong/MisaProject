@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import FONTMISA from "../asset/logo/FONTMISA.png";
+import FONTMISA from "../asset/logo/misalogo.png";
 import "./NotFound.css";
 
 const NotFoundPage = () => {

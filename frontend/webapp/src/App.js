@@ -12,7 +12,6 @@ import MainComponent, {
 import Main from './MainMenu/Main.js';
 import BlogPage, { blogLoader } from './BlogPage/Blog';
 import StoreList from './StoreList/StoreList.js';
-import EnterArcade from './EnterArcade/EnterArcade.js';
 import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
 import Admin from './Admin/AdminPage.js';
@@ -30,7 +29,6 @@ const router = createBrowserRouter([
   { path: '/storelist', element: <StoreList /> },
   { path: '/parkinfo', element: <Park /> },
   { path: '/findspot/:name', element: <FindSpot /> }, // findSpotLoader 제거
-  { path: '/build', element: <EnterArcade /> },
   { path: '/floormenu', element: <FloorMenu /> },
   {
     path: '/:building/:wing',
@@ -42,9 +40,8 @@ const router = createBrowserRouter([
   { path: '/addshop', element: <AddShop /> },
 
   { path: '/findad', element: <FindAD /> },
-  { path: '/enter', element: <EnterArcade /> },
   { path: '*', element: <NotFound /> },
-
+]);
 function App() {
   return (
     <div className="App">

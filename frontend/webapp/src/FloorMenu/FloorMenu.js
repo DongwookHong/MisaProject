@@ -3,7 +3,6 @@ import { AppProvider } from './AppContext';
 import BuildingSelector from './BuildingSelector';
 import FloorSelector from './FloorSelector';
 import TenantList from './TenantList';
-import FloorImage from './FloorImage';
 import MainHeader from '../Fix/MainHeader.js';
 import MainFooter from '../Fix/MainFooter.js';
 import '../style/FloorMenu/FloorMenu.css';
@@ -24,7 +23,6 @@ function FloorMenu() {
             </div>
             <BuildingSelector />
             <div className="map_button-container">
-              <FloorImage />
             </div>
             <div className="rounded relative">
               <div className="flex">
