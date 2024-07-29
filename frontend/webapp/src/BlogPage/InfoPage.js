@@ -30,72 +30,80 @@ const getManualBoundingRectFromPath = (pathElement) => {
 };
 
 const drawLocpin = (svgDoc, ctx, blockId, scale) => {
-  const img = new Image();
-  img.src = qrLocpin;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = qrLocpin;
 
-  const baseWidth = 60;
-  const baseHeight = 60;
-  const width = baseWidth * scale;
-  const height = baseHeight * scale;
+    const baseWidth = 60;
+    const baseHeight = 60;
+    const width = baseWidth * scale;
+    const height = baseHeight * scale;
 
-  img.onload = () => {
-    if (!blockId) {
-      console.log('BlockId is missing');
-      return;
-    }
-
-    console.log('Drawing locpin for blockId:', blockId);
-
-    const targetElement = svgDoc.getElementById(blockId);
-
-    if (!targetElement) {
-      console.log(`Element not found for blockId:`, blockId);
-      return;
-    }
-
-    let cx, cy;
-
-    if (targetElement.tagName.toLowerCase() === 'path') {
-      const rect = getManualBoundingRectFromPath(targetElement);
-      cx = rect.x + rect.width / 2;
-      cy = rect.y + rect.height / 2;
-    } else {
-      const x = parseFloat(targetElement.getAttribute('x')) || 0;
-      const y = parseFloat(targetElement.getAttribute('y')) || 0;
-      const elementWidth = parseFloat(targetElement.getAttribute('width'));
-      const elementHeight = parseFloat(targetElement.getAttribute('height'));
-
-      if (elementWidth === 0 || elementHeight === 0) {
-        console.log(`Element has invalid dimensions:`, targetElement);
+    img.onload = () => {
+      if (!blockId) {
+        console.log('BlockId is missing');
+        reject('BlockId is missing');
         return;
       }
 
-      cx = x + elementWidth / 2;
-      cy = y + elementHeight / 2;
-    }
+      console.log('Drawing locpin for blockId:', blockId);
 
-    const offsetY = baseHeight / 2;
-    cy -= offsetY;
+      const targetElement = svgDoc.getElementById(blockId);
 
-    ctx.drawImage(
-      img,
-      cx * scale - width / 2,
-      cy * scale - height / 2,
-      width,
-      height
-    );
+      if (!targetElement) {
+        console.log(`Element not found for blockId:`, blockId);
+        reject(`Element not found for blockId: ${blockId}`);
+        return;
+      }
 
-    console.log(`Drawing locpin for element:`, targetElement);
-    console.log(
-      `Locpin position: (${cx * scale}, ${
-        cy * scale
-      }), size: ${width}x${height}`
-    );
-  };
+      let cx, cy;
 
-  img.onerror = () => {
-    console.error('Failed to load the image:', qrLocpin);
-  };
+      if (targetElement.tagName.toLowerCase() === 'path') {
+        const rect = getManualBoundingRectFromPath(targetElement);
+        cx = rect.x + rect.width / 2;
+        cy = rect.y + rect.height / 2;
+      } else {
+        const x = parseFloat(targetElement.getAttribute('x')) || 0;
+        const y = parseFloat(targetElement.getAttribute('y')) || 0;
+        const elementWidth = parseFloat(targetElement.getAttribute('width'));
+        const elementHeight = parseFloat(targetElement.getAttribute('height'));
+
+        if (elementWidth === 0 || elementHeight === 0) {
+          console.log(`Element has invalid dimensions:`, targetElement);
+          reject(`Element has invalid dimensions`);
+          return;
+        }
+
+        cx = x + elementWidth / 2;
+        cy = y + elementHeight / 2;
+      }
+
+      const offsetY = baseHeight / 2;
+      cy -= offsetY;
+
+      ctx.drawImage(
+        img,
+        cx * scale - width / 2,
+        cy * scale - height / 2,
+        width,
+        height
+      );
+
+      console.log(`Drawing locpin for element:`, targetElement);
+      console.log(
+        `Locpin position: (${cx * scale}, ${
+          cy * scale
+        }), size: ${width}x${height}`
+      );
+
+      resolve();
+    };
+
+    img.onerror = () => {
+      console.error('Failed to load the image:', qrLocpin);
+      reject('Failed to load the image');
+    };
+  });
 };
 
 function InfoPage({
@@ -118,6 +126,8 @@ function InfoPage({
   const containerRef = useRef(null);
   const imgRef = useRef(null);
   const [scale, setScale] = useState(1);
+  const [svgDoc, setSvgDoc] = useState(null);
+  const [isCanvasReady, setIsCanvasReady] = useState(false);
 
   const handleResize = useCallback(() => {
     if (containerRef.current && imgRef.current) {
@@ -128,55 +138,56 @@ function InfoPage({
     }
   }, []);
 
+  const drawCanvas = useCallback(async () => {
+    if (canvasRef.current && imgRef.current && svgDoc && isCanvasReady) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      const img = imgRef.current;
+
+      const dpr = window.devicePixelRatio || 1;
+      const scaledWidth = img.width * scale;
+      const scaledHeight = img.height * scale;
+
+      canvas.style.width = `${scaledWidth}px`;
+      canvas.style.height = `${scaledHeight}px`;
+      canvas.width = scaledWidth * dpr;
+      canvas.height = scaledHeight * dpr;
+
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+
+      try {
+        await drawLocpin(svgDoc, ctx, block_id, scale);
+      } catch (error) {
+        console.error('Error drawing locpin:', error);
+      }
+    }
+  }, [scale, block_id, svgDoc, isCanvasReady]);
+
   useEffect(() => {
     const fetchSvgContent = async () => {
       if (floor_image && isLocationExpanded) {
         try {
           const response = await fetch(floor_image);
           const svgText = await response.text();
+          
           const parser = new DOMParser();
-          const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
-          const svgElement = svgDoc.documentElement;
-
-          const viewBox = svgElement.getAttribute('viewBox').split(' ');
-          const width = parseFloat(viewBox[2]);
-          const height = parseFloat(viewBox[3]);
+          const newSvgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+          setSvgDoc(newSvgDoc);
 
           const img = new Image();
           imgRef.current = img;
-          img.src =
-            'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+          img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
 
           img.onload = () => {
             handleResize();
-            window.addEventListener('resize', handleResize);
-
-            const drawCanvas = () => {
-              const canvas = canvasRef.current;
-              const ctx = canvas.getContext('2d');
-
-              const dpr = window.devicePixelRatio || 1;
-              const scaledWidth = width * scale;
-              const scaledHeight = height * scale;
-
-              canvas.style.width = `${scaledWidth}px`;
-              canvas.style.height = `${scaledHeight}px`;
-              canvas.width = scaledWidth * dpr;
-              canvas.height = scaledHeight * dpr;
-
-              ctx.scale(dpr, dpr);
-
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-              ctx.imageSmoothingEnabled = true;
-              ctx.imageSmoothingQuality = 'high';
-
-              ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
-
-              drawLocpin(svgDoc, ctx, block_id, scale);
-            };
-
-            drawCanvas();
+            setIsCanvasReady(true);
           };
 
           img.onerror = (error) => {
@@ -189,11 +200,20 @@ function InfoPage({
     };
 
     fetchSvgContent();
+  }, [floor_image, isLocationExpanded, handleResize]);
 
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [floor_image, isLocationExpanded, block_id, scale, handleResize]);
+  }, [handleResize]);
+
+  useEffect(() => {
+    if (isCanvasReady) {
+      drawCanvas();
+    }
+  }, [isCanvasReady, drawCanvas]);
 
   const getFloorDisplay = (floorNum) => {
     const num = Number(floorNum);

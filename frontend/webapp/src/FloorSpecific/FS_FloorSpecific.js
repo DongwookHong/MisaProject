@@ -146,7 +146,7 @@ function FS_FloorSpecific({
     const loadSvgAndDraw = async () => {
       try {
         const imageUrl = selectedFloorData.floorImage;
-        console.log("Attempting to fetch from URL:", imageUrl);
+        // console.log("Attempting to fetch from URL:", imageUrl);
 
         const response = await fetch(imageUrl);
         if (!response.ok) {

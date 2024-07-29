@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useLoaderData, useNavigate, useParams, useLocation } from 'react-router-dom';
 import FS_FloorSpecific from './FS_FloorSpecific';
 import GuideFloor from './GuideFloor';
 import MainFooter from '../Fix/MainFooter';
@@ -35,17 +35,33 @@ function MainComponent() {
   const floorData = useLoaderData();
   const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [selectedFloorData, setSelectedFloorData] = useState(floorData[0]);
+  const [selectedFloorData, setSelectedFloorData] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isFacility, setIsFacility] = useState(true);
 
   const { building, wing } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialFloor = searchParams.get('floor');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!floorData || floorData.length === 0) {
       navigate('/404');
+      return;
     }
-  }, [floorData, navigate]);
+
+    let floorToShow;
+    if (initialFloor) {
+      floorToShow = floorData.find(floor => floor.floorNumber === initialFloor);
+    }
+
+    if (!floorToShow) {
+      // If the initial floor is not found or not specified, default to 1F or the first available floor
+      floorToShow = floorData.find(floor => floor.floorNumber === '1') || floorData[0];
+    }
+
+    setSelectedFloorData(floorToShow);
+  }, [floorData, navigate, initialFloor]);
 
   const handleFloorChange = useCallback((floorNumber) => {
     const newSelectedFloorData = floorData.find(
@@ -56,8 +72,13 @@ function MainComponent() {
       console.log("New floor data:", newSelectedFloorData);
       setSelectedFloorData(newSelectedFloorData);
       setSelectedItems([]);
+      
+      // Update URL with new floor
+      const newSearchParams = new URLSearchParams(location.search);
+      newSearchParams.set('floor', floorNumber);
+      navigate(`/${building}/${wing}?${newSearchParams.toString()}`, { replace: true });
     }
-  }, [floorData, selectedFloorData]);
+  }, [floorData, selectedFloorData, building, wing, navigate, location.search]);
 
   const handleIconClick = useCallback((blockIds, isFacilityClick = true) => {
     console.log('Clicked blockIds:', blockIds, 'isFacility:', isFacilityClick);
@@ -65,7 +86,7 @@ function MainComponent() {
     setIsFacility(isFacilityClick);
   }, []);
 
-  if (!floorData || floorData.length === 0) {
+  if (!selectedFloorData) {
     return null;
   }
 
