@@ -13,7 +13,6 @@ public class HomeController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @ResponseBody
     @GetMapping("/test")
     public String test(HttpServletRequest request) {
         return jwtUtils.getExpirationDateFromToken(request.getHeader("Authorization"));
