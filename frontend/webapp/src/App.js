@@ -7,7 +7,6 @@ import FindSpot from './FindSpot/FindSpot.js';
 import FloorMenu from './FloorMenu/FloorMenu.js';
 import MainComponent, {
   mainComponentLoader,
-
 } from './FloorSpecific/MainComponent.js';
 import Main from './MainMenu/Main.js';
 import BlogPage, { blogLoader } from './BlogPage/Blog';
@@ -17,7 +16,6 @@ import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
 import Admin from './Admin/AdminPage.js';
 import AddShop from './AdminDashboard/AdminAddShop.js';
-
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
   { path: '/qr/:id', element: <QrPage /> },
@@ -30,7 +28,6 @@ const router = createBrowserRouter([
   { path: '/storelist', element: <StoreList /> },
   { path: '/parkinfo', element: <Park /> },
   { path: '/findspot/:name', element: <FindSpot /> }, // findSpotLoader 제거
-  { path: '/build', element: <EnterArcade /> },
   { path: '/floormenu', element: <FloorMenu /> },
   {
     path: '/:building/:wing',
@@ -42,9 +39,8 @@ const router = createBrowserRouter([
   { path: '/addshop', element: <AddShop /> },
 
   { path: '/findad', element: <FindAD /> },
-  { path: '/enter', element: <EnterArcade /> },
   { path: '*', element: <NotFound /> },
-
+]);
 function App() {
   return (
     <div className="App">

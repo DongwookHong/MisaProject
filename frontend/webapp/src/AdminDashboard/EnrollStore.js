@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './EnrollStore.css';
 import Select from 'react-select';
 import OperationModal from './OperationModal.js';
@@ -48,18 +48,31 @@ function EnrollStore() {
     { value: '3층', label: '3층' },
   ];
 
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('모든 영업일이 같아요');
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    if (selectedFiles.length + files.length > 5) {
+      alert('최대 5개의 파일만 업로드할 수 있습니다.');
+      return;
+    }
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
+  const handleRemoveFile = (index) => {
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
   return (
     <>
       <div className="enroll-container">
@@ -99,27 +112,89 @@ function EnrollStore() {
             <h5 className="enroll-ask">운영시간</h5>
             <div className="enroll-operationdata">
               <div
-                className="operation-data"
+                className={`operation-data ${
+                  selectedOption === '모든 영업일이 같아요' ? 'selected' : ''
+                }`}
                 onClick={() => handleOptionClick('모든 영업일이 같아요')}>
                 모든 영업일이 같아요
               </div>
               <div
-                className="operation-data"
+                className={`operation-data ${
+                  selectedOption === '평일/주말 달라요' ? 'selected' : ''
+                }`}
                 onClick={() => handleOptionClick('평일/주말 달라요')}>
                 평일/주말 달라요
               </div>
               <div
-                className="operation-data"
+                className={`operation-data ${
+                  selectedOption === '요일별로 달라요' ? 'selected' : ''
+                }`}
                 onClick={() => handleOptionClick('요일별로 달라요')}>
                 요일별로 달라요
               </div>
             </div>
           </div>
+          <div>
+            <OperationModal option={selectedOption} />
+            <button className="submit-button">확인</button>
+          </div>
+          <div className="enroll-item">
+            <h5 className="enroll-ask">매장 연락처</h5>
+            <input
+              className="enroll-input"
+              placeholder="등록할 매장 번호를 정확히 입력해주세요"></input>
+            <button className="submit-button">확인</button>
+          </div>
+          <div className="enroll-item">
+            <h5 className="enroll-ask">매장 인스타그램 주소</h5>
+            <input
+              className="enroll-input"
+              placeholder="등록할 인스타그램 주소를 정확히 입력해주세요"></input>
+            <button className="submit-button">확인</button>
+          </div>
+          <div className="enroll-item">
+            <h5 className="enroll-ask">매장 홈페이지 주소</h5>
+            <input
+              className="enroll-input"
+              placeholder="등록할 매장 홈페이지 주소를 정확히 입력해주세요"></input>
+            <button className="submit-button">확인</button>
+          </div>
+          <div className="enroll-item">
+            <h5 className="enroll-ask">매장 상세설명</h5>
+            <input
+              className="enroll-input"
+              placeholder="등록할 매장 상세 설명을 정확히 입력해주세요"></input>
+            <button className="submit-button">확인</button>
+          </div>
+          <div className="enroll-item">
+            <h5 className="enroll-ask">매장 사진 업로드</h5>
+            <div className="file-upload-container">
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+                accept="image/*"
+                multiple
+              />
+              <button className="upload-button" onClick={handleUploadClick}>
+                파일 선택 ({selectedFiles.length}/5)
+              </button>
+              <div className="file-list">
+                {selectedFiles.map((file, index) => (
+                  <div key={index} className="file-item">
+                    <span>{file.name}</span>
+                    <button onClick={() => handleRemoveFile(index)}>
+                      삭제
+                    </button>
+                  </div>
+                ))}
+                <button className="submit-button">확인</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {isModalOpen && (
-        <OperationModal option={selectedOption} onClose={closeModal} />
-      )}
     </>
   );
 }
