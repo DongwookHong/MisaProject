@@ -111,16 +111,15 @@
 }
 
 .operation-data {
+  cursor: pointer;
+  padding: 10px;
   border: 1px solid #ccc;
-  padding: 10px; /* 내부 여백 추가 */
-  border-radius: 4px; /* 모서리를 둥글게 */
-  cursor: pointer; /* 커서를 포인터로 변경 */
-  flex: 1; /* 모든 항목이 동일한 너비를 가지도록 설정 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  margin-right: 30px;
-  margin-top: 20px;
+  border-radius: 5px;
+  margin: 5px 0;
+  text-align: center;
 }
 
-.operation-data:hover {
-  background-color: #bdafff; /* 마우스를 올렸을 때 배경색 변경 */
+.operation-data.selected {
+  background-color: #bdafff;
+  color: white;
 }

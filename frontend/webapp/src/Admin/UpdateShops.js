@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const UpdateShops = () => {
   const { name } = useParams();
   const [store, setStore] = useState({
-    buildingName: '',
-    buildingDong: '',
-    floor: '',
-    blockId: '',
-    storeName: '',
+    buildingName: "",
+    buildingDong: "",
+    floor: "",
+    blockId: "",
+    storeName: "",
     storeHours: [
       {
-        dayOfWeek: '',
+        dayOfWeek: "",
         isOpen: true,
-        openTime: '',
-        closeTime: '',
-        breakStartTime: '',
-        breakEndTime: '',
-        lastOrder: '',
+        openTime: "",
+        closeTime: "",
+        breakStartTime: "",
+        breakEndTime: "",
+        lastOrder: "",
       },
     ],
-    businessHour: '',
-    info: '',
-    storeNumber: '',
-    homePagePath: '',
-    instaPath: '',
-    storeAddress: '',
+    businessHour: "",
+    info: "",
+    storeNumber: "",
+    homePagePath: "",
+    instaPath: "",
+    storeAddress: "",
     files: [],
   });
   const [newFiles, setNewFiles] = useState([]);
@@ -39,15 +39,19 @@ const UpdateShops = () => {
     const fetchStoreData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/stores/${name}`, {
-          headers: {
-            'x-api-key': API_KEY,
-          },
-        });
+        const response = await axios.get(
+          // `https://api.misarodeo.com/api/stores/${name}`,
+          `/api/stores/${name}`,
+          {
+            headers: {
+              "x-api-key": API_KEY,
+            },
+          }
+        );
         setStore(response.data);
       } catch (error) {
-        console.error('Error fetching store data:', error);
-        setError('Failed to fetch store data. Please try again later.');
+        console.error("Error fetching store data:", error);
+        setError("Failed to fetch store data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -76,30 +80,30 @@ const UpdateShops = () => {
     const formData = new FormData();
 
     // Append all store data to formData
-    Object.keys(store).forEach(key => {
-      if (key === 'storeHours') {
+    Object.keys(store).forEach((key) => {
+      if (key === "storeHours") {
         formData.append(key, JSON.stringify(store[key]));
-      } else if (key !== 'files') {
+      } else if (key !== "files") {
         formData.append(key, store[key]);
       }
     });
 
     // Append new files
-    newFiles.forEach(file => {
-      formData.append('files', file);
+    newFiles.forEach((file) => {
+      formData.append("files", file);
     });
 
     try {
       await axios.put(`/api/stores/${name}`, formData, {
         headers: {
-          'x-api-key': API_KEY,
-          'Content-Type': 'multipart/form-data',
+          "x-api-key": API_KEY,
+          "Content-Type": "multipart/form-data",
         },
       });
-      alert('Store updated successfully!');
+      alert("Store updated successfully!");
     } catch (error) {
-      console.error('Error updating store:', error);
-      setError('Failed to update store. Please try again.');
+      console.error("Error updating store:", error);
+      setError("Failed to update store. Please try again.");
     }
   };
 
@@ -108,7 +112,9 @@ const UpdateShops = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Update Store: {store.storeName}</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        Update Store: {store.storeName}
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block">Building Name:</label>
@@ -167,21 +173,27 @@ const UpdateShops = () => {
               <input
                 type="text"
                 value={hours.dayOfWeek}
-                onChange={(e) => handleStoreHoursChange(index, 'dayOfWeek', e.target.value)}
+                onChange={(e) =>
+                  handleStoreHoursChange(index, "dayOfWeek", e.target.value)
+                }
                 className="w-full p-2 border rounded"
                 placeholder="Day of Week"
               />
               <input
                 type="text"
                 value={hours.openTime}
-                onChange={(e) => handleStoreHoursChange(index, 'openTime', e.target.value)}
+                onChange={(e) =>
+                  handleStoreHoursChange(index, "openTime", e.target.value)
+                }
                 className="w-full p-2 border rounded"
                 placeholder="Open Time"
               />
               <input
                 type="text"
                 value={hours.closeTime}
-                onChange={(e) => handleStoreHoursChange(index, 'closeTime', e.target.value)}
+                onChange={(e) =>
+                  handleStoreHoursChange(index, "closeTime", e.target.value)
+                }
                 className="w-full p-2 border rounded"
                 placeholder="Close Time"
               />
@@ -257,7 +269,10 @@ const UpdateShops = () => {
             className="w-full p-2 border rounded"
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
           Update Store
         </button>
       </form>
