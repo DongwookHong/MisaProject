@@ -128,7 +128,7 @@ function OperationModal({ option }) {
             </div>
           </div>
           <div className="operation-break">
-            <div className="operation-subject">브레이크 </div>
+            <div className="operation-subject">브레이크 타임</div>
             <div className="operation-break-time">
               <TimeDropdown
                 value={breakTime.start}
@@ -136,13 +136,13 @@ function OperationModal({ option }) {
                 name="start"
                 options={timeOptions}
               />
-              <div className="operation-flew">~</div>
+              {/* <div className="operation-flew">~</div>
               <TimeDropdown
                 value={breakTime.end}
                 onChange={handleBreakTimeChange}
                 name="end"
                 options={timeOptions}
-              />
+              /> */}
             </div>
           </div>
           <div className="operation-break">
@@ -223,7 +223,7 @@ function OperationModal({ option }) {
             </div>
           </div>
           <div className="operation-break">
-            <div className="operation-subject">브레이크 </div>
+            <div className="operation-subject">브레이크 타임</div>
             <div className="operation-break-time">
               <TimeDropdown
                 value={breakTime.start}
@@ -231,13 +231,13 @@ function OperationModal({ option }) {
                 name="start"
                 options={timeOptions}
               />
-              <div className="operation-flew">~</div>
+              {/* <div className="operation-flew">~</div>
               <TimeDropdown
                 value={breakTime.end}
                 onChange={handleBreakTimeChange}
                 name="end"
                 options={timeOptions}
-              />
+              /> */}
             </div>
           </div>
           <div className="operation-break">
@@ -313,7 +313,7 @@ function OperationModal({ option }) {
                     />
                   </div>
                   <div className="time-row">
-                    <span>브레이크:</span>
+                    <span>브레이크 타임:</span>
                     <TimeDropdown
                       value={dailySchedule[day].breakStart}
                       onChange={(e) =>
@@ -321,14 +321,14 @@ function OperationModal({ option }) {
                       }
                       options={timeOptions}
                     />
-                    <span>~</span>
+                    {/* <span>~</span>
                     <TimeDropdown
                       value={dailySchedule[day].breakEnd}
                       onChange={(e) =>
                         handleTimeChange(day, 'breakEnd', e.target.value)
                       }
                       options={timeOptions}
-                    />
+                    /> */}
                   </div>
                   <div className="time-row">
                     <span>라스트오더:</span>

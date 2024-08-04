@@ -161,9 +161,10 @@ function EnrollStore() {
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">매장 상세설명</h5>
-            <input
+            <textarea
               className="enroll-input"
-              placeholder="등록할 매장 상세 설명을 정확히 입력해주세요"></input>
+              placeholder="등록할 매장 상세 설명을 정확히 입력해주세요"
+            />
             <button className="submit-button">확인</button>
           </div>
           <div className="enroll-item">
@@ -189,6 +190,7 @@ function EnrollStore() {
                     </button>
                   </div>
                 ))}
+                {/* </div> */}
                 <button className="submit-button">확인</button>
               </div>
             </div>
