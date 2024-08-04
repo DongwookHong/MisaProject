@@ -45,10 +45,10 @@
 }
 
 .title {
-  font-size: 10px;
+  font-size: 1.2em;
   font-weight: bold;
   margin-left: 5px;
-  color: black;
+  color: rgb(51, 51, 51);
 }
 
 .current-location {
@@ -157,5 +157,9 @@
 
   .search-results {
     max-height: 250px;
+  }
+
+  .floor-select {
+    max-width: 120px;
   }
 }

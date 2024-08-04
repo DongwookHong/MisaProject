@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 import '../style/QRpage/Dropdown.css';
 
 function DropdownMenu({ floorData, onFloorSelect }) {
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [selectedFloor, setSelectedFloor] = useState(null);
+  const { id } = useParams();
 
   const buildingOptions = useMemo(() => {
     const uniqueBuildings = [
@@ -49,26 +51,61 @@ function DropdownMenu({ floorData, onFloorSelect }) {
   }, [floorData, selectedBuilding]);
 
   useEffect(() => {
-    // 선택된 동이 변경될 때마다 층 선택 초기화
-    setSelectedFloor(null);
-  }, [selectedBuilding]);
+    if (id && id.length >= 2) {
+      const building = parseInt(id[0]);
+      const floor = parseInt(id[1]);
+
+      let buildingValue;
+      switch (building) {
+        case 1:
+          buildingValue = '힐스테이트 A';
+          break;
+        case 2:
+          buildingValue = '힐스테이트 B';
+          break;
+        case 3:
+          buildingValue = '롯데캐슬';
+          break;
+        default:
+          buildingValue = null;
+      }
+
+      if (buildingValue) {
+        const buildingOption = buildingOptions.find(
+          (option) => option.value === buildingValue
+        );
+        setSelectedBuilding(buildingOption);
+      }
+
+      if (!isNaN(floor)) {
+        const floorOption = {
+          value: floor.toString(),
+          label: floor === 0 ? 'B1층' : `${floor}층`,
+        };
+        setSelectedFloor(floorOption);
+      }
+    }
+  }, [id, buildingOptions]);
+
+  useEffect(() => {
+    if (selectedBuilding && selectedFloor) {
+      const selectedFloorData = floorData.find(
+        (floor) =>
+          `${floor.buildingName} ${floor.buildingDong}` ===
+            selectedBuilding.value && floor.floorNumber === selectedFloor.value
+      );
+      onFloorSelect(selectedFloorData);
+    }
+  }, [selectedBuilding, selectedFloor, floorData, onFloorSelect]);
 
   const handleBuildingChange = (selectedOption) => {
     setSelectedBuilding(selectedOption);
-    // 층 선택 초기화
     setSelectedFloor(null);
-    // 층 선택이 초기화되었으므로 onFloorSelect를 null로 호출
     onFloorSelect(null);
   };
 
   const handleFloorChange = (selectedOption) => {
     setSelectedFloor(selectedOption);
-    const selectedFloorData = floorData.find(
-      (floor) =>
-        `${floor.buildingName} ${floor.buildingDong}` ===
-          selectedBuilding.value && floor.floorNumber === selectedOption.value
-    );
-    onFloorSelect(selectedFloorData);
   };
 
   const customStyles = {

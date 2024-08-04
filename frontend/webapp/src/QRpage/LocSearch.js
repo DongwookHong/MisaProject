@@ -103,32 +103,71 @@ function LocSearch({ floorData }) {
     setMenuOpen(false);
   };
 
+  // const performSearch = () => {
+  //   if (selectedResult) {
+  //     navigateToStore(selectedResult.name);
+  //   } else if (results.length === 1) {
+  //     navigateToStore(results[0].name);
+  //   } else if (query) {
+  //     const matchingStore = results.find(
+  //       (store) =>
+  //         store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
+  //         query.trim().replace(/\s+/g, ' ').toLowerCase()
+  //     );
+  //     if (matchingStore) {
+  //       navigateToStore(matchingStore.name);
+  //     }
+  //   }
+  //   setShowResults(false);
+  // };
   const performSearch = () => {
+    let storeToNavigate = null;
+
     if (selectedResult) {
-      navigateToStore(selectedResult.name);
+      storeToNavigate = selectedResult;
     } else if (results.length === 1) {
-      navigateToStore(results[0].name);
+      storeToNavigate = results[0];
     } else if (query) {
-      const matchingStore = results.find(
+      storeToNavigate = results.find(
         (store) =>
           store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
           query.trim().replace(/\s+/g, ' ').toLowerCase()
       );
-      if (matchingStore) {
-        navigateToStore(matchingStore.name);
-      }
+    }
+
+    if (storeToNavigate) {
+      navigateToStore(storeToNavigate.name);
     }
     setShowResults(false);
   };
 
+  // const handleKeyDown = (event) => {
+  //   if (event.key === 'Enter') {
+  //     event.preventDefault();
+  //     performSearch();
+  //   } else if (event.key === 'ArrowDown') {
+  //     setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+  //   } else if (event.key === 'ArrowUp') {
+  //     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  //   }
+  // };
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      performSearch();
+      if (selectedIndex >= 0 && selectedIndex < results.length) {
+        handleResultClick(results[selectedIndex]);
+      } else {
+        performSearch();
+      }
     } else if (event.key === 'ArrowDown') {
-      setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+      event.preventDefault();
+      setSelectedIndex((prev) =>
+        prev < results.length - 1 ? prev + 1 : results.length - 1
+      );
     } else if (event.key === 'ArrowUp') {
-      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      event.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
     }
   };
 
@@ -183,7 +222,7 @@ function LocSearch({ floorData }) {
             />
           </div>
           <div className="title">
-            현재 위치{' '}
+            현재 위치는{'  '}
             <span className="current-location">{currentLocation}</span>
           </div>
           <div className="menu-icon" onClick={handleMenuClick}>
