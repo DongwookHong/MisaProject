@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import LocSearch from './LocSearch';
-import AdvertiseQR from '../Fix/AdvertiseQR';
-import DropDown from './Dropdown';
-import PinMove from './PinMove';
-import MainFooter from '../Fix/MainFooter';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import LocSearch from "./LocSearch";
+import AdvertiseQR from "../Fix/AdvertiseQR";
+import DropDown from "./Dropdown";
+import PinMove from "./PinMove";
+import MainFooter from "../Fix/MainFooter";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -20,11 +20,13 @@ function QrPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get('https://api.misarodeo.com/api/qr-page',{
-        const response = await axios.get('/api/qr-page', {
+        // const response = await axios.get(
+        //   "https://api.misarodeo.com/api/qr-page",
+        //   {
+        const response = await axios.get("/api/qr-page", {
           headers: {
-            accept: '*/*',
-            'x-api-key': API_KEY,
+            accept: "*/*",
+            "x-api-key": API_KEY,
           },
         });
         const parsedData = response.data.map((item) => JSON.parse(item));
@@ -33,8 +35,8 @@ function QrPage() {
 
         if (id) {
           const building =
-            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : 'C';
-          const buildingName = id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트';
+            id.charAt(0) === "1" ? "A" : id.charAt(0) === "2" ? "B" : "C";
+          const buildingName = id.charAt(0) === "3" ? "롯데캐슬" : "힐스테이트";
           const floor = id.charAt(1);
 
           const relevantFloorData = parsedData.find(
@@ -51,8 +53,8 @@ function QrPage() {
           }
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('데이터를 불러오는 데 실패했습니다.');
+        console.error("Error fetching data:", error);
+        setError("데이터를 불러오는 데 실패했습니다.");
         setIsLoading(false);
       }
     };

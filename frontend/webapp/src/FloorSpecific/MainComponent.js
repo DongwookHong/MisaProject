@@ -1,35 +1,43 @@
-import React, { useState, useRef } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
-import FS_FloorSpecific from './FS_FloorSpecific';
-import GuideFloor from './GuideFloor';
-import MainFooter from '../Fix/MainFooter';
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import {
+  useLoaderData,
+  useNavigate,
+  useParams,
+  useLocation,
+} from "react-router-dom";
+import FS_FloorSpecific from "./FS_FloorSpecific";
+import GuideFloor from "./GuideFloor";
+import MainFooter from "../Fix/MainFooter";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 export async function mainComponentLoader({ params }) {
   const { building, wing } = params;
   try {
     const response = await fetch(
-      // `https://api.misarodeo.com/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
-      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(wing)}`,
+      // `https://api.misarodeo.com/api/building/${encodeURIComponent(
+      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
+        wing
+      )}`,
       {
         headers: {
-          accept: '*/*',
-          'x-api-key': 'testapikey',
+          accept: "*/*",
+          "x-api-key": API_KEY,
         },
       }
     );
     if (response.ok) {
       const rawData = await response.json();
       if (rawData.length === 0) {
-        // 데이터가 비어있으면 유효하지 않은 building/wing으로 간주
-        throw new Response('Not Found', { status: 404 });
+        throw new Response("Not Found", { status: 404 });
       }
       const parsedData = rawData.map((item) => JSON.parse(item));
       return parsedData;
     } else {
-      throw new Response('Not Found', { status: 404 });
+      throw new Response("Not Found", { status: 404 });
     }
   } catch (error) {
-    throw new Response('Not Found', { status: 404 });
+    throw new Response("Not Found", { status: 404 });
   }
 }
 
@@ -37,34 +45,66 @@ function MainComponent() {
   const floorData = useLoaderData();
   const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [selectedFloorData, setSelectedFloorData] = useState(floorData[0]);
+  const [selectedFloorData, setSelectedFloorData] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isFacility, setIsFacility] = useState(true);
 
   const { building, wing } = useParams();
-  // 추가된 부분: 데이터 유효성 검사
-  React.useEffect(() => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialFloor = searchParams.get("floor");
+
+  useEffect(() => {
     if (!floorData || floorData.length === 0) {
-      navigate('/404');
+      navigate("/404");
+      return;
     }
-  }, [floorData, navigate]);
 
-  const handleFloorChange = (floorNumber) => {
-    const newSelectedFloorData = floorData.find(
-      (floor) => floor.floorNumber === floorNumber
-    );
-    setSelectedFloorData(newSelectedFloorData);
-    setSelectedItems([]);
-  };
+    let floorToShow;
+    if (initialFloor) {
+      floorToShow = floorData.find(
+        (floor) => floor.floorNumber === initialFloor
+      );
+    }
 
-  const handleIconClick = (blockIds, isFacilityClick = true) => {
-    console.log('Clicked blockIds:', blockIds, 'isFacility:', isFacilityClick);
+    if (!floorToShow) {
+      // If the initial floor is not found or not specified, default to 1F or the first available floor
+      floorToShow =
+        floorData.find((floor) => floor.floorNumber === "1") || floorData[0];
+    }
+
+    setSelectedFloorData(floorToShow);
+  }, [floorData, navigate, initialFloor]);
+
+  const handleFloorChange = useCallback(
+    (floorNumber) => {
+      const newSelectedFloorData = floorData.find(
+        (floor) => floor.floorNumber === floorNumber
+      );
+      if (newSelectedFloorData && newSelectedFloorData !== selectedFloorData) {
+        console.log("Changing floor to:", floorNumber);
+        console.log("New floor data:", newSelectedFloorData);
+        setSelectedFloorData(newSelectedFloorData);
+        setSelectedItems([]);
+
+        // Update URL with new floor
+        const newSearchParams = new URLSearchParams(location.search);
+        newSearchParams.set("floor", floorNumber);
+        navigate(`/${building}/${wing}?${newSearchParams.toString()}`, {
+          replace: true,
+        });
+      }
+    },
+    [floorData, selectedFloorData, building, wing, navigate, location.search]
+  );
+
+  const handleIconClick = useCallback((blockIds, isFacilityClick = true) => {
+    console.log("Clicked blockIds:", blockIds, "isFacility:", isFacilityClick);
     setSelectedItems(Array.isArray(blockIds) ? blockIds : [blockIds]);
     setIsFacility(isFacilityClick);
-  };
+  }, []);
 
-  // 데이터가 없으면 아무것도 렌더링하지 않음
-  if (!floorData || floorData.length === 0) {
+  if (!selectedFloorData) {
     return null;
   }
 

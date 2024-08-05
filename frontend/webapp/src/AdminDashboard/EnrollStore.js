@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './EnrollStore.css';
 import Select from 'react-select';
 import OperationModal from './OperationModal.js';
@@ -49,6 +50,7 @@ function EnrollStore() {
   ];
 
   const [selectedOption, setSelectedOption] = useState('모든 영업일이 같아요');
+  const [selectedOption, setSelectedOption] = useState('모든 영업일이 같아요');
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -66,6 +68,24 @@ function EnrollStore() {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    if (selectedFiles.length + files.length > 5) {
+      alert('최대 5개의 파일만 업로드할 수 있습니다.');
+      return;
+    }
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const handleRemoveFile = (index) => {
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
   const handleRemoveFile = (index) => {
     setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
@@ -115,6 +135,9 @@ function EnrollStore() {
                 className={`operation-data ${
                   selectedOption === '모든 영업일이 같아요' ? 'selected' : ''
                 }`}
+                className={`operation-data ${
+                  selectedOption === '모든 영업일이 같아요' ? 'selected' : ''
+                }`}
                 onClick={() => handleOptionClick('모든 영업일이 같아요')}>
                 모든 영업일이 같아요
               </div>
@@ -122,10 +145,16 @@ function EnrollStore() {
                 className={`operation-data ${
                   selectedOption === '평일/주말 달라요' ? 'selected' : ''
                 }`}
+                className={`operation-data ${
+                  selectedOption === '평일/주말 달라요' ? 'selected' : ''
+                }`}
                 onClick={() => handleOptionClick('평일/주말 달라요')}>
                 평일/주말 달라요
               </div>
               <div
+                className={`operation-data ${
+                  selectedOption === '요일별로 달라요' ? 'selected' : ''
+                }`}
                 className={`operation-data ${
                   selectedOption === '요일별로 달라요' ? 'selected' : ''
                 }`}

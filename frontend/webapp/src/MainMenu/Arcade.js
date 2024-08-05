@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../style/MainMenu/Arcade.css';
-
-// import hillstateA from '../asset/logo/HillstateA.png';
-// import hillstateB from '../asset/logo/HillstateB.png';
-// import lotteCastle from '../asset/logo/LotteCastle.png';
-
-import hillstateA from '../asset/logo/hillA.png';
-import hillstateB from '../asset/logo/hillB.png';
-import lotteCastle from '../asset/logo/hLotte.png';
-
-import build from './build_001.png';
-import build_02 from './build_02.png';
-
-import mainTest from './newimage.jpg';
-
 import hillstateImg from '../asset/logo/Ar1.png'; // 실제 이미지 경로로 교체
 import lotteCastleImg from '../asset/logo/Ar2.png';
 function Arcade() {

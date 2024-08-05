@@ -11,7 +11,6 @@ import MainComponent, {
 import Main from './MainMenu/Main.js';
 import BlogPage, { blogLoader } from './BlogPage/Blog';
 import StoreList from './StoreList/StoreList.js';
-import EnterArcade from './EnterArcade/EnterArcade.js';
 import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
 import Admin from './Admin/AdminPage.js';
