@@ -7,7 +7,6 @@ import FindSpot from './FindSpot/FindSpot.js';
 import FloorMenu from './FloorMenu/FloorMenu.js';
 import MainComponent, {
   mainComponentLoader,
-
 } from './FloorSpecific/MainComponent.js';
 import Main from './MainMenu/Main.js';
 import BlogPage, { blogLoader } from './BlogPage/Blog';
@@ -16,7 +15,6 @@ import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
 import Admin from './Admin/AdminPage.js';
 import AddShop from './AdminDashboard/AdminAddShop.js';
-
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
   { path: '/qr/:id', element: <QrPage /> },
