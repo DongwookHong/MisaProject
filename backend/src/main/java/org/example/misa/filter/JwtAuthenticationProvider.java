@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @Slf4j
 @Component
-public class JwtAuthenticationProvider implements AuthenticationProvider {
+public final class JwtAuthenticationProvider implements AuthenticationProvider {
     private final JwtUtils jwtUtils;
 
     public JwtAuthenticationProvider(JwtUtils jwtUtils) {

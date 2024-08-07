@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 
 import java.io.IOException;
 @Slf4j
-public class JwtFilter implements Filter {
+public final class JwtFilter implements Filter {
     private final String jwtHeader = "Authorization";
     AuthenticationManager jwtAuthenticationManager;
 
