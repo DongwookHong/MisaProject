@@ -1,21 +1,15 @@
 package org.example.misa.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.misa.domain.StoreMember;
+import org.example.misa.component.DecodeURIUtils;
 import org.example.misa.service.AdminService;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Tag(name = "관리자 API", description = "등록, 수정, 삭제(POST, PUT, DELETE)를 담당하는 API")
@@ -39,6 +33,7 @@ public class MisaAdminController {
     @Operation(summary = "상점 수정", description = "관리자 권한으로 상점 수정시 해당 요청을 담당하는 API, floor 의 value 는 Int 로 넣어주세요. 허용되는 이미지 파일의 확장자는 jpg, jpeg, png, gif 입니다.")
     public String updateStore(@PathVariable("name") String name, @RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) {
 
+//        name = DecodeURIUtils.decodeParamByBase64(name);
         String storeName = adminService.update(name, storeMemberForm, files);
         return "update store: " + storeName;
     }
@@ -47,6 +42,7 @@ public class MisaAdminController {
     @Operation(summary = "상점 삭제", description = "관리자 권한으로 상점 삭제시 해당 요청을 담당하는 API")
     public String deleteStore(@PathVariable("name") String name) {
 
+//        name = DecodeURIUtils.decodeParamByBase64(name);
         String storeName = adminService.delete(name);
         return "delete store: " + storeName;
     }

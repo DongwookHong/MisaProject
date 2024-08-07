@@ -1,6 +1,7 @@
 package org.example.misa.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import org.example.misa.domain.Block;
 import org.example.misa.domain.Floor;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@AllArgsConstructor
 public class BuildingDTO {
     @JsonProperty("floorNumber")
     private String floorNumber;
@@ -16,18 +18,13 @@ public class BuildingDTO {
     @JsonProperty("data")
     private List<BuildingDTO.Data> dataList;
 
-    private BuildingDTO(String floorNumber, String floorImage, List<BuildingDTO.Data> dataList) {
-        this.floorNumber = floorNumber;
-        this.floorImage = floorImage;
-        this.dataList = dataList;
-    }
-
     public static BuildingDTO from(Floor floor, List<BuildingDTO.Data> dataList) {
         return new BuildingDTO(floor.getFloor(),
                 floor.getFloorImgPath(),
                 dataList);
     }
 
+    @AllArgsConstructor
     public static class Data {
         @JsonProperty("blockId")
         private String blockId;
@@ -35,12 +32,6 @@ public class BuildingDTO {
         private String type;
         @JsonProperty("name")
         private String name;
-
-        private Data(String blockId, String type, String name) {
-            this.blockId = blockId;
-            this.type = type;
-            this.name = name;
-        }
 
         public static BuildingDTO.Data from(Block block) {
             return new BuildingDTO.Data(block.getArea().toString(), block.getType(), block.getName());

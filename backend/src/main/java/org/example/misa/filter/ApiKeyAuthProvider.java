@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.security.AuthProvider;
 import java.util.Collections;
 
-public class ApiKeyAuthProvider implements AuthenticationProvider {
+public final class ApiKeyAuthProvider implements AuthenticationProvider {
 
     private static final String validApiKey = "testapikey";
 

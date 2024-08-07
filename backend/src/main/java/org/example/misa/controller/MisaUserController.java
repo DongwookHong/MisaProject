@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.example.misa.DTO.*;
+import org.example.misa.component.DecodeURIUtils;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.UserService;
@@ -36,8 +37,6 @@ public class MisaUserController {
     public MisaUserController(UserService userService) {
         this.userService = userService;
     }
-
-//    private final RateLimiter rateLimiter = RateLimiter.of
 
     @GetMapping("/api/stores")
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
@@ -66,8 +65,7 @@ public class MisaUserController {
     @Operation(summary = "blog 에 필요한 상점 조회", description = "PathVariable 로 전달된 상점의 전체 정보 조회")
     public String store(@PathVariable("name") String name) {
 
-//        byte[] bytes = Decoders.BASE64.decode(name);
-//        name = new String(bytes);
+//        name = DecodeURIUtils.decodeParamByBase64(name);
 
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
@@ -127,11 +125,7 @@ public class MisaUserController {
     @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
     @Operation(summary = "find-spot 에 필요한 정보 조회", description = "PathVariable로 전달된 상점의 위치 정보(건물 명, 층수 등) 조회")
     public String findSpot(@PathVariable("name") String name) {
-        try {
-            name = URLDecoder.decode(name, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("Failed to decode url", e);
-        }
+//        name = DecodeURIUtils.decodeParamByBase64(name);
         StoreMember storeMember = userService.findStoreMember(name);
         String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
         if (storeMember != null) {
@@ -169,6 +163,7 @@ public class MisaUserController {
     @GetMapping("/api/building/{buildingName}/{buildingDong}")
     @Operation(summary = "building 에 필요한 정보 조회", description = "PathValiable 로 전달된 정보에 속하는 모든 상점 조회")
     public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
+//        buildingName = DecodeURIUtils.decodeParamByBase64(buildingName);
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
 

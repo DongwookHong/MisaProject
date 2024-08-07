@@ -1,6 +1,7 @@
 package org.example.misa.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import org.example.misa.domain.Block;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 //건물, 층, 상점 이름, 현재위치 (qr 파라미터로 받음)
+@AllArgsConstructor
 public class QrDTO {
     @JsonProperty("buildingName")
     private String buildingName;
@@ -23,14 +25,6 @@ public class QrDTO {
     @JsonProperty("data")
     private List<Data> dataList;
 
-    private QrDTO(String buildingName, String buildingDong, String floorNumber, String floorImage, List<Data> dataList) {
-        this.buildingName = buildingName;
-        this.buildingDong = buildingDong;
-        this.floorNumber = floorNumber;
-        this.floorImage = floorImage;
-        this.dataList = dataList;
-    }
-
     public static QrDTO from(Floor floor, List<Data> dataList) {
         return new QrDTO(floor.getBuildingName(),
                 floor.getBuildingDong(),
@@ -39,6 +33,7 @@ public class QrDTO {
                 dataList);
     }
 
+    @AllArgsConstructor
     public static class Data {
         @JsonProperty("blockId")
         private String blockId;
@@ -46,12 +41,6 @@ public class QrDTO {
         private String type;
         @JsonProperty("name")
         private String name;
-
-        private Data(String blockId, String type, String name) {
-            this.blockId = blockId;
-            this.type = type;
-            this.name = name;
-        }
 
         public static Data from(Block block) {
             return new Data(block.getArea().toString(), block.getType(), block.getName());
