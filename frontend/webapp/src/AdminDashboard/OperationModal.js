@@ -103,111 +103,6 @@ function OperationModal({ option }) {
     );
   };
 
-import React, { useState } from 'react';
-import './OperationModal.css';
-import TimeDropdown from './TimeDropdown';
-
-const generateTimeOptions = () => {
-  const options = [];
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 10) {
-      const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(
-        2,
-        '0'
-      )}`;
-      options.push({ value: time, label: time });
-    }
-  }
-  return options;
-};
-
-const timeOptions = generateTimeOptions();
-const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
-
-function OperationModal({ option }) {
-  const [weekdayHours, setWeekdayHours] = useState({ open: '', close: '' });
-  const [weekendHours, setWeekendHours] = useState({
-    openweekend: '',
-    closeweekend: '',
-  });
-  const [breakTime, setBreakTime] = useState({ start: '', end: '' });
-  const [lastOrder, setLastOrder] = useState({ first: '', last: '' });
-  const [dayOff, setDayOff] = useState([]);
-  // const [dayOff, setDayOff] = useState([]);
-  const [selectedDays, setSelectedDays] = useState([]);
-
-  const [dailySchedule, setDailySchedule] = useState(
-    daysOfWeek.reduce(
-      (acc, day) => ({
-        ...acc,
-        [day]: {
-          isOpen: false,
-          openTime: '',
-          closeTime: '',
-          breakStart: '',
-          breakEnd: '',
-          lastOrderStart: '',
-          lastOrderEnd: '',
-        },
-      }),
-      {}
-    )
-  );
-
-  const handleDayToggle = (day) => {
-    setDailySchedule((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        isOpen: !prev[day].isOpen,
-      },
-    }));
-  };
-
-  const handleTimeChange = (day, field, value) => {
-    setDailySchedule((prev) => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        [field]: value,
-      },
-    }));
-  };
-
-  const handleInputChange = (event, type) => {
-    const { name, value } = event.target;
-    if (type === 'weekday') {
-      setWeekdayHours({ ...weekdayHours, [name]: value });
-    } else if (type === 'weekend') {
-      setWeekendHours({ ...weekendHours, [name]: value });
-    }
-  };
-
-  const handleBreakTimeChange = (event) => {
-    const { name, value } = event.target;
-    setBreakTime((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleLastOrderChange = (event) => {
-    const { name, value } = event.target;
-    setLastOrder((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleDayOffChange = (event) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setDayOff((prev) => [...prev, value]);
-    } else {
-      setDayOff((prev) => prev.filter((day) => day !== value));
-    }
-  };
-
-  const handleDaySelect = (day) => {
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    );
-  };
-
   let content;
 
   switch (option) {
@@ -469,10 +364,6 @@ function OperationModal({ option }) {
   if (!content) return null;
 
   return (
-    <div className="operation-modal-container">
-      <div className="operation-modal">
-        <div className="operation-modal-content">{content}</div>
-      </div>
     <div className="operation-modal-container">
       <div className="operation-modal">
         <div className="operation-modal-content">{content}</div>
