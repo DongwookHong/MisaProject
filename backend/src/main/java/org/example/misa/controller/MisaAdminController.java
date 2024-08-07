@@ -28,7 +28,7 @@ public class MisaAdminController {
     }
 
     @PostMapping(value = "/api/stores", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "상점 등록", description = "관리자 권한으로 상점 등록시 해당 요청을 담당하는 API")
+    @Operation(summary = "상점 등록", description = "관리자 권한으로 상점 등록시 해당 요청을 담당하는 API, floor 의 value 는 Int 로 넣어주세요. 허용되는 이미지 파일의 확장자는 jpg, jpeg, png, gif 입니다.")
     public String postStore(@RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) throws IOException, JsonProcessingException {
 
         String storeName = adminService.join(storeMemberForm, files);
@@ -36,7 +36,7 @@ public class MisaAdminController {
     }
 
     @PutMapping(value = "/api/stores/{name}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "상점 수정", description = "관리자 권한으로 상점 수정시 해당 요청을 담당하는 API")
+    @Operation(summary = "상점 수정", description = "관리자 권한으로 상점 수정시 해당 요청을 담당하는 API, floor 의 value 는 Int 로 넣어주세요. 허용되는 이미지 파일의 확장자는 jpg, jpeg, png, gif 입니다.")
     public String updateStore(@PathVariable("name") String name, @RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) {
 
         String storeName = adminService.update(name, storeMemberForm, files);

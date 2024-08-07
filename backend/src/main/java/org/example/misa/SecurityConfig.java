@@ -54,10 +54,10 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtFilter(jwtAuthenticationManager()), AuthorizationFilter.class)
                 .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), JwtFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable) //disable 이 맞나?
+                .cors(Customizer.withDefaults()) //왜 사용하나?
                 .sessionManagement((customizer) -> customizer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //stateless 사용 이유는?
         return http.build();
     }
 
@@ -68,10 +68,11 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers("/test/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((customizer) -> customizer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
