@@ -1,12 +1,9 @@
 package org.example.misa.service;
 
-import org.example.misa.DTO.StoreDTO;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
-import org.example.misa.repository.BlockRepository;
 import org.example.misa.repository.FloorRepository;
 import org.example.misa.repository.StoreMemberRepository;
-import org.example.misa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,6 @@ import java.util.List;
 public class UserService {
     @Autowired private StoreMemberRepository storeMemberRepository;
     @Autowired private FloorRepository floorRepository;
-    @Autowired private BlockRepository blockRepository;
 
     public List<StoreMember> findStoreMembers() {
         return storeMemberRepository.findAll();

@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
-public class ApiKeyFilter extends OncePerRequestFilter {
+public class ApiKeyFilter implements Filter {
 
     private final String apiKeyHeaderName = "x-api-key";
 
@@ -36,20 +36,17 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String apiKey = request.getHeader(apiKeyHeaderName);
-        System.out.println("apiKeyHeaderName: " + apiKeyHeaderName);
-        System.out.println("request: " + request.getRequestURI());
-        System.out.println("apikey: " + apiKey);
-        if (this.getOnly && !request.getMethod().equals("GET")) {
-            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
-        }
-        else {
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(apiKey, apiKey);
-            authRequest.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String apiKey = httpRequest.getHeader(apiKeyHeaderName);
+        if (apiKey != null) {
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(apiKey, null);
+            authRequest.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
             Authentication authentication =  apiAuthenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
         }
+        chain.doFilter(request, response);
     }
 }

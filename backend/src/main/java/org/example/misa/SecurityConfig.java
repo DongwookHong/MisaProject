@@ -1,20 +1,24 @@
 package org.example.misa;
 
-import jakarta.servlet.DispatcherType;
+import org.example.misa.component.JwtUtils;
 import org.example.misa.filter.ApiKeyAuthProvider;
 import org.example.misa.filter.ApiKeyFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.misa.filter.JwtAuthenticationProvider;
+import org.example.misa.filter.JwtFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,75 +27,85 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private JwtUtils jwtUtils;
+
+    public SecurityConfig(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
+
     @Bean
-    @Order(0)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-//        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(new HandlerMappingIntrospector()).servletPath("/");
         http
                 .securityMatcher("/api/**")
-                .authorizeHttpRequests((authorize) -> authorize //authorization
-                        .requestMatchers("/api/**").hasRole("USER")
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/api/*")).hasRole("USER")
-                        .anyRequest().authenticated())
-                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), AuthorizationFilter.class)
-//                .formLogin(AbstractHttpConfigurer::disable)
-        ;
+                .authorizeHttpRequests((customizer) -> customizer
+                        .requestMatchers(HttpMethod.POST, "/api/stores").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/stores/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/stores/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().denyAll())
+                .addFilterBefore(new JwtFilter(jwtAuthenticationManager()), AuthorizationFilter.class)
+                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), JwtFilter.class)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) //disable 이 맞나?
+                .cors(Customizer.withDefaults()) //왜 사용하나?
+                .sessionManagement((customizer) -> customizer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //stateless 사용 이유는?
         return http.build();
     }
 
     @Bean
-    @Order(1)
-    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
-        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(new HandlerMappingIntrospector()).servletPath("/admin");
+    public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
         http
-//                .securityMatcher("**")
-                .authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers("login").permitAll()
-//                        .requestMatchers("**").hasRole("ADMIN")
-                        .requestMatchers(mvcMatcherBuilder.pattern("/**")).hasRole("ADMIN")
+                .authorizeHttpRequests((customizer) -> customizer
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
-        ;
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((customizer) -> customizer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
     @Bean
     public AuthenticationManager apiAuthenticationManager() {
-        System.out.println("apiAuthenticationManager");
-
         ApiKeyAuthProvider apiKeyAuthProvider = new ApiKeyAuthProvider();
 
         return new ProviderManager(apiKeyAuthProvider);
     }
 
     @Bean
-    @Primary
+    public AuthenticationManager jwtAuthenticationManager() {
+        JwtAuthenticationProvider jwtAuthenticationProvider = new JwtAuthenticationProvider(jwtUtils);
+
+        return new ProviderManager(jwtAuthenticationProvider);
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        System.out.println("authenticationManager");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
 
-        return new ProviderManager(authenticationProvider);
+
+        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        providerManager.setEraseCredentialsAfterAuthentication(false);
+
+        return providerManager;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails adminDetails = User.withUsername("misaadmin") //보안에 좀 더 좋음
+        UserDetails adminDetails = User.withUsername("misaadmin")
                 .password("{bcrypt}$2a$10$6ObTn/3Pz.qRC9/jmAetveqRno6UkeYo3BFNlUJU7ub03d7EGocgK")
                 .roles("ADMIN", "USER")
                 .build();

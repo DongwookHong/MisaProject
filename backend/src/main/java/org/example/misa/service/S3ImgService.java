@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class S3ImgService implements ImgService {
@@ -34,7 +35,7 @@ public class S3ImgService implements ImgService {
 
     @Override
     public List<String> upload(List<MultipartFile> files) {
-        if (Objects.isNull(files) || files.isEmpty()) {
+        if (files == null || files.isEmpty()) {
             throw new IllegalStateException("Empty or invalid file name");
         }
         return this.uploadImg(files);
@@ -82,7 +83,6 @@ public class S3ImgService implements ImgService {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
-//            objectMetadata.setContentType("img/" + extension);
             objectMetadata.setContentType(extension);
             objectMetadata.setContentLength(bytes.length);
 
@@ -116,9 +116,9 @@ public class S3ImgService implements ImgService {
     public String getKeyFromImgUrl(String imgPath) {
         try {
             URL url = new URL(imgPath);
-            String key = URLDecoder.decode(url.getPath(), "UTF-8");
+            String key = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8);
             return key.substring(1);
-        } catch (MalformedURLException | UnsupportedEncodingException e) {
+        } catch (MalformedURLException e) {
             throw new AmazonS3Exception("Invalid image path: " + imgPath);
         }
     }

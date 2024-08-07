@@ -43,24 +43,14 @@ public class BuildingDTO {
         }
 
         public static BuildingDTO.Data from(Block block) {
-            String type = block.getType();
-            String name = "";
-            if (Objects.equals(type, "facility")) {
-                name = block.getFacility().getFacilityName();
-            }
-            else if (Objects.equals(type, "store")) {
-                name = block.getStoreMember().getStoreName();
-            }
-            if (Objects.isNull(name)) {
-                name = "";
-            }
-            return new BuildingDTO.Data(block.getArea().toString(), type, name);
+            return new BuildingDTO.Data(block.getArea().toString(), block.getType(), block.getName());
         }
 
         public static List<BuildingDTO.Data> dataList(List<Block> blocks) {
             List<BuildingDTO.Data> dataList = new ArrayList<>();
             for (Block block : blocks) {
-                dataList.add(from(block));
+                if (block.getFacility() != null || block.getStoreMember() != null)
+                    dataList.add(from(block));
             }
             return dataList;
         }

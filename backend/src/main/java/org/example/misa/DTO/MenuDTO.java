@@ -61,7 +61,7 @@ public class MenuDTO {
         public static List<Data> dataList(List<Block> blocks) {
             List<Data> dataList = new ArrayList<>();
             for (Block block : blocks) {
-                if (Objects.equals(block.getType(), "store")) {
+                if (block.getStoreMember() != null) {
                     dataList.add(from(block));
                 }
             }

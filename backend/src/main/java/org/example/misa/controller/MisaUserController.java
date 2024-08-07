@@ -2,37 +2,75 @@ package org.example.misa.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.io.Decoders;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.example.misa.DTO.*;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
 
-@CrossOrigin(origins = "https://misarodeo.com, https://www.misarodeo.com, https://api.misarodeo.com, http://api.misarodeo.com")
-//@CrossOrigin(origins = "http://localhost:8080")
+@Slf4j
 @RestController
+@Tag(name = "유저 API", description = "조회(GET)를 담당하는 API")
 public class MisaUserController {
 
     private final UserService userService;
 
-    @Autowired
     public MisaUserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/api/store/{name}")// 상점의 모든 정보
+//    private final RateLimiter rateLimiter = RateLimiter.of
+
+    @GetMapping("/api/stores")
+    @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
+    public List<String> getStores() {
+        List<Floor> floors = userService.findFloors();
+        List<String> jsonSet = new ArrayList<>();
+
+        if (!floors.isEmpty()) {
+            ObjectMapper mapper = new ObjectMapper();
+            for (Floor floor : floors) {
+                try {
+
+                    String json = mapper.writeValueAsString(StoresDTO.from(floor, StoresDTO.Data.dataList(floor.getBlocks())));
+                    jsonSet.add(json);
+
+                } catch (IOException e) {
+                    throw new IllegalStateException("Failed to serialize building", e);
+                }
+            }
+            return jsonSet;
+        }
+        return jsonSet;
+    }
+
+    @GetMapping("/api/stores/{name}")
+    @Operation(summary = "blog 에 필요한 상점 조회", description = "PathVariable 로 전달된 상점의 전체 정보 조회")
     public String store(@PathVariable("name") String name) {
+
+//        byte[] bytes = Decoders.BASE64.decode(name);
+//        name = new String(bytes);
+
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "";
+        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
         if (storeMember != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -45,7 +83,8 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/menu") // 건물, 층, 상점 이름, 상점 사진
+    @GetMapping("/api/menu") //find-stores-sorted-by-building-name
+    @Operation(summary = "storelist 에 필요한 정보 조회", description = "모든 상점에 대해 각 상점의 이미지 URL 과 일부 정보 조회")
     public List<String> menu() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
@@ -64,7 +103,8 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/qr-page") // 건물, 층, 상점 이름, 상점 위치 (추후 작업)
+    @GetMapping("/api/qr-page")
+    @Operation(summary = "qr-page 에 필요한 정보 조회", description = "층 별 이미지의 URL 및 상점 정보와 편의시설 정보 조회")
     public List<String> qrPage() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
@@ -84,11 +124,16 @@ public class MisaUserController {
         return jsonSet;
     }
 
-
     @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
+    @Operation(summary = "find-spot 에 필요한 정보 조회", description = "PathVariable로 전달된 상점의 위치 정보(건물 명, 층수 등) 조회")
     public String findSpot(@PathVariable("name") String name) {
+        try {
+            name = URLDecoder.decode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("Failed to decode url", e);
+        }
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "";
+        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
         if (storeMember != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -101,7 +146,8 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/floor") //floor -> floors
+    @GetMapping("/api/floor")
+    @Operation(summary = "floor 에 필요한 정보 조회", description = "각 건물의 층을 기준으로 정렬괸 상점 정보 조회")
     public List<String> floor() {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();
@@ -121,6 +167,7 @@ public class MisaUserController {
     }
 
     @GetMapping("/api/building/{buildingName}/{buildingDong}")
+    @Operation(summary = "building 에 필요한 정보 조회", description = "PathValiable 로 전달된 정보에 속하는 모든 상점 조회")
     public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
         List<Floor> floors = userService.findFloors();
         List<String> jsonSet = new ArrayList<>();

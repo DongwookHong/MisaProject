@@ -1,11 +1,17 @@
 package org.example.misa.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "imgpath")
+@Table
 public class ImgPath {
 
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,33 +23,7 @@ public class ImgPath {
     @Column(name = "img_path", nullable = false)
     private String imgPath;
 
-    //Getter && Setter
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public StoreMember getStoreMember() {
-        return storeMember;
-    }
-
-    public void setStoreMember(StoreMember storeMember) {
-        this.storeMember = storeMember;
-        if(!this.storeMember.getImgPaths().contains(this)) {
-            this.storeMember.getImgPaths().add(this);
-        }
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
+    public void update(String imgPath) {
         this.imgPath = imgPath;
     }
 

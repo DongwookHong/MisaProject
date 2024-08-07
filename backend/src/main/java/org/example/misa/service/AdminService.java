@@ -1,46 +1,67 @@
 package org.example.misa.service;
 
+import org.apache.coyote.BadRequestException;
+import org.example.misa.DTO.LoginDTO;
+import org.example.misa.component.JwtUtils;
 import org.example.misa.controller.StoreMemberForm;
-import org.example.misa.domain.Block;
-import org.example.misa.domain.Floor;
-import org.example.misa.domain.ImgPath;
-import org.example.misa.domain.StoreMember;
-import org.example.misa.repository.BlockRepository;
-import org.example.misa.repository.FloorRepository;
-import org.example.misa.repository.StoreMemberRepository;
+import org.example.misa.domain.*;
+import org.example.misa.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class AdminService {
 
+    @Autowired private JwtUtils jwtUtils;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private MemberRepository memberRepository;
     @Autowired private StoreMemberRepository storeMemberRepository;
     @Autowired private FloorRepository floorRepository;
     @Autowired private BlockRepository blockRepository;
     @Autowired private ImgService imgService;
 
-    public Long join(StoreMemberForm form) {
-        Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
-        validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
-        Block block = new Block(floor, Long.parseLong(form.getBlockId()), "store");
-        try {
-            block = blockRepository.save(block);
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to add block", e);
+    public String login(LoginDTO loginDTO) {
+        Member member = memberRepository.findByUsername(loginDTO.getUsername());
+        if (member == null) {
+            throw new IllegalStateException("member not found");
         }
 
-        StoreMember storeMember = StoreMember.create(form);
-        validateDuplicateStoreMember(storeMember);
+        if (!passwordEncoder.matches(loginDTO.getPassword(), member.getPassword())) {
+            throw new IllegalStateException("wrong password");
+        }
+
+        return jwtUtils.generateAccessToken(member);
+    }
+
+    public String update(String storeName, StoreMemberForm form, List<MultipartFile> files) {
+        Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
+        Block block = validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
+
+        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName);
+
+        if (storeMember == null) {
+            throw new IllegalStateException("Store does not exist");
+        }
+
+        storeMember.update(form);
         storeMember.setBlock(block);
-        saveImgPaths(form, storeMember);
+
+        if (!files.isEmpty()) {
+            imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
+            updateImgPaths(files, storeMember);
+        }
 
         try {
             storeMember = storeMemberRepository.save(storeMember);
@@ -48,7 +69,36 @@ public class AdminService {
             imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
             throw new IllegalStateException("Could not save storeMember", e);
         }
-        return storeMember.getId();
+        return storeMember.getStoreName();
+    }
+
+    public String join(StoreMemberForm form, List<MultipartFile> files) {
+        validateDuplicateStoreMember(form.getStoreName());
+        Floor floor = validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
+        Block block = validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
+
+        StoreMember storeMember = StoreMember.create(form);
+        storeMember.setBlock(block);
+        saveImgPaths(files, storeMember);
+
+        try {
+            storeMember = storeMemberRepository.save(storeMember);
+        } catch (Exception e) {
+            imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
+            throw new IllegalStateException("Could not save storeMember", e);
+        }
+
+        return storeMember.getStoreName();
+    }
+
+    public String delete(String storeName) {
+        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName);
+        if (storeMember == null) {
+            throw new IllegalStateException("Store does not exist: " + storeName);
+        }
+        imgService.deleteImg(convertToImagePaths(storeMember.getImgPaths()));
+        storeMemberRepository.delete(storeMember);
+        return storeName;
     }
 
     private Floor validateExistFloorAndBuilding(String floorName, String buildingName, String buildingDong) {
@@ -61,24 +111,34 @@ public class AdminService {
         return floor;
     }
 
-    private void validateDuplicateBlockId(Long area, Floor floor) {
+    private Block validateDuplicateBlockId(Long area, Floor floor) {
         Block block = blockRepository.findByAreaAndFloorId(area, floor.getId());
 
-        if (block != null) {
-            throw new IllegalStateException("이미 등록된 구역 이름입니다.");
+        if (block == null) {
+            block = new Block(floor, area, "store");
+            try {
+                block = blockRepository.save(block);
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to add block", e);
+            }
         }
 
+        return block;
     }
 
-    private void validateDuplicateStoreMember(StoreMember storeMember) {
-        storeMember = storeMemberRepository.findByStoreName(storeMember.getStoreName());
-        if (storeMember != null) {
+    private void validateDuplicateStoreMember(String storeName) {
+        if (storeMemberRepository.findByStoreName(storeName) != null) {
             throw new IllegalStateException("이미 존재하는 상점입니다.");
         }
     }
 
-    private void saveImgPaths(StoreMemberForm form, StoreMember storeMember) {
-        storeMember.setImgPaths(makeImgPaths(imgService.upload(form.getFiles()), storeMember));
+    private void updateImgPaths(List<MultipartFile> files, StoreMember storeMember) {
+        List<String> urlList = imgService.upload(files);
+        storeMember.updateImgPaths(urlList);
+    }
+
+    private void saveImgPaths(List<MultipartFile> files, StoreMember storeMember) {
+        storeMember.setImgPaths(makeImgPaths(imgService.upload(files), storeMember));
     }
 
     public List<String> convertToImagePaths(List<ImgPath> imgPaths) {
@@ -88,7 +148,7 @@ public class AdminService {
     }
 
     public List<ImgPath> makeImgPaths(List<String> urlList, StoreMember storeMember) {
-        List<ImgPath> imgPaths = new ArrayList<>();
+        List<ImgPath> imgPaths = new ArrayList<>(5);
         for (String url : urlList) {
             imgPaths.add(ImgPath.create(storeMember, url));
         }
