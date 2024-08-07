@@ -1,0 +1,123 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+  }
+  
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .content {
+    flex: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .HeadImage {
+    max-width: 300px;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .w-full {
+    width: 100%;
+    height: auto;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .my-4 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .button-container {
+    margin-top: 1rem;
+  }
+  
+  .button-container a {
+    position: relative;
+    display: inline-block;
+    width: 240px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: #ccc;
+    color: #000;
+    overflow: hidden;
+  }
+  
+  .button-container a:before,
+  .button-container a:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: #16253C;
+    color: #fff;
+    transition: 0.5s;
+  }
+  
+  .button-container a:before {
+    transform-origin: bottom;
+    transform: translatey(-100%) rotatex(90deg);
+  }
+  
+  .button-container a:hover:before {
+    transform: translatey(0) rotatex(0deg);
+  }
+  
+  .button-container a:after {
+    background: #4583FF;
+    transform-origin: top;
+    transform: translatey(0) rotatex(0deg);
+  }
+  
+  .button-container a:hover:after {
+    transform: translatey(100%) rotatex(90deg);
+  }
+  
+  .bottom-color {
+    flex: 40%;
+    background-color: rgba(255, 102, 235, 0.14);
+  }
+  
+  @media (max-width: 768px) {
+    .HeadImage {
+      max-width: 200px;
+    }
+  
+    .text-2xl {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  
+    .button-container a {
+      width: 200px;
+      height: 45px;
+      line-height: 45px;
+      font-size: 14px;
+    }
+  }

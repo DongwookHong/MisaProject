@@ -13,13 +13,6 @@
 }
 
 @font-face {
-  font-family: 'NEXON Lv1 Gothic OTF';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: 'Freesentation-9Black';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2')
     format('woff2');
@@ -43,17 +36,9 @@
 }
 
 @font-face {
-  font-family: 'KOHIBaeumOTF';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHIBaeumOTF.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Cafe24Ohsquareair';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/Cafe24Ohsquareair.woff')
-    format('woff');
+  font-family: 'PartialSansKR-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2')
+    format('woff2');
   font-weight: normal;
   font-style: normal;
 }

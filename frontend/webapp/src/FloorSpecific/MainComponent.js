@@ -1,66 +1,112 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import {
+  useLoaderData,
+  useNavigate,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 import FS_FloorSpecific from "./FS_FloorSpecific";
 import GuideFloor from "./GuideFloor";
 import MainFooter from "../Fix/MainFooter";
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+export async function mainComponentLoader({ params }) {
+  const { building, wing } = params;
+  try {
+    const response = await fetch(
+      // `https://api.misarodeo.com/api/building/${encodeURIComponent(
+      `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
+        wing
+      )}`,
+      {
+        headers: {
+          accept: "*/*",
+          "x-api-key": API_KEY,
+        },
+      }
+    );
+    if (response.ok) {
+      const rawData = await response.json();
+      if (rawData.length === 0) {
+        throw new Response("Not Found", { status: 404 });
+      }
+      const parsedData = rawData.map((item) => JSON.parse(item));
+      return parsedData;
+    } else {
+      throw new Response("Not Found", { status: 404 });
+    }
+  } catch (error) {
+    throw new Response("Not Found", { status: 404 });
+  }
+}
+
 function MainComponent() {
-  const { building, wing } = useParams();
+  const floorData = useLoaderData();
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [floorData, setFloorData] = useState([]);
   const [selectedFloorData, setSelectedFloorData] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isFacility, setIsFacility] = useState(true);
+
+  const { building, wing } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialFloor = searchParams.get("floor");
 
   useEffect(() => {
-    const fetchFloorData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get(
-          `/api/building/${encodeURIComponent(building)}/${encodeURIComponent(
-            wing
-          )}`,
-          {
-            headers: {
-              accept: "*/*",
-              "x-api-key": "testapikey",
-            },
-          }
-        );
+    if (!floorData || floorData.length === 0) {
+      navigate("/404");
+      return;
+    }
 
-        const rawData = response.data;
-        const parsedData = rawData.map((item) => JSON.parse(item));
-        setFloorData(parsedData);
-        setSelectedFloorData(parsedData[0]); // Set the first floor as default
-      } catch (error) {
-        console.error("Error fetching floor data:", error);
-        setError("Failed to load floor data");
-      } finally {
-        setIsLoading(false);
+    let floorToShow;
+    if (initialFloor) {
+      floorToShow = floorData.find(
+        (floor) => floor.floorNumber === initialFloor
+      );
+    }
+
+    if (!floorToShow) {
+      // If the initial floor is not found or not specified, default to 1F or the first available floor
+      floorToShow =
+        floorData.find((floor) => floor.floorNumber === "1") || floorData[0];
+    }
+
+    setSelectedFloorData(floorToShow);
+  }, [floorData, navigate, initialFloor]);
+
+  const handleFloorChange = useCallback(
+    (floorNumber) => {
+      const newSelectedFloorData = floorData.find(
+        (floor) => floor.floorNumber === floorNumber
+      );
+      if (newSelectedFloorData && newSelectedFloorData !== selectedFloorData) {
+        console.log("Changing floor to:", floorNumber);
+        console.log("New floor data:", newSelectedFloorData);
+        setSelectedFloorData(newSelectedFloorData);
+        setSelectedItems([]);
+
+        // Update URL with new floor
+        const newSearchParams = new URLSearchParams(location.search);
+        newSearchParams.set("floor", floorNumber);
+        navigate(`/${building}/${wing}?${newSearchParams.toString()}`, {
+          replace: true,
+        });
       }
-    };
+    },
+    [floorData, selectedFloorData, building, wing, navigate, location.search]
+  );
 
-    fetchFloorData();
-  }, [building, wing]);
+  const handleIconClick = useCallback((blockIds, isFacilityClick = true) => {
+    console.log("Clicked blockIds:", blockIds, "isFacility:", isFacilityClick);
+    setSelectedItems(Array.isArray(blockIds) ? blockIds : [blockIds]);
+    setIsFacility(isFacilityClick);
+  }, []);
 
-  const handleFloorChange = (floorNumber) => {
-    const newSelectedFloorData = floorData.find(
-      (floor) => floor.floorNumber === floorNumber
-    );
-    setSelectedFloorData(newSelectedFloorData);
-    setSelectedItems([]);
-  };
-
-  const handleIconClick = (blockId) => {
-    console.log("Clicked blockId:", blockId); // 디버깅을 위한 로그
-    setSelectedItems([blockId]);
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (!selectedFloorData) {
+    return null;
+  }
 
   return (
     <div>
@@ -70,6 +116,7 @@ function MainComponent() {
         selectedFloorData={selectedFloorData}
         floorData={floorData}
         onFloorChange={handleFloorChange}
+        isFacility={isFacility}
       />
       <GuideFloor
         selectedFloorData={selectedFloorData}

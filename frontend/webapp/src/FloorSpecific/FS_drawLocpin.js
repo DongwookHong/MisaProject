@@ -1,8 +1,8 @@
 import locpin from "../asset/tool/locpin.png";
+import elev from "../asset/tool/elevator.svg";
 
 const getBoundingBox = (element) => {
   if (element.tagName.toLowerCase() === "g") {
-    // For group elements, calculate bounding box of all child elements
     let minX = Infinity,
       minY = Infinity,
       maxX = -Infinity,
@@ -18,10 +18,8 @@ const getBoundingBox = (element) => {
     });
     return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
   } else if (element.tagName.toLowerCase() === "path") {
-    // For path elements, use manual calculation
     return getManualBoundingRectFromPath(element);
   } else {
-    // For other elements, use getBBox
     return element.getBBox();
   }
 };
@@ -46,32 +44,99 @@ const getManualBoundingRectFromPath = (pathElement) => {
     height: yMax - yMin,
   };
 };
-
-export const FS_drawLocpin = (svgDoc, ctx, selectedBlockId, floorData) => {
+export const FS_drawLocpin = (
+  svgDoc,
+  ctx,
+  selectedBlockIds,
+  floorData,
+  isFacility
+) => {
   const locpinImg = new Image();
   locpinImg.src = locpin;
 
-  const locpinWidth = 50;
-  const locpinHeight = 50;
+  const elevImg = new Image();
+  elevImg.src = elev;
 
-  locpinImg.onload = () => {
-    if (!selectedBlockId || !svgDoc) return;
+  const locpinWidth = isFacility ? 50 : 60;
+  const locpinHeight = isFacility ? 50 : 60;
 
-    const targetElement = svgDoc.getElementById(selectedBlockId);
-    if (!targetElement) {
-      console.log(`Element with ID: ${selectedBlockId} not found in SVG.`);
-      return;
-    }
+  const drawImages = () => {
+    if (!selectedBlockIds || selectedBlockIds.length === 0 || !svgDoc) return;
 
-    const bbox = getBoundingBox(targetElement);
+    console.log(
+      `Drawing ${isFacility ? "facility" : "store"} icons for blockIds:`,
+      selectedBlockIds
+    );
 
-    const cx = bbox.x + bbox.width / 2 - locpinWidth / 2;
-    const cy = bbox.y + bbox.height / 2 - locpinHeight / 2;
+    selectedBlockIds.forEach((blockId) => {
+      const targetElement = svgDoc.getElementById(blockId);
+      if (!targetElement) {
+        console.log(`Element with ID: ${blockId} not found in SVG.`);
+        return;
+      }
 
-    ctx.drawImage(locpinImg, cx, cy, locpinWidth, locpinHeight);
+      const bbox = getBoundingBox(targetElement);
+
+      let cx = bbox.x + bbox.width / 2;
+      let cy = bbox.y + bbox.height / 2;
+
+      const isElevator =
+        isFacility &&
+        (targetElement.id.toLowerCase().includes("elevator") ||
+          targetElement.id.toLowerCase().includes("엘리베이터") ||
+          (floorData.data.find((item) => item.blockId === blockId)?.name || "")
+            .toLowerCase()
+            .includes("엘리베이터"));
+
+      console.log(
+        `Checking element ${blockId}: isFacility=${isFacility}, isElevator=${isElevator}`
+      );
+
+      if (isElevator) {
+        console.log(`Drawing elevator icon for ${blockId}`);
+        // 엘리베이터 이미지를 원본 크기로 그립니다.
+        ctx.drawImage(elevImg, cx - elevImg.width / 2, cy - elevImg.height / 2);
+        console.log(
+          `Drew elevator icon at (${cx - elevImg.width / 2}, ${
+            cy - elevImg.height / 2
+          }) with size ${elevImg.width}x${elevImg.height}`
+        );
+      } else {
+        console.log(`Drawing locpin for ${blockId}`);
+        let pinX = cx - locpinWidth / 2;
+        let pinY = cy - locpinHeight / 2;
+
+        if (!isFacility) {
+          const offsetY = locpinHeight / 2;
+          pinY -= offsetY;
+        }
+
+        ctx.drawImage(locpinImg, pinX, pinY, locpinWidth, locpinHeight);
+        console.log(
+          `Drew locpin at (${pinX}, ${pinY}) with size ${locpinWidth}x${locpinHeight}`
+        );
+      }
+    });
   };
+
+  let loadedImages = 0;
+  const onImageLoad = () => {
+    loadedImages++;
+    if (loadedImages === 2) {
+      drawImages();
+    }
+  };
+
+  locpinImg.onload = onImageLoad;
+  elevImg.onload = onImageLoad;
 
   locpinImg.onerror = () => {
     console.error("Failed to load the locpin image.");
+    loadedImages++;
+  };
+
+  elevImg.onerror = () => {
+    console.error("Failed to load the elevator image.");
+    loadedImages++;
   };
 };

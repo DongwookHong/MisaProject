@@ -1,7 +1,7 @@
 /* 기존 CSS 유지 */
 .locsearch-header {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,14 @@
   width: 100%;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
+  padding: 10px 10px;
+  border: 2px solid #f0f0ff;
+  border-radius: 6px;
+  font-family: 'Freesentation-9Black';
+
+  /* font-family: Pretendard-Regular; */
+  /* background-color: #faf5ff; */
+  /* background-color: #f0f0ff; */
 }
 
 .search-menu {
@@ -22,16 +29,31 @@
 }
 
 .logo-item {
-  margin-left: -10px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .title {
-  font-size: 18px;
+  font-size: 1.2em;
   font-weight: bold;
   margin-left: 5px;
+  color: rgb(51, 51, 51);
 }
 
 .current-location {
+  /* color: #5d4fbb; */
+  /* color: black; */
   color: #5d4fbb;
 }
 
@@ -41,41 +63,47 @@
   margin-left: auto;
 }
 
-.search-bar {
+.search-input-bar {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   width: 90%;
   margin-top: 16px;
   padding: 5px 10px 5px 5px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
-  position: relative; /* 검색 결과 위치 지정을 위해 추가 */
+  position: relative;
+  border: none;
 }
 
-.search-bar input {
+.search-input-bar input {
   border: none;
   outline: none;
   flex: 1;
   font-size: 16px;
   padding: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
 }
 
 .search-icon {
-  padding-left: 8px;
+  /* padding-left: 8px; */
+  padding-left: 3px;
 }
 
-/* 새로운 검색 결과 스타일 */
+/* 수정된 검색 결과 스타일 */
 .search-results {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   background-color: white;
-  border-radius: 0 0 10px 10px;
+  border-radius: 6px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
   z-index: 1000;
 }
@@ -83,18 +111,22 @@
 .search-result-item {
   padding: 10px 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.search-result-item:hover {
-  background-color: #f0f0f0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .search-result-item:last-child {
+  border-bottom: none;
   border-radius: 0 0 10px 10px;
 }
 
-/* 스크롤바 스타일 (옵션) */
+.search-result-item:hover,
+.search-result-item.selected {
+  background-color: #f0f0f0;
+  color: #5d4fbb;
+}
+
+/* 스크롤바 스타일 (개선) */
 .search-results::-webkit-scrollbar {
   width: 8px;
 }
@@ -111,4 +143,23 @@
 
 .search-results::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 95%;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .search-results {
+    max-height: 250px;
+  }
+
+  .floor-select {
+    max-width: 120px;
+  }
 }

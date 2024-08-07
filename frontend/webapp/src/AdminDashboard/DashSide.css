@@ -1,0 +1,71 @@
+.dash-sidebar {
+  width: 75px;
+  height: 100vh;
+  /* background-color: #edf3f6; */
+
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* margin-bottom: 20px; */
+}
+
+.dashsidebar-logo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #5d4fbb;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  /* background-color: #96a3e4;
+  border-radius: 2px; */
+}
+
+.dashside-image {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 10px;
+}
+
+.dashside-menu {
+  flex-grow: 1;
+  margin-top: 2em;
+}
+
+.dashside-item {
+  margin-bottom: 30px;
+}
+
+.dashside-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.dashside-menu a:hover {
+  color: #007bff;
+}
+
+.dashside-footer {
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: #007bff;
+}

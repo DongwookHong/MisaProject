@@ -12,6 +12,13 @@ module.exports = function(app) {
   );
 
   app.use(
+    '/login',
+    createProxyMiddleware({
+      target: 'https://api.misarodeo.com',
+      changeOrigin: true,
+    })
+  );
+  app.use(
     'd2uoi63j88ocg6.cloudfront.net',
     createProxyMiddleware({
       target: 'https://d2uoi63j88ocg6.cloudfront.net',

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../style/QRpage/LocSearch.css';
 import MenuBar from '../Fix/MenuBar';
 import IconLoc from '../asset/tool/locpin.png';
@@ -12,7 +12,11 @@ function LocSearch({ floorData }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const searchRef = useRef(null);
+  const { id } = useParams();
+  const [currentLocation, setCurrentLocation] = useState('알 수 없는 위치');
+  const [selectedResult, setSelectedResult] = useState(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -21,28 +25,73 @@ function LocSearch({ floorData }) {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [searchRef]);
+
+  useEffect(() => {
+    if (id && id.length >= 2) {
+      const building = parseInt(id[0]);
+      const floor = parseInt(id[1]);
+      let locationString = '';
+
+      switch (building) {
+        case 1:
+          locationString = '힐스테이트 12BL';
+          break;
+        case 2:
+          locationString = '힐스테이트 11BL';
+          break;
+        case 3:
+          locationString = '롯데캐슬';
+          break;
+        default:
+          locationString = '알 수 없는 위치';
+      }
+
+      if (!isNaN(floor)) {
+        locationString += floor === 0 ? ' B1층' : ` ${floor}층`;
+      }
+
+      setCurrentLocation(locationString);
+    } else {
+      setCurrentLocation('알 수 없는 위치');
+    }
+  }, [id]);
 
   const handleSearch = (event) => {
     const value = event.target.value;
     setQuery(value);
     if (value) {
       const cleanedValue = value.trim().replace(/\s+/g, ' ').toLowerCase();
-      const filteredStores = floorData.flatMap(floor => 
-        floor.data.filter(store => 
-          store.type === 'store' && 
-          store.name.trim().replace(/\s+/g, ' ').toLowerCase().includes(cleanedValue)
+      const filteredStores = floorData.flatMap((floor) =>
+        floor.data.filter(
+          (store) =>
+            store &&
+            store.type === 'store' &&
+            store.name &&
+            store.name
+              .trim()
+              .replace(/\s+/g, ' ')
+              .toLowerCase()
+              .includes(cleanedValue)
         )
       );
       setResults(filteredStores);
       setShowResults(true);
+      setSelectedIndex(-1);
+
+      if (filteredStores.length === 1) {
+        setSelectedResult(filteredStores[0]);
+      } else {
+        setSelectedResult(null);
+      }
     } else {
       setResults([]);
       setShowResults(false);
+      setSelectedResult(null);
     }
   };
 
@@ -54,31 +103,109 @@ function LocSearch({ floorData }) {
     setMenuOpen(false);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      navigateToStore(query);
+  // const performSearch = () => {
+  //   if (selectedResult) {
+  //     navigateToStore(selectedResult.name);
+  //   } else if (results.length === 1) {
+  //     navigateToStore(results[0].name);
+  //   } else if (query) {
+  //     const matchingStore = results.find(
+  //       (store) =>
+  //         store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
+  //         query.trim().replace(/\s+/g, ' ').toLowerCase()
+  //     );
+  //     if (matchingStore) {
+  //       navigateToStore(matchingStore.name);
+  //     }
+  //   }
+  //   setShowResults(false);
+  // };
+  const performSearch = () => {
+    let storeToNavigate = null;
+
+    if (selectedResult) {
+      storeToNavigate = selectedResult;
+    } else if (results.length === 1) {
+      storeToNavigate = results[0];
+    } else if (query) {
+      storeToNavigate = results.find(
+        (store) =>
+          store.name.trim().replace(/\s+/g, ' ').toLowerCase() ===
+          query.trim().replace(/\s+/g, ' ').toLowerCase()
+      );
     }
-  };
 
-  const handleIconClick = () => {
-    navigateToStore(query);
-  };
-
-  const navigateToStore = (storeName) => {
-    const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
-    const matchingStore = floorData.flatMap(floor => floor.data).find(
-      store => store.type === 'store' && 
-               store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
-    );
-    if (matchingStore) {
-      navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`);
+    if (storeToNavigate) {
+      navigateToStore(storeToNavigate.name);
     }
     setShowResults(false);
   };
 
-  const handleResultClick = (storeName) => {
-    setQuery(storeName);
-    navigateToStore(storeName);
+  // const handleKeyDown = (event) => {
+  //   if (event.key === 'Enter') {
+  //     event.preventDefault();
+  //     performSearch();
+  //   } else if (event.key === 'ArrowDown') {
+  //     setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+  //   } else if (event.key === 'ArrowUp') {
+  //     setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  //   }
+  // };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (selectedIndex >= 0 && selectedIndex < results.length) {
+        handleResultClick(results[selectedIndex]);
+      } else {
+        performSearch();
+      }
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setSelectedIndex((prev) =>
+        prev < results.length - 1 ? prev + 1 : results.length - 1
+      );
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    }
+  };
+
+  const handleIconClick = () => {
+    performSearch();
+  };
+
+  const navigateToStore = (storeName) => {
+    if (storeName && typeof storeName === 'string') {
+      const cleanedName = storeName.trim().replace(/\s+/g, ' ').toLowerCase();
+      const matchingStore = floorData
+        .flatMap((floor) => floor.data)
+        .find(
+          (store) =>
+            store.type === 'store' &&
+            store.name.trim().replace(/\s+/g, ' ').toLowerCase() === cleanedName
+        );
+      if (matchingStore) {
+        const currentLocationInfo = {
+          buildingName: id.charAt(0) === '3' ? '롯데캐슬' : '힐스테이트',
+          buildingDong:
+            id.charAt(0) === '1' ? 'A' : id.charAt(0) === '2' ? 'B' : '',
+          floorNumber: id.charAt(1),
+        };
+        navigate(`/findspot/${encodeURIComponent(matchingStore.name)}`, {
+          state: { currentLocation: currentLocationInfo },
+        });
+      }
+    }
+    setShowResults(false);
+  };
+
+  const handleResultClick = (store) => {
+    if (store && typeof store === 'object' && store.name) {
+      setQuery(store.name);
+      setSelectedResult(store);
+      navigateToStore(store.name);
+    }
   };
 
   return (
@@ -95,37 +222,39 @@ function LocSearch({ floorData }) {
             />
           </div>
           <div className="title">
-            현재 위치는{' '}
-            <span className="current-location">힐스테이트 A동 1층</span>
+            현재 위치는{'  '}
+            <span className="current-location">{currentLocation}</span>
           </div>
           <div className="menu-icon" onClick={handleMenuClick}>
             <img src={Menu} alt="menu-bar" width="30" height="30" />
           </div>
         </div>
-        <div className="search-bar" ref={searchRef}>
+        <div className="search-input-bar" ref={searchRef}>
           <input
             type="text"
             placeholder="장소 위치를 찾는 곳을 입력해주세요"
             value={query}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}
+            style={{ border: 'none', outline: 'none' }}
           />
           <img
             className="search-icon"
             src={SearchBtn}
             onClick={handleIconClick}
             alt="search-bar"
-            width="32"
+            width="30"
             height="32"
           />
           {showResults && results.length > 0 && (
             <div className="search-results">
               {results.map((store, index) => (
-                <div 
-                  key={index} 
-                  className="search-result-item"
-                  onClick={() => handleResultClick(store.name)}
-                >
+                <div
+                  key={index}
+                  className={`search-result-item ${
+                    index === selectedIndex ? 'selected' : ''
+                  }`}
+                  onClick={() => handleResultClick(store)}>
                   {store.name}
                 </div>
               ))}

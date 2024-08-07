@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 function TenantList() {
   const { selectedBuilding, selectedFloor } = useContext(AppContext);
   const [tenants, setTenants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFloorData = async () => {
@@ -19,11 +23,13 @@ function TenantList() {
           setIsLoading(false);
           return;
         }
-
         const response = await axios.get("/api/floor", {
+          // const response = await axios.get(
+          //   "https://api.misarodeo.com/api/floor",
+          // {
           headers: {
             accept: "*/*",
-            "x-api-key": "testapikey",
+            "x-api-key": API_KEY,
           },
         });
 
@@ -61,11 +67,11 @@ function TenantList() {
 
   // Helper function to check if the selected floor is a parking lot
   const isParkingLot = (building, floor) => {
-    if (building === "힐스테이트 A동" && ["B2", "B3", "B4"].includes(floor)) {
+    if (building === "힐스테이트 12BL" && ["B2", "B3", "B4"].includes(floor)) {
       return true;
     }
     if (
-      (building === "힐스테이트 B동" || building === "롯데캐슬 C동") &&
+      (building === "힐스테이트 11BL" || building === "롯데캐슬 동") &&
       ["B1", "B2", "B3", "B4"].includes(floor)
     ) {
       return true;
@@ -80,6 +86,10 @@ function TenantList() {
     return floor.replace("F", "");
   };
 
+  const handleTenantClick = (tenant) => {
+    navigate(`/storeinfo/${encodeURIComponent(tenant)}`);
+  };
+
   if (isLoading) return <div></div>;
   if (error) return <div>{error}</div>;
 
@@ -87,7 +97,12 @@ function TenantList() {
     <div className="tenant-container">
       {tenants.length > 0 ? (
         tenants.map((tenant, index) => (
-          <div key={index} className="tenant">
+          <div
+            key={index}
+            className="tenant"
+            onClick={() => handleTenantClick(tenant)}
+            style={{ cursor: "pointer" }}
+          >
             {tenant}
           </div>
         ))

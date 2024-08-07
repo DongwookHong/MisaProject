@@ -1,0 +1,173 @@
+.enroll-container {
+  /* padding: 20px; */
+  /* background-color: #f8f9fa; */
+}
+
+.enroll-header {
+  text-align: left;
+  margin-top: 20px;
+  font-family: 'Freesentation-9Black';
+  border-bottom: 1px solid gray;
+}
+
+.enroll-items {
+  text-align: left;
+  margin-top: 4em;
+}
+
+.enroll-item {
+  margin-top: 2em;
+}
+
+.enroll-input {
+  width: 50%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-left: 10px;
+}
+
+.enroll-select {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-right: 10px;
+  margin-left: 7px;
+}
+
+.enroll-select-option {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  /* margin-right: 10px; */
+}
+
+.enroll-select-option-floor {
+  width: 8%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  margin-right: 10px;
+}
+
+.enroll-input:focus,
+.enroll-select:focus {
+  border-color: #5d4fbb;
+  box-shadow: 0 0 5px rgba(93, 79, 187, 0.5);
+  outline: none;
+}
+
+.enroll-select option,
+.enroll-select-floor option {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.submit-button {
+  background-color: #5d4fbb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.submit-button:hover {
+  background-color: #4c3ba7;
+}
+
+.enrollselect-container {
+  display: flex;
+  align-items: baseline;
+  gap: 13em;
+}
+
+.enroll-operationdata {
+  display: flex;
+  gap: 10px; /* 간격 추가 */
+  align-items: center;
+}
+
+.operation-data {
+  cursor: pointer;
+  padding: 10px;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 5px 0;
+  text-align: center;
+}
+
+.operation-data.selected {
+  background-color: #bdafff;
+  color: white;
+}
+
+.upload-button {
+  background-color: #4caf50; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 15px 32px; /* Some padding */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the container block element */
+  font-size: 16px; /* Increase font size */
+  margin: 4px 2px; /* Add some margin */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s; /* Animation for background color change */
+}
+
+.upload-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.file-item span {
+  flex: 1;
+}
+
+.file-item button {
+  background-color: #f44336; /* Red background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 5px 10px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  border-radius: 4px; /* Rounded corners */
+}

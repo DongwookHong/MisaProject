@@ -1,0 +1,69 @@
+.sidebar {
+  /* width: 9%;  */
+  width: 15vh;
+  height: 100vh;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* margin-bottom: 20px; */
+}
+
+.sidebar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #5d4fbb;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* background-color: #96a3e4;
+  border-radius: 2px; */
+}
+
+.sidebar-image {
+  width: 2rem; /* 이미지가 사이드바 너비에 맞게 */
+  height: 2rem; /* 비율에 맞게 이미지 크기 조절 */
+  margin-bottom: 10px;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  margin-top: 2em;
+}
+
+.sidebar-item {
+  /* padding: 20px 35px 0px 35px; */
+  margin-bottom: 30px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.sidebar-menu a:hover {
+  color: #007bff;
+}
+
+.sidebar-footer {
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: #007bff;
+}
