@@ -154,13 +154,13 @@ function OperationModal({ option }) {
                 name="first"
                 options={timeOptions}
               />
-              <div className="operation-flew">~</div>
+              {/* <div className="operation-flew">~</div>
               <TimeDropdown
                 value={lastOrder.last}
                 onChange={handleLastOrderChange}
                 name="last"
                 options={timeOptions}
-              />
+              /> */}
             </div>
           </div>
           <div className="operation-dayoff">
@@ -249,13 +249,13 @@ function OperationModal({ option }) {
                 name="first"
                 options={timeOptions}
               />
-              <div className="operation-flew">~</div>
+              {/* <div className="operation-flew">~</div>
               <TimeDropdown
                 value={lastOrder.last}
                 onChange={handleLastOrderChange}
                 name="last"
                 options={timeOptions}
-              />
+              /> */}
             </div>
           </div>
           <div className="operation-dayoff">
@@ -339,14 +339,14 @@ function OperationModal({ option }) {
                       }
                       options={timeOptions}
                     />
-                    <span>~</span>
+                    {/* <span>~</span>
                     <TimeDropdown
                       value={dailySchedule[day].lastOrderEnd}
                       onChange={(e) =>
                         handleTimeChange(day, 'lastOrderEnd', e.target.value)
                       }
                       options={timeOptions}
-                    />
+                    /> */}
                   </div>
                 </div>
               ) : (

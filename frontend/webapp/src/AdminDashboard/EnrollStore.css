@@ -91,7 +91,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .submit-button:hover {
@@ -111,6 +111,8 @@
 }
 
 .operation-data {
+  cursor: pointer;
+  padding: 10px;
   cursor: pointer;
   padding: 10px;
   border: 1px solid #ccc;
@@ -137,6 +139,7 @@
   cursor: pointer; /* Add a pointer cursor on hover */
   border-radius: 8px; /* Rounded corners */
   transition: background-color 0.3s; /* Animation for background color change */
+  margin-left: 20px;
 }
 
 .upload-button:hover {
