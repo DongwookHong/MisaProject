@@ -13,59 +13,64 @@ const SelectShops = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBuildingBlock, setFilterBuildingBlock] = useState('');
   const [filterFloor, setFilterFloor] = useState('');
+  const [token, setToken] = useState('');
 
   // 고정된 건물 및 블록 목록
   const allBuildingBlocks = ['힐스테이트 11BL', '힐스테이트 12BL', '롯데캐슬'];
 
   useEffect(() => {
-    const fetchStores = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          '/api/stores',
-          // "https://api.misarodeo.com/api/stores",
-          {
-            headers: {
-              'x-api-key': API_KEY,
-            },
-          }
-        );
-
-        if (response.status === 204 || !response.data) {
-          setError('No data available');
-          setStores([]);
-        } else {
-          const parsedStores = response.data.flatMap((storeString) => {
-            try {
-              const storeData = JSON.parse(storeString);
-              return storeData.data.map((store) => ({
-                buildingBlock: getBuildingBlock(
-                  storeData.buildingName,
-                  storeData.buildingDong
-                ),
-                floor: storeData.floorNumber,
-                storeName: store.storeName,
-                storeNumber: store.storeNumber,
-              }));
-            } catch (err) {
-              console.error('Error parsing store data:', err);
-              return [];
-            }
-          });
-          setStores(parsedStores);
-          setFilteredStores(parsedStores);
-        }
-      } catch (error) {
-        console.error('Error fetching stores:', error);
-        setError('Failed to fetch stores. Please try again later.');
-        setStores([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
     fetchStores();
   }, []);
+
+  const fetchStores = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        '/api/stores',
+        {
+          headers: {
+            'x-api-key': API_KEY,
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 204 || !response.data) {
+        setError('No data available');
+        setStores([]);
+      } else {
+        const parsedStores = response.data.flatMap((storeString) => {
+          try {
+            const storeData = JSON.parse(storeString);
+            return storeData.data.map((store) => ({
+              buildingBlock: getBuildingBlock(
+                storeData.buildingName,
+                storeData.buildingDong
+              ),
+              floor: storeData.floorNumber,
+              storeName: store.storeName,
+              storeNumber: store.storeNumber,
+            }));
+          } catch (err) {
+            console.error('Error parsing store data:', err);
+            return [];
+          }
+        });
+        setStores(parsedStores);
+        setFilteredStores(parsedStores);
+      }
+    } catch (error) {
+      console.error('Error fetching stores:', error);
+      setError('Failed to fetch stores. Please try again later.');
+      setStores([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const filtered = stores.filter(
@@ -94,10 +99,17 @@ const SelectShops = () => {
 
     if (isConfirmed) {
       try {
-        // 여기에 실제 삭제 API 호출 로직을 추가할 수 있습니다.
-        // 예: await axios.delete(`/api/stores/${store.storeNumber}`, { headers: { 'x-api-key': API_KEY } });
+        await axios.delete(`/api/stores/${store.storeName}`, {
+          headers: {
+            'x-api-key': API_KEY,
+            'Authorization': `Bearer ${token}`,
+          },
+        });
 
-        setStores(stores.filter((s) => s.storeNumber !== store.storeNumber));
+        // 성공적으로 삭제된 경우, 로컬 상태 업데이트
+        setStores(stores.filter((s) => s.storeName !== store.storeName));
+        setFilteredStores(filteredStores.filter((s) => s.storeName !== store.storeName));
+        alert('상점이 성공적으로 삭제되었습니다.');
       } catch (error) {
         console.error('Error deleting store:', error);
         alert('상점 삭제에 실패했습니다. 다시 시도해 주세요.');
@@ -179,16 +191,8 @@ const SelectShops = () => {
                   <td className="border p-2">{store.storeName}</td>
                   <td className="border p-2">{store.storeNumber}</td>
                   <td className="border p-2">
-                    {/* <Link
-                      to={`/stores/update/${store.storeName}`}
-                      className="bg-yellow-500 text-white px-2 py-1 rounded mr-2">
-                      수정
-                    </Link> */}
-
                     <Link
-                      to={`/admin/modify/${encodeURIComponent(
-                        store.storeName
-                      )}`}
+                      to={`/admin/modify/${encodeURIComponent(store.storeName)}`}
                       className="admin-button modi-btn bg-red-500 text-white px-2 py-1 rounded">
                       수정
                     </Link>

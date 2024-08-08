@@ -19,6 +19,7 @@ import AddShop from './AdminDashboard/AdminAddShop.js';
 import ModifyShop from './AdminDashboard/AdminModify.js';
 import SelectShop from './AdminDashboard/AdminSelect.js';
 import ProtectedRoute from './utils/ProtectedRoute.js'; 
+import Pocha from './Adpage/Pocha1991.js';
 
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
   },
  
   { path: '/findad', element: <FindAD /> },
+  { path: '/pocha', element: <Pocha /> },
   { path: '*', element: <NotFound /> },
 ]);
 function App() {

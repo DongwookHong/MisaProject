@@ -1,0 +1,195 @@
+.pocha-container {
+    background-color: #F3E8FF;
+    min-height: 100vh;
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  
+  .pocha-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .pocha-header {
+    background: linear-gradient(to right, #7C3AED, #4338CA);
+    color: white;
+    padding: 24px;
+    text-align: center;
+  }
+  
+  .pocha-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .pocha-header p {
+    font-size: 20px;
+  }
+  
+  .pocha-main-content {
+    padding: 24px;
+  }
+  
+  .pocha-paragraph {
+    font-size: 18px;
+    margin-bottom: 24px;
+    color: #4B5563;
+  }
+  
+  .pocha-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .pocha-gallery {
+    margin-bottom: 24px;
+  }
+  
+  .pocha-gallery h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .pocha-image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .pocha-image-container img {
+    width: calc(33.333% - 8px);
+    height: 128px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .pocha-menu-button {
+    width: 100%;
+    background-color: #8B5CF6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+  
+  .pocha-menu-button span {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .pocha-menu-list {
+    background-color: #F3E8FF;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .pocha-menu-category {
+    margin-bottom: 16px;
+  }
+  
+  .pocha-menu-category h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #7C3AED;
+    margin-bottom: 8px;
+  }
+  
+  .pocha-menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #D1D5DB;
+  }
+  
+  .pocha-location {
+    background-color: #F3E8FF;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  
+  .pocha-location h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #7C3AED;
+  }
+  
+  .pocha-location p {
+    color: #4B5563;
+  }
+  
+  .pocha-instagram-button-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pocha-instagram-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #8B5CF6, #EC4899);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .pocha-feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .pocha-feature-icon-container {
+    background-color: #F3E8FF;
+    padding: 8px;
+    border-radius: 9999px;
+  }
+  
+  .pocha-feature-content {
+    flex: 1;
+  }
+  
+  .pocha-feature-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .pocha-feature-content p {
+    font-size: 14px;
+    color: #6B7280;
+  }
+  .pocha-location-button {
+    background-color: #7C3AED;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pocha-location-button:hover {
+    background-color: #6D28D9;
+  }
