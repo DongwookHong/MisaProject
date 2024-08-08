@@ -23,7 +23,7 @@ function ParkingDetail() {
           <div className="accordion-content">
             <h3>주차요금</h3>
             <ul>
-              <li>최초 1시간 무료 (매 10분 당 1,000원)</li>
+              <li>최초 1시간 무료 (매 10분 당 500원)</li>
             </ul>
             <h3>매장 이용시 무료 주차 안내</h3>
             <ul>
@@ -32,10 +32,9 @@ function ParkingDetail() {
               <li>영화관람 시: 3시간(추가 10분당 1,000원)</li>
             </ul>
             <h3>문의전화</h3>
-            <p className="custom-p">주차관리실 02-xxxx-xxxx</p>
+            <p className="custom-p">주차관리실 031-794-0352</p>
             <p className="custom-p">
-              주말/공휴일 공영주차장 이용시 구매 금액에 따라 요금 정산 (본관 1F
-              정문 안내데스크)
+              주말/공휴일 공영주차장 이용시 구매 금액에 따라 요금 정산 (주차 정산기 이용)
             </p>
           </div>
         )}
