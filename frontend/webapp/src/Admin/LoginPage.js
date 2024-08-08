@@ -31,14 +31,14 @@ const LoginPage = () => {
           if (responseText.startsWith("ey")) {
             console.log("Login successful. Token received.");
             localStorage.setItem("token", responseText);
-            navigate("/addshop"); // 로그인 성공 시 매장 등록 페이지로 이동
+            navigate("/admin/select"); // 로그인 성공 시 매장 등록 페이지로 이동
           } else {
             try {
               const data = JSON.parse(responseText);
               if (data.token) {
                 console.log("Login successful. Token:", data.token);
                 localStorage.setItem("token", data.token);
-                navigate("/addshop"); // 로그인 성공 시 매장 등록 페이지로 이동
+                navigate("/admin/select"); // 로그인 성공 시 매장 등록 페이지로 이동
               } else {
                 console.error("Login failed: No token in response");
                 setError("로그인 실패: 토큰이 없습니다.");
