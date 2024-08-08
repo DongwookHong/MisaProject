@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function TimeDropdown({ value, onChange, name, options }) {
   return (
@@ -7,8 +7,7 @@ function TimeDropdown({ value, onChange, name, options }) {
         className="dropdown-select"
         value={value}
         onChange={onChange}
-        name={name}
-      >
+        name={name}>
         <option value="">시간 선택</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>

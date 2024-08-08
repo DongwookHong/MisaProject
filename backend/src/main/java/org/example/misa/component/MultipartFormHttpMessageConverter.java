@@ -13,7 +13,7 @@ application/octet-stream 사용을 비활성화한다.
 */
 
 @Component
-public class MultipartFormHttpMessageConverter extends AbstractJackson2HttpMessageConverter {
+public final class MultipartFormHttpMessageConverter extends AbstractJackson2HttpMessageConverter {
 
     public MultipartFormHttpMessageConverter(ObjectMapper objectMapper) {
         super(objectMapper, MediaType.APPLICATION_OCTET_STREAM);

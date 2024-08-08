@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
-public class ApiKeyFilter implements Filter {
+public final class ApiKeyFilter implements Filter {
 
     private final String apiKeyHeaderName = "x-api-key";
 
