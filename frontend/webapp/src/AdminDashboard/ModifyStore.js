@@ -11,57 +11,59 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 function ModifyStore() {
   const { name } = useParams();
   const decodedName = decodeURIComponent(name);
+  console.log('the code name is ', decodedName);
+  const [storeData, setStoreData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // const fetchModifyStores = async () => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     // const response = await axios.get("https://api.misarodeo.com/api/menu", {
-  //     const response = await axios.get('/api/menu', {
-  //       headers: {
-  //         accept: '*/*',
-  //         'x-api-key': API_KEY,
-  //       },
-  //     });
-  //     console.log('API Response:', response.data);
+  const [storeName, setStoreName] = useState('');
+  const [building, setBuilding] = useState(null);
+  const [floor, setFloor] = useState(null);
+  const [detailAddress, setDetailAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [website, setWebsite] = useState('');
+  const [description, setDescription] = useState('');
 
-  //     if (!Array.isArray(response.data)) {
-  //       throw new Error('API 응답이 배열 형태가 아닙니다.');
-  //     }
+  const fetchStoreData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(`/api/stores/${decodedName}`, {
+        headers: {
+          accept: '*/*',
+          'x-api-key': API_KEY,
+        },
+      });
+      setStoreData(response.data);
+      // Populate the state with fetched data
+      setStoreName(response.data.name);
 
-  //     const parsedData = response.data.map((item) => JSON.parse(item));
-  //     console.log('Parsed data:', parsedData);
+      setBuilding({
+        value: response.data.buildingName,
+        label: response.data.buildingName,
+      });
+      setFloor({
+        value: response.data.floorNumber,
+        label: response.data.floorNumber,
+      });
+      setDetailAddress(response.data.detailAddress);
+      setPhone(response.data.phone);
+      console.log('phone num: ', response.data.phone);
+      setInstagram(response.data.instagram);
+      setWebsite(response.data.website);
+      setDescription(response.data.description);
+    } catch (error) {
+      console.error('Error fetching store data:', error);
+      setError(`매장 정보를 불러오는 데 실패했습니다: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  //     const processedData = parsedData.flatMap((floor) => {
-  //       if (!floor.data || !Array.isArray(floor.data)) {
-  //         console.warn('Invalid floor data:', floor);
-  //         return [];
-  //       }
-  //       return floor.data.map((store) => ({
-  //         ...store,
-  //         buildingName: floor.buildingName,
-  //         buildingDong: floor.buildingDong,
-  //         floorNumber: floor.floorNumber,
-  //       }));
-  //     });
-
-  //     console.log('Processed data:', processedData);
-
-  //     setAllStores(processedData);
-  //     setFilteredStores(processedData);
-  //   } catch (error) {
-  //     console.error('Error fetching stores:', error);
-  //     setError(`매장 정보를 불러오는 데 실패했습니다: ${error.message}`);
-  //     setAllStores([]);
-  //     setFilteredStores([]);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchModifyStores();
-  // }, []);
+  useEffect(() => {
+    fetchStoreData();
+  }, [decodedName]);
 
   const customStyles = {
     control: (provided) => ({
