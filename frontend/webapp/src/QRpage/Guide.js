@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "../style/QRpage/Guide_demo.css";
 import locpin from "../asset/tool/locpin.png";
 
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
 function Guide_demo({
   onIconClick,
   floorData,
@@ -26,7 +31,7 @@ function Guide_demo({
 
   const handleItemClick = (item, type) => {
     if (type === "store") {
-      navigate(`/storeinfo/${encodeURIComponent(item)}`);
+      navigate(`/storeinfo/${base64EncodeForAPI(item)}`);
     } else if (type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item)) {
       handleIconClick(item, type);
     }
@@ -121,7 +126,7 @@ function FacilityContent({ items, onIconClick, onItemClick, selectedItem, type }
             onClick={(e) => {
               e.stopPropagation();
               if (type === "store") {
-                navigate(`/storeinfo/${encodeURIComponent(item)}`);
+                navigate(`/storeinfo/${base64EncodeForAPI(item)}`);
               }
             }}
             style={{ cursor: type === "store" ? "pointer" : "default" }}

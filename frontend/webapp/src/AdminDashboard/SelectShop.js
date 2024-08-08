@@ -5,6 +5,11 @@ import './SelectShop.css';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
 const SelectShops = () => {
   const [stores, setStores] = useState([]);
   const [filteredStores, setFilteredStores] = useState([]);
@@ -30,7 +35,7 @@ const SelectShops = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        '/api/stores',
+        'https://apig.misarodeo.com/api/stores',
         {
           headers: {
             'x-api-key': API_KEY,
@@ -192,7 +197,7 @@ const SelectShops = () => {
                   <td className="border p-2">{store.storeNumber}</td>
                   <td className="border p-2">
                     <Link
-                      to={`/admin/modify/${encodeURIComponent(store.storeName)}`}
+                      to={`/admin/modify/${base64EncodeForAPI(store.storeName)}`}
                       className="admin-button modi-btn bg-red-500 text-white px-2 py-1 rounded">
                       수정
                     </Link>

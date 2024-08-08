@@ -8,6 +8,8 @@ import React, {
 import { LuShare, LuChevronDown, LuChevronUp } from 'react-icons/lu';
 import qrLocpin from '../asset/tool/locpin.png';
 
+
+
 const getManualBoundingRectFromPath = (pathElement) => {
   const pathLength = pathElement.getTotalLength();
   const points = [];
