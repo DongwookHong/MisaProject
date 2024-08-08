@@ -24,16 +24,6 @@ function EnrollStore() {
   const [floorOptions, setFloorOptions] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  const [token, setToken] = useState('');
-
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
 
   const customStyles = {
     control: (provided) => ({
@@ -115,13 +105,12 @@ function EnrollStore() {
       ...prevData,
       buildingName: selectedOption.buildingName,
       buildingDong: selectedOption.buildingDong,
-      floor: '', // Reset floor when building changes
+      floor: '',
     }));
 
-    // Update floor options based on selected building
     if (selectedOption.value === '힐스테이트 12BL') {
       setFloorOptions([
-        { value: '0', label: 'B1층' },
+        { value: 'B1', label: 'B1층' },
         { value: '1', label: '1층' },
         { value: '2', label: '2층' },
         { value: '3', label: '3층' },
@@ -137,9 +126,20 @@ function EnrollStore() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let updatedValue = value;
+    if (name === 'homePagePath' || name === 'instaPath') {
+      // URL이 http:// 또는 https://로 시작하는지 확인
+      if (
+        value &&
+        !value.startsWith('http://') &&
+        !value.startsWith('https://')
+      ) {
+        updatedValue = `https://${value}`;
+      }
+    }
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: updatedValue,
     }));
   };
 
@@ -169,7 +169,6 @@ function EnrollStore() {
         floorCode = '0';
     }
 
-    // Extract numbers from storeAddress
     const addressNumbers = storeAddress.replace(/\D/g, '');
     return `${buildingCode}${floorCode}${addressNumbers}`;
   };
@@ -177,7 +176,6 @@ function EnrollStore() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     const requiredFields = [
       'storeName',
       'buildingName',
@@ -237,7 +235,6 @@ function EnrollStore() {
       formDataToSend.append(`files`, file);
     });
 
-    // 디버깅을 위해 formData 내용을 콘솔에 출력
     console.log('Sending formData:', JSON.stringify(jsonData));
     for (let [key, value] of formDataToSend.entries()) {
       console.log(key, value);
@@ -247,13 +244,12 @@ function EnrollStore() {
       const response = await axios.post('/api/stores', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,  // 여기서 state에 저장된 토큰을 사용
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExMjk4MCwiZXhwIjoxNzIzMTE2NTgwfQ.KV7-2IswgZoUteYFrLHrMtxlw-WzkQnGtsLa1_oo9Bw`,
         },
       });
       console.log('Store registered successfully:', response.data);
       setPopupMessage('성공적으로 등록되었습니다');
       setShowPopup(true);
-      // Reset form after successful submission
       setFormData({
         storeName: '',
         buildingName: '',
@@ -278,7 +274,6 @@ function EnrollStore() {
     }
   };
 
-  // Initialize floor options
   useEffect(() => {
     setFloorOptions([
       { value: '1', label: '1층' },
@@ -297,7 +292,7 @@ function EnrollStore() {
           <div className="enroll-items">
             <div className="enroll-item">
               <h5 className="enroll-ask">
-                매장이름 <span style={{ color: 'red' }}>*필수제출</span>
+                매장이름 <span className="highlight-admin">*필수제출</span>
               </h5>
               <input
                 className="enroll-input"
@@ -309,7 +304,7 @@ function EnrollStore() {
             </div>
             <div className="enroll-item">
               <h5 className="enroll-ask">
-                매장위치 <span style={{ color: 'red' }}>*필수제출</span>
+                매장위치 <span className="highlight-admin">*필수제출</span>
               </h5>
               <div className="enrollselect-container">
                 <Select
@@ -380,27 +375,27 @@ function EnrollStore() {
                 name="storeNumber"
                 value={formData.storeNumber}
                 onChange={handleInputChange}
-                placeholder="등록할 매장 번호를 정확히 입력해주세요"
+                placeholder="- 를 포함하여 입력하여주세요. ex>010-0000-0000"
               />
             </div>
             <div className="enroll-item">
-              <h5 className="enroll-ask">매장 인스타그램 주소</h5>
-              <input
-                className="enroll-input"
-                name="instaPath"
-                value={formData.instaPath}
-                onChange={handleInputChange}
-                placeholder="등록할 인스타그램 주소를 정확히 입력해주세요"
-              />
-            </div>
-            <div className="enroll-item">
-              <h5 className="enroll-ask">매장 홈페이지 주소</h5>
+              <h5 className="enroll-ask">매장 대표 홈페이지</h5>
               <input
                 className="enroll-input"
                 name="homePagePath"
                 value={formData.homePagePath}
                 onChange={handleInputChange}
-                placeholder="등록할 매장 홈페이지 주소를 정확히 입력해주세요"
+                placeholder="등록할 매장 대표 홈페이지 링크를 입력해주세요"
+              />
+            </div>
+            <div className="enroll-item">
+              <h5 className="enroll-ask">인스타그램</h5>
+              <input
+                className="enroll-input"
+                name="instaPath"
+                value={formData.instaPath}
+                onChange={handleInputChange}
+                placeholder="등록할 매장 인스타그램 링크를 입력해주세요"
               />
             </div>
             <div className="enroll-item">
@@ -415,7 +410,8 @@ function EnrollStore() {
             </div>
             <div className="enroll-item">
               <h5 className="enroll-ask">
-                매장 사진 업로드 <span style={{ color: 'red' }}>*필수제출</span>
+                매장 사진 업로드{' '}
+                <span className="highlight-admin">*필수제출</span>
               </h5>
               <div className="file-upload-container">
                 <input
