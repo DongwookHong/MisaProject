@@ -28,7 +28,19 @@ const daysOfWeek = [
 ];
 const daysOfWeekKorean = ['월', '화', '수', '목', '금', '토', '일'];
 
-function OperationModal({ option, setStoreHours }) {
+// 영어 요일을 한글로 변환하는 함수
+const convertToKorean = (englishDay) => {
+  const index = daysOfWeek.indexOf(englishDay);
+  return daysOfWeekKorean[index];
+};
+
+// 한글 요일을 영어로 변환하는 함수
+const convertToEnglish = (koreanDay) => {
+  const index = daysOfWeekKorean.indexOf(koreanDay);
+  return daysOfWeek[index];
+};
+
+function OperationModal({ option, setStoreHours, initialStoreHours }) {
   const [weekdayHours, setWeekdayHours] = useState({ open: '', close: '' });
   const [weekendHours, setWeekendHours] = useState({ open: '', close: '' });
   const [breakTime, setBreakTime] = useState({ start: '' });
@@ -52,6 +64,45 @@ function OperationModal({ option, setStoreHours }) {
   );
 
   useEffect(() => {
+    if (initialStoreHours) {
+      const weekdayData = initialStoreHours.find(
+        (day) => day.dayOfWeek === '월'
+      );
+      const weekendData = initialStoreHours.find(
+        (day) => day.dayOfWeek === '토'
+      );
+
+      setWeekdayHours({
+        open: weekdayData?.openTime || '',
+        close: weekdayData?.closeTime || '',
+      });
+      setWeekendHours({
+        open: weekendData?.openTime || '',
+        close: weekendData?.closeTime || '',
+      });
+      setBreakTime({ start: weekdayData?.breakStartTime || '' });
+      setLastOrder({ time: weekdayData?.lastOrder || '' });
+
+      const closedDays = initialStoreHours
+        .filter((day) => !day.isOpen)
+        .map((day) => day.dayOfWeek);
+      setSelectedDays(closedDays);
+
+      const newDailySchedule = initialStoreHours.reduce((acc, day) => {
+        acc[convertToEnglish(day.dayOfWeek)] = {
+          isOpen: day.isOpen,
+          openTime: day.openTime,
+          closeTime: day.closeTime,
+          breakStartTime: day.breakStartTime,
+          lastOrderTime: day.lastOrder,
+        };
+        return acc;
+      }, {});
+      setDailySchedule(newDailySchedule);
+    }
+  }, [initialStoreHours]);
+
+  useEffect(() => {
     updateStoreHours();
   }, [
     weekdayHours,
@@ -68,10 +119,8 @@ function OperationModal({ option, setStoreHours }) {
 
     if (option === '모든 영업일이 같아요') {
       updatedStoreHours = daysOfWeek.map((day) => ({
-        dayOfWeek: day,
-        isOpen: !selectedDays.includes(
-          daysOfWeekKorean[daysOfWeek.indexOf(day)]
-        ),
+        dayOfWeek: convertToKorean(day),
+        isOpen: !selectedDays.includes(convertToKorean(day)),
         openTime: weekdayHours.open,
         closeTime: weekdayHours.close,
         breakStartTime: breakTime.start,
@@ -82,10 +131,8 @@ function OperationModal({ option, setStoreHours }) {
       updatedStoreHours = daysOfWeek.map((day) => {
         const isWeekend = day === 'SATURDAY' || day === 'SUNDAY';
         return {
-          dayOfWeek: day,
-          isOpen: !selectedDays.includes(
-            daysOfWeekKorean[daysOfWeek.indexOf(day)]
-          ),
+          dayOfWeek: convertToKorean(day),
+          isOpen: !selectedDays.includes(convertToKorean(day)),
           openTime: isWeekend ? weekendHours.open : weekdayHours.open,
           closeTime: isWeekend ? weekendHours.close : weekdayHours.close,
           breakStartTime: breakTime.start,
@@ -96,7 +143,7 @@ function OperationModal({ option, setStoreHours }) {
     } else if (option === '요일별로 달라요') {
       updatedStoreHours = daysOfWeek.map((day) => ({
         ...dailySchedule[day],
-        dayOfWeek: day,
+        dayOfWeek: convertToKorean(day),
       }));
     }
 
@@ -194,7 +241,7 @@ function OperationModal({ option, setStoreHours }) {
                 onChange={handleLastOrderChange}
                 name="time"
                 options={timeOptions}
-              />{' '}
+              />
             </div>
           </div>
           <div className="operation-dayoff">
@@ -276,7 +323,7 @@ function OperationModal({ option, setStoreHours }) {
                 onChange={handleLastOrderChange}
                 name="time"
                 options={timeOptions}
-              />{' '}
+              />
             </div>
           </div>
           <div className="operation-dayoff">
@@ -354,7 +401,7 @@ function OperationModal({ option, setStoreHours }) {
                         handleTimeChange(day, 'lastOrderTime', e.target.value)
                       }
                       options={timeOptions}
-                    />{' '}
+                    />
                   </div>
                 </div>
               ) : (
@@ -368,8 +415,6 @@ function OperationModal({ option, setStoreHours }) {
     default:
       content = null;
   }
-
-  if (!content) return null;
 
   return (
     <div className="operation-modal-container">
