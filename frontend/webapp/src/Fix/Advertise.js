@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import '../style/Fix/Advertise.css';
 import { useState, useEffect } from 'react';
@@ -7,6 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 
 function Advertise() {
   const bannerImage = ['/ban/ad1.png', '/ban/ad2.png'];
+  const bannerLinks = ['/pocha', '/findad'];
   const [curIdx, setCurIdx] = useState(0);
 
   const nextImage = () => {
@@ -22,9 +22,9 @@ function Advertise() {
   };
 
   useEffect(() => {
-    const interval = setInterval(nextImage, 5000); // 5초마다 전환
-    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval 제거
-  }, []); // 빈 배열로 변경하여 nextImage 함수만 사용
+    const interval = setInterval(nextImage, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handlers = useSwipeable({
     onSwipedLeft: nextImage,
@@ -35,7 +35,7 @@ function Advertise() {
 
   return (
     <div className="banner-container" {...handlers}>
-      <Banner imageUrl={bannerImage[curIdx]} />
+      <Banner imageUrl={bannerImage[curIdx]} linkTo={bannerLinks[curIdx]} />
       <div className="slide-indicator">
         {curIdx + 1} / {bannerImage.length}
       </div>
@@ -43,11 +43,11 @@ function Advertise() {
   );
 }
 
-function Banner({ imageUrl }) {
+function Banner({ imageUrl, linkTo }) {
   return (
     <div className="main_ban">
       <div className="banner-content">
-        <Link to="/findad">
+        <Link to={linkTo}>
           <img className="ban" src={imageUrl} alt="banner" />
         </Link>
       </div>
