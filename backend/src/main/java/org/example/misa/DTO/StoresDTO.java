@@ -29,7 +29,7 @@ public class StoresDTO {
         @JsonProperty("storeNumber")
         private String storeNumber;
 
-        public static StoresDTO.Data from(Block block) {
+        private static StoresDTO.Data from(Block block) {
             return new StoresDTO.Data(block.getStoreMember().getStoreName(), block.getStoreMember().getStoreNumber());
         }
 

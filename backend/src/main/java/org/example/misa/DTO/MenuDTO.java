@@ -40,7 +40,7 @@ public class MenuDTO {
         @JsonProperty("storeImage")
         private String storeImage;
 
-        public static Data from(Block block) {
+        private static Data from(Block block) {
             List<ImgPath> storeImages = block.getStoreMember().getImgPaths();
             String imgPath = "";
             if (storeImages != null && !storeImages.isEmpty()) {

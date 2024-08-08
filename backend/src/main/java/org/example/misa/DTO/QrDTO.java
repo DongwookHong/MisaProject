@@ -42,7 +42,7 @@ public class QrDTO {
         @JsonProperty("name")
         private String name;
 
-        public static Data from(Block block) {
+        private static Data from(Block block) {
             return new Data(block.getArea().toString(), block.getType(), block.getName());
         }
 

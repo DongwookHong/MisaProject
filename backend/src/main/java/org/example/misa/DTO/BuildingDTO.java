@@ -33,7 +33,7 @@ public class BuildingDTO {
         @JsonProperty("name")
         private String name;
 
-        public static BuildingDTO.Data from(Block block) {
+        private static BuildingDTO.Data from(Block block) {
             return new BuildingDTO.Data(block.getArea().toString(), block.getType(), block.getName());
         }
 
