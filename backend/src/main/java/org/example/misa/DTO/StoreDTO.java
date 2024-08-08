@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.misa.domain.Block;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.domain.StoreHours;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class StoreDTO {
                 storeMember.getBlock().getArea().toString(),
                 storeMember.getStoreName(),
                 storeMember.getInfo(),
-                StoreHoursData.from(storeMember.getStoreHours()),
+                StoreHoursData.dataList(storeMember.getStoreHours()),
                 storeMember.getHomePagePath(),
                 storeMember.getInstaPath(),
                 storeMember.getStoreNumber(),
@@ -77,16 +78,20 @@ public class StoreDTO {
         @JsonProperty
         private String lastOrder;
 
-        public static List<StoreDTO.StoreHoursData> from(List<StoreHours> storeHours) {
+        private static StoreDTO.StoreHoursData from(StoreHours storeHour) {
+            return new StoreDTO.StoreHoursData(storeHour.getDayOfWeek(),
+                    storeHour.isOpen(),
+                    storeHour.getOpenTime(),
+                    storeHour.getCloseTime(),
+                    storeHour.getBreakStartTime(),
+                    storeHour.getBreakEndTime(),
+                    storeHour.getLastOrder());
+        }
+
+        public static List<StoreDTO.StoreHoursData> dataList(List<StoreHours> storeHours) {
             List<StoreDTO.StoreHoursData> dataList = new ArrayList<>();
             for (StoreHours storeHour : storeHours) {
-                dataList.add(new StoreDTO.StoreHoursData(storeHour.getDayOfWeek(),
-                        storeHour.isOpen(),
-                        storeHour.getOpenTime(),
-                        storeHour.getCloseTime(),
-                        storeHour.getBreakStartTime(),
-                        storeHour.getBreakEndTime(),
-                        storeHour.getLastOrder()));
+                dataList.add(from(storeHour));
             }
             return dataList;
         }

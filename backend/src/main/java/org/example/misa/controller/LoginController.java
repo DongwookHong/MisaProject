@@ -18,4 +18,5 @@ public class LoginController {
         String token = adminService.login(request);
         return ResponseEntity.ok(token);
     }
+
 }

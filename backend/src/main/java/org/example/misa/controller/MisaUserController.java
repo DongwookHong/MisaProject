@@ -38,7 +38,7 @@ public class MisaUserController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/stores")
+    @GetMapping("/api/stores") //n + 1 수정
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
     public List<String> getStores() {
         List<Floor> floors = userService.findFloors();
@@ -81,7 +81,7 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/menu") //find-stores-sorted-by-building-name
+    @GetMapping("/api/menu") //find-stores-sorted-by-building-name, n + 1 수정
     @Operation(summary = "storelist 에 필요한 정보 조회", description = "모든 상점에 대해 각 상점의 이미지 URL 과 일부 정보 조회")
     public List<String> menu() {
         List<Floor> floors = userService.findFloors();
@@ -101,7 +101,7 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/qr-page")
+    @GetMapping("/api/qr-page") //n + 1 수정
     @Operation(summary = "qr-page 에 필요한 정보 조회", description = "층 별 이미지의 URL 및 상점 정보와 편의시설 정보 조회")
     public List<String> qrPage() {
         List<Floor> floors = userService.findFloors();
@@ -140,7 +140,7 @@ public class MisaUserController {
         return json;
     }
 
-    @GetMapping("/api/floor")
+    @GetMapping("/api/floor") //n + 1 수정
     @Operation(summary = "floor 에 필요한 정보 조회", description = "각 건물의 층을 기준으로 정렬괸 상점 정보 조회")
     public List<String> floor() {
         List<Floor> floors = userService.findFloors();
@@ -160,7 +160,7 @@ public class MisaUserController {
         return jsonSet;
     }
 
-    @GetMapping("/api/building/{buildingName}/{buildingDong}")
+    @GetMapping("/api/building/{buildingName}/{buildingDong}") //n + 1 수정
     @Operation(summary = "building 에 필요한 정보 조회", description = "PathValiable 로 전달된 정보에 속하는 모든 상점 조회")
     public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
 //        buildingName = DecodeURIUtils.decodeParamByBase64(buildingName);

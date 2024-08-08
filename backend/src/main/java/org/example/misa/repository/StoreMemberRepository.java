@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoreMemberRepository extends JpaRepository<StoreMember, Long> {
     StoreMember findByStoreName(String storeName);
-
 }
