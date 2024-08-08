@@ -2,24 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import './EnrollStore.css';
 import Select from 'react-select';
 import Operation_edit from './Operation_Edit.js';
-import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
-const API_KEY = process.env.REACT_APP_API_KEY;
 
 function ModifyStore() {
   const { name } = useParams();
   const decodedName = decodeURIComponent(name);
-  console.log('the code name is ', decodedName);
-  const [storeData, setStoreData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [storeName, setStoreName] = useState('');
   const [building, setBuilding] = useState(null);
   const [floor, setFloor] = useState(null);
-  const [detailAddress, setDetailAddress] = useState('');
+  const [blockId, setBlockId] = useState('');
   const [phone, setPhone] = useState('');
   const [instagram, setInstagram] = useState('');
   const [website, setWebsite] = useState('');
@@ -28,33 +23,25 @@ function ModifyStore() {
   const fetchStoreData = async () => {
     setIsLoading(true);
     setError(null);
+
     try {
       const response = await axios.get(`/api/stores/${decodedName}`, {
         headers: {
-          accept: '*/*',
-          'x-api-key': API_KEY,
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzEwMjk1MiwiZXhwIjoxNzIzMTA2NTUyfQ.MzO4paOwZp4zW3N2qP3uI-4i_nFtjG_1psNkzPmuyP8`,
         },
       });
-      setStoreData(response.data);
-      // Populate the state with fetched data
-      console.log(response.data);
-      setStoreName(response.data.storeName);
-      console.log(response.data.name);
-
-      setBuilding({
-        value: response.data.buildingName,
-        label: response.data.buildingName,
-      });
-      setFloor({
-        value: response.data.floorNumber,
-        label: response.data.floorNumber,
-      });
-      setDetailAddress(response.data.detailAddress);
-      setPhone(response.data.phone);
-      console.log('phone num: ', response.data.phone);
-      setInstagram(response.data.instagram);
-      setWebsite(response.data.website);
-      setDescription(response.data.description);
+      const data = response.data;
+      setStoreName(data.storeName);
+      setBuilding({ value: data.buildingName, label: data.buildingName });
+      setFloor({ value: data.floorNumber, label: data.floorNumber });
+      // setBlockId(data.blockId); //확인해봐야함!
+      setBlockId(data.blockId.slice(2));
+      setPhone(data.phone);
+      setInstagram(data.instagram);
+      setWebsite(data.website);
+      console.log('detailAddress:', data.blockId);
+      setDescription(data.description);
     } catch (error) {
       console.error('Error fetching store data:', error);
       setError(`매장 정보를 불러오는 데 실패했습니다: ${error.message}`);
@@ -88,6 +75,7 @@ function ModifyStore() {
       color: 'black',
     }),
   };
+
   const customStylesFloor = {
     ...customStyles,
     control: (provided) => ({
@@ -98,6 +86,7 @@ function ModifyStore() {
       height: '40px',
     }),
   };
+
   const buildingOptions = [
     { value: '힐스테이트 12BL', label: '힐스테이트 12BL' },
     { value: '힐스테이트 11BL', label: '힐스테이트 11BL' },
@@ -136,6 +125,10 @@ function ModifyStore() {
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <>
       <div className="enroll-container">
@@ -147,7 +140,10 @@ function ModifyStore() {
             <h5 className="enroll-ask">매장이름</h5>
             <input
               className="enroll-input"
-              placeholder="등록할 매장 이름을 정확히 입력해주세요"></input>
+              placeholder="등록할 매장 이름을 정확히 입력해주세요"
+              value={storeName}
+              onChange={(e) => setStoreName(e.target.value)}
+            />
             <button className="submit-button">수정</button>
           </div>
           <div className="enroll-item">
@@ -158,21 +154,30 @@ function ModifyStore() {
                 styles={customStyles}
                 options={buildingOptions}
                 placeholder="동 선택"
+                value={building}
+                onChange={setBuilding}
               />
               <Select
                 className="enroll-select-option-floor"
                 styles={customStylesFloor}
                 options={floorOptions}
                 placeholder="층 선택"
+                value={floor}
+                onChange={setFloor}
               />
             </div>
+
             <input
               className="enroll-input"
-              placeholder="상세 호실 주소를 입력해주세요"></input>
+              placeholder="상세 호실 주소를 입력해주세요"
+              value={blockId}
+              onChange={(e) => setBlockId(e.target.value)}
+            />
             <button className="submit-button">수정</button>
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">운영시간</h5>
+
             <div className="enroll-operationdata">
               <div
                 className={`operation-data ${
@@ -205,21 +210,30 @@ function ModifyStore() {
             <h5 className="enroll-ask">매장 연락처</h5>
             <input
               className="enroll-input"
-              placeholder="등록할 매장 번호를 정확히 입력해주세요"></input>
+              placeholder="등록할 매장 번호를 정확히 입력해주세요"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
             <button className="submit-button">수정</button>
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">매장 인스타그램 주소</h5>
             <input
               className="enroll-input"
-              placeholder="등록할 인스타그램 주소를 정확히 입력해주세요"></input>
+              placeholder="등록할 인스타그램 주소를 정확히 입력해주세요"
+              value={instagram}
+              onChange={(e) => setInstagram(e.target.value)}
+            />
             <button className="submit-button">수정</button>
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">매장 홈페이지 주소</h5>
             <input
               className="enroll-input"
-              placeholder="등록할 매장 홈페이지 주소를 정확히 입력해주세요"></input>
+              placeholder="등록할 매장 홈페이지 주소를 정확히 입력해주세요"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
             <button className="submit-button">수정</button>
           </div>
           <div className="enroll-item">
@@ -227,6 +241,8 @@ function ModifyStore() {
             <textarea
               className="enroll-input"
               placeholder="등록할 매장 상세 설명을 정확히 입력해주세요"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
             <button className="submit-button">수정</button>
           </div>
@@ -253,9 +269,8 @@ function ModifyStore() {
                     </button>
                   </div>
                 ))}
-                {/* </div> */}
-                <button className="submit-button">제출하기</button>
               </div>
+              <button className="submit-button">제출하기</button>
             </div>
           </div>
         </div>
