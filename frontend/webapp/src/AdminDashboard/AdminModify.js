@@ -2,18 +2,18 @@ import React from 'react';
 import './AdminAddShop.css';
 import DashSide from './DashSide';
 import DashHeader from './DashHeader';
-import EnrollStore from './EnrollStore';
+import ModifyStore from './ModifyStore.js';
 
-function AdminAddShop() {
+function AdminModify() {
   return (
     <div className="admin-dashboard">
       <DashSide />
       <DashHeader />
       <div className="main-content">
-        <EnrollStore />
+        <ModifyStore />
       </div>
     </div>
   );
 }
 
-export default AdminAddShop;
+export default AdminModify;
