@@ -37,7 +37,9 @@ function ModifyStore() {
       });
       setStoreData(response.data);
       // Populate the state with fetched data
-      setStoreName(response.data.name);
+      console.log(response.data);
+      setStoreName(response.data.storeName);
+      console.log(response.data.name);
 
       setBuilding({
         value: response.data.buildingName,
