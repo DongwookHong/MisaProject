@@ -195,7 +195,6 @@ function OperationModal({ option, setStoreHours }) {
                 name="time"
                 options={timeOptions}
               />{' '}
-              */}
             </div>
           </div>
           <div className="operation-dayoff">
@@ -278,7 +277,6 @@ function OperationModal({ option, setStoreHours }) {
                 name="time"
                 options={timeOptions}
               />{' '}
-              */}
             </div>
           </div>
           <div className="operation-dayoff">
@@ -357,7 +355,6 @@ function OperationModal({ option, setStoreHours }) {
                       }
                       options={timeOptions}
                     />{' '}
-                    */}
                   </div>
                 </div>
               ) : (
