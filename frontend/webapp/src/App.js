@@ -13,10 +13,12 @@ import BlogPage, { blogLoader } from './BlogPage/Blog';
 import StoreList from './StoreList/StoreList.js';
 import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
-import Admin from './Admin/AdminPage.js';
+
+import Admin from './Admin/LoginPage.js';
 import AddShop from './AdminDashboard/AdminAddShop.js';
 import ModifyShop from './AdminDashboard/AdminModify.js';
 import SelectShop from './AdminDashboard/AdminSelect.js';
+import ProtectedRoute from './utils/ProtectedRoute.js'; 
 
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
@@ -37,11 +39,20 @@ const router = createBrowserRouter([
     loader: mainComponentLoader,
     errorElement: <NotFound />,
   },
-  { path: '/admin', element: <Admin /> },
-  { path: '/admin/add', element: <AddShop /> },
-  { path: '/admin/modify/:name', element: <ModifyShop /> },
-  { path: '/admin/select', element: <SelectShop /> },
-
+  {
+    path: "/admin",
+    element: <Admin />
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute />,
+    children: [
+      { path: "add", element: <AddShop /> },
+      { path: "modify/:name", element: <ModifyShop /> },
+      { path: "select", element: <SelectShop /> }
+    ]
+  },
+ 
   { path: '/findad', element: <FindAD /> },
   { path: '*', element: <NotFound /> },
 ]);
