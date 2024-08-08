@@ -10,15 +10,22 @@ import '../style/BlogPage/BlogPage.css';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
 export async function blogLoader({ params }) {
   const { name } = params;
   try {
-    const encodedName = encodeURIComponent(name);
+    const encodedName = base64EncodeForAPI(name);
 
     // Fetch store data
     // const storeResponse = await fetch(
     // `https://api.misarodeo.com/api/stores/${encodedName}`,
-    const storeResponse = await fetch(`/api/stores/${encodedName}`, {
+    const storeResponse = await fetch(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
       headers: {
         accept: '*/*',
         'x-api-key': API_KEY,

@@ -5,7 +5,14 @@ import axios from "axios";
 import "../style/FloorMenu/FloorMenu.css";
 import mapImage from "../asset/tool/mapimage.png";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "";
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
 
 function BuildingSelector() {
   const { selectedBuilding, setSelectedBuilding, setFloorData, selectedFloor } =
@@ -40,9 +47,14 @@ function BuildingSelector() {
     try {
       const response = await axios.get(
         // `https://api.misarodeo.com/api/building/${encodeURIComponent(
-        `/api/building/${encodeURIComponent(buildingName)}/${encodeURIComponent(
+        `https://apig.misarodeo.com/api/building/${base64EncodeForAPI(buildingName)}/${encodeURIComponent(
           buildingDong
-        )}`
+        )}`, {
+          headers: {
+            accept: "*/*",
+            "x-api-key": API_KEY,
+          },
+        }
       );
       const parsedData = response.data.map((item) => JSON.parse(item));
       setFloorData(parsedData);

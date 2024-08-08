@@ -14,6 +14,12 @@ import CurToDest from "./CurToDest.js";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
 function FindSpot() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -51,7 +57,7 @@ function FindSpot() {
     const fetchStoreData = async () => {
       try {
         const response = await axios.get(
-          `/api/find-spot/${encodeURIComponent(name)}`,
+          `https://apig.misarodeo.com/api/find-spot/${base64EncodeForAPI(name)}`,
           // const response = await axios.get(
           // `https://api.misarodeo.com/api/find-spot/${encodeURIComponent(name)}`,
           {

@@ -6,14 +6,14 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://api.misarodeo.com",
+      target: "https://apig.misarodeo.com",
       changeOrigin: true,
     })
   );
   app.use(
     "/login",
     createProxyMiddleware({
-      target: "https://api.misarodeo.com",
+      target: "https://apig.misarodeo.com",
       changeOrigin: true,
     })
   );

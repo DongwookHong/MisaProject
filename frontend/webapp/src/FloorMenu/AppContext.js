@@ -2,6 +2,14 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+function base64Encode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -28,8 +36,16 @@ export const AppProvider = ({ children }) => {
         // const response = await axios.get(
         //   `https://api.misarodeo.com/api/building/${buildingName}/${buildingDong}`
         // );
+        const encodedBuildingName = base64Encode(buildingName);
+        
+
         const response = await axios.get(
-          `/api/building/${buildingName}/${buildingDong}`
+          `https://apig.misarodeo.com/api/building/${encodedBuildingName}/${buildingDong}`, {
+            headers: {
+              accept: "*/*",
+              "x-api-key": API_KEY,
+            },
+          }
         );
         const parsedData = response.data.map((item) => JSON.parse(item));
         setFloorData(parsedData);
