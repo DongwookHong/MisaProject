@@ -1,20 +1,21 @@
-import React from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import MainFooter from '../Fix/MainFooter.js';
-import MainHeader from '../Fix/MainHeader.js';
-import ShareModal from './ShareModal.js';
-import Slide from './BlogPhotoSlide.js';
-import InfoPage from './InfoPage';
-import '../style/BlogPage/BlogPage.css';
+import React from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import MainFooter from "../Fix/MainFooter.js";
+import MainHeader from "../Fix/MainHeader.js";
+import ShareModal from "./ShareModal.js";
+import Slide from "./BlogPhotoSlide.js";
+import InfoPage from "./InfoPage";
+import "../style/BlogPage/BlogPage.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-
 function base64EncodeForAPI(str) {
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-    return String.fromCharCode('0x' + p1);
-  }));
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode("0x" + p1);
+    })
+  );
 }
 
 export async function blogLoader({ params }) {
@@ -25,37 +26,38 @@ export async function blogLoader({ params }) {
     // Fetch store data
     // const storeResponse = await fetch(
     // `https://api.misarodeo.com/api/stores/${encodedName}`,
-    const storeResponse = await fetch(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    // const storeResponse = await fetch(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    const storeResponse = await fetch(`/api/stores/${encodedName}`, {
       headers: {
-        accept: '*/*',
-        'x-api-key': API_KEY,
+        accept: "*/*",
+        "x-api-key": API_KEY,
       },
     });
 
     if (!storeResponse.ok) {
-      throw new Response('Store Not Found', { status: 404 });
+      throw new Response("Store Not Found", { status: 404 });
     }
 
     const storeData = await storeResponse.json();
 
     let images = [];
     if (storeData.storeImage) {
-      const url = storeData.storeImage.startsWith('http')
+      const url = storeData.storeImage.startsWith("http")
         ? storeData.storeImage
         : `https://${storeData.storeImage}`;
       images = [url];
     } else if (Array.isArray(storeData.storeImages)) {
       images = storeData.storeImages
-        .filter((url) => typeof url === 'string')
-        .map((url) => (url.startsWith('http') ? url : `https://${url}`));
+        .filter((url) => typeof url === "string")
+        .map((url) => (url.startsWith("http") ? url : `https://${url}`));
     }
 
     return {
       storeData: { ...storeData, images },
     };
   } catch (error) {
-    console.error('Error fetching data:', error);
-    throw new Response('Error loading data', { status: 500 });
+    console.error("Error fetching data:", error);
+    throw new Response("Error loading data", { status: 500 });
   }
 }
 
@@ -67,7 +69,7 @@ function Blog() {
 
   React.useEffect(() => {
     if (!storeData) {
-      navigate('/404');
+      navigate("/404");
     } else {
       window.scrollTo(0, 0);
     }
@@ -92,7 +94,7 @@ function Blog() {
         handleShowModal();
       }
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
     }
   };
 
