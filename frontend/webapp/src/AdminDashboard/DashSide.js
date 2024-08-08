@@ -28,16 +28,16 @@ function DashSide() {
             </Link>
           </div>
         </div>
-        <div className="dashside-item">
-          <Link to="/admin/add">
+        <Link to="/admin/add">
+          <div className="dashside-item">
             <div>
               <img src={plusImage} alt="Plus" className="dashside-image" />
             </div>
             <div>
               <a href="/monitoring">상점 등록</a>
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
       <div className="dashside-footer">
         <button className="logout-button">
