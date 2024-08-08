@@ -33,7 +33,7 @@ function ModifyStore() {
       const response = await axios.get(`/api/stores/${decodedName}`, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExMDUzNywiZXhwIjoxNzIzMTE0MTM3fQ.2bKsrbfR5mqNVPgaXvvImiZo9EGXQlI1sDwVCyt7y_c`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
         },
       });
       const data = response.data;
@@ -135,7 +135,7 @@ function ModifyStore() {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExMDUzNywiZXhwIjoxNzIzMTE0MTM3fQ.2bKsrbfR5mqNVPgaXvvImiZo9EGXQlI1sDwVCyt7y_c`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
           },
         }
       );
