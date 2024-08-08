@@ -6,11 +6,18 @@ import './AdminModify.css'; // CSS 파일 경로를 적절히 조정하세요
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
+
 export async function modifyStoreLoader({ params }) {
   const { name } = params;
   try {
-    const encodedName = encodeURIComponent(name);
-    const response = await axios.get(`/api/stores/${encodedName}`, {
+    const encodedName = base64EncodeForAPI(name);
+    const response = await axios.get(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
       headers: {
         accept: '*/*',
         'x-api-key': API_KEY,

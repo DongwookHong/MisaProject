@@ -23,7 +23,7 @@ function TenantList() {
           setIsLoading(false);
           return;
         }
-        const response = await axios.get("/api/floor", {
+        const response = await axios.get("https://apig.misarodeo.com/api/floor", {
           // const response = await axios.get(
           //   "https://api.misarodeo.com/api/floor",
           // {

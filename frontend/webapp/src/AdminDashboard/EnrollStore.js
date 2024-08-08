@@ -4,6 +4,12 @@ import Select from 'react-select';
 import OperationModal from './OperationModal.js';
 import axios from 'axios';
 
+function base64Encode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
 function EnrollStore() {
   const [formData, setFormData] = useState({
     storeName: '',

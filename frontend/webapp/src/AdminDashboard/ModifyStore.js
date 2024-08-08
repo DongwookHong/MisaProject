@@ -25,12 +25,23 @@ function ModifyStore() {
   const [storeImages, setStoreImages] = useState([]);
   const fileInputRef = useRef(null);
 
+
+
+
+function base64EncodeForAPI(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+
+
+
   const fetchStoreData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get(`/api/stores/${decodedName}`, {
+      const response = await axios.get(`https://apig.misarodeo.com/api/stores/${decodedName}`, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExMDUzNywiZXhwIjoxNzIzMTE0MTM3fQ.2bKsrbfR5mqNVPgaXvvImiZo9EGXQlI1sDwVCyt7y_c`,
