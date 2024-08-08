@@ -1,14 +1,13 @@
-import React from "react";
+import React from 'react';
 
-function TimeDropdown({ value, onChange, name, options }) {
+function TimeDrop_Edit({ value, onChange, name, options }) {
   return (
     <div className="custom-dropdown">
       <select
         className="dropdown-select"
         value={value}
         onChange={onChange}
-        name={name}
-      >
+        name={name}>
         <option value="">시간 선택</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -20,4 +19,4 @@ function TimeDropdown({ value, onChange, name, options }) {
   );
 }
 
-export default TimeDropdown;
+export default TimeDrop_Edit;

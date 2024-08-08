@@ -15,6 +15,9 @@ import FindAD from './Fix/FindAD.js';
 import NotFound from './Static/NotFound.js';
 import Admin from './Admin/AdminPage.js';
 import AddShop from './AdminDashboard/AdminAddShop.js';
+import ModifyShop from './AdminDashboard/AdminModify.js';
+import SelectShop from './AdminDashboard/AdminSelect.js';
+
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
   { path: '/qr/:id', element: <QrPage /> },
@@ -35,7 +38,9 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
   },
   { path: '/admin', element: <Admin /> },
-  { path: '/addshop', element: <AddShop /> },
+  { path: '/admin/add', element: <AddShop /> },
+  { path: '/admin/modify/:name', element: <ModifyShop /> },
+  { path: '/admin/select', element: <SelectShop /> },
 
   { path: '/findad', element: <FindAD /> },
   { path: '*', element: <NotFound /> },

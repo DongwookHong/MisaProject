@@ -1,0 +1,46 @@
+.select-items {
+  margin-top: 50px;
+  padding-top: 20px;
+}
+
+.search-adminstore {
+  margin-bottom: 40px !important;
+  width: 70% !important;
+  padding: 10px !important;
+}
+
+.flex-adminstore {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  background-color: #faf5ff;
+  width: 95%;
+  border-radius: 5px;
+}
+
+.border-adminstore {
+  width: 95% !important;
+}
+
+.build-adminstore {
+  padding: 12px !important;
+  margin-right: 10px !important;
+}
+
+.admin-button {
+  margin-right: 5px;
+  border: none;
+}
+
+.modi-btn {
+  background-color: #bdafff;
+}
+
+.del-btn {
+  background-color: #f67e7e;
+}
+
+.selectadmin-trheader {
+  background-color: #faf5ff;
+  font-size: 1.2em;
+}
