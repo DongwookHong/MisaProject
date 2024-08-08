@@ -24,6 +24,16 @@ function EnrollStore() {
   const [floorOptions, setFloorOptions] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [token, setToken] = useState('');
+
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
 
   const customStyles = {
     control: (provided) => ({
@@ -111,7 +121,7 @@ function EnrollStore() {
     // Update floor options based on selected building
     if (selectedOption.value === '힐스테이트 12BL') {
       setFloorOptions([
-        { value: 'B1', label: 'B1층' },
+        { value: '0', label: 'B1층' },
         { value: '1', label: '1층' },
         { value: '2', label: '2층' },
         { value: '3', label: '3층' },
@@ -237,7 +247,7 @@ function EnrollStore() {
       const response = await axios.post('/api/stores', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzA4MzI4NiwiZXhwIjoxNzIzMDg2ODg2fQ._hYpHaXYw0l30Jw-3t2y1lMRc8486GgO8Mh3b1n2qEU`,
+          Authorization: `Bearer ${token}`,  // 여기서 state에 저장된 토큰을 사용
         },
       });
       console.log('Store registered successfully:', response.data);
