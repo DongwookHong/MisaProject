@@ -48,7 +48,9 @@ function BuildingSelector() {
     try {
       const response = await axios.get(
         // `https://api.misarodeo.com/api/building/${encodeURIComponent(
-        // `https://apig.misarodeo.com/api/building/${base64EncodeForAPI(buildingName)}/${encodeURIComponent(
+        // `https://apig.misarodeo.com/api/building/${base64EncodeForAPI(
+        // buildingName
+        // )}/${encodeURIComponent(
         `/api/building/${base64EncodeForAPI(buildingName)}/${encodeURIComponent(
           buildingDong
         )}`,

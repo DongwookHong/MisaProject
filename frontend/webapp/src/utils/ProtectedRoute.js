@@ -1,8 +1,8 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     // 토큰이 없으면 로그인 페이지로 리다이렉트

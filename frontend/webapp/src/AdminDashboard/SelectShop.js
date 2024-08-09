@@ -26,23 +26,23 @@ const SelectShops = () => {
   const allBuildingBlocks = ["힐스테이트 11BL", "힐스테이트 12BL", "롯데캐슬"];
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = sessionStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+      fetchStores(storedToken);
     }
-    fetchStores();
   }, []);
 
-  const fetchStores = async () => {
+  const fetchStores = async (storedToken) => {
     try {
       setLoading(true);
+      // const response = await axios.get("/api/stores", {
       const response = await axios.get(
-        // 'https://apig.misarodeo.com/api/stores',
+        // "https://apig.misarodeo.com/api/stores",
         "/api/stores",
         {
           headers: {
-            "x-api-key": API_KEY,
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${storedToken}`,
           },
         }
       );
@@ -63,9 +63,23 @@ const SelectShops = () => {
               storeName: store.storeName,
               storeNumber: store.storeNumber,
             }));
-          } catch (err) {
-            console.error("Error parsing store data:", err);
-            return [];
+          } catch (error) {
+            console.error("Error fetching stores:", error);
+            if (error.response) {
+              // 서버가 2xx 범위를 벗어나는 상태 코드로 응답한 경우
+              setError(
+                `Failed to fetch stores. Server responded with ${error.response.status}: ${error.response.data}`
+              );
+            } else if (error.request) {
+              // 요청이 전송되었지만 응답을 받지 못한 경우
+              setError(
+                "Failed to fetch stores. No response received from server."
+              );
+            } else {
+              // 요청 설정 중에 오류가 발생한 경우
+              setError(`Failed to fetch stores. Error: ${error.message}`);
+            }
+            setStores([]);
           }
         });
         setStores(parsedStores);
