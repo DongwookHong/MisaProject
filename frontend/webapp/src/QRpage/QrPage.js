@@ -20,15 +20,16 @@ function QrPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios.get(
-        //   "https://apig.misarodeo.com/api/qr-page",
-        //   {
-        const response = await axios.get("/api/qr-page", {
-          headers: {
-            accept: "*/*",
-            "x-api-key": API_KEY,
-          },
-        });
+        const response = await axios.get(
+          "https://apig.misarodeo.com/api/qr-page",
+          {
+            // const response = await axios.get("/api/qr-page", {
+            headers: {
+              accept: "*/*",
+              "x-api-key": API_KEY,
+            },
+          }
+        );
         const parsedData = response.data.map((item) => JSON.parse(item));
         setFloorData(parsedData);
         setIsLoading(false);

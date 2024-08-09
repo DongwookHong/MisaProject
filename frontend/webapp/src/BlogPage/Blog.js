@@ -23,15 +23,16 @@ export async function blogLoader({ params }) {
   try {
     const encodedName = base64EncodeForAPI(name);
 
-    // const storeResponse = await fetch(
-    //   `https://apig.misarodeo.com/api/stores/${encodedName}`,
-    //   {
-    const storeResponse = await fetch(`/api/stores/${encodedName}`, {
-      headers: {
-        accept: "*/*",
-        "x-api-key": API_KEY,
-      },
-    });
+    const storeResponse = await fetch(
+      `https://apig.misarodeo.com/api/stores/${encodedName}`,
+      {
+        // const storeResponse = await fetch(`/api/stores/${encodedName}`, {
+        headers: {
+          accept: "*/*",
+          "x-api-key": API_KEY,
+        },
+      }
+    );
 
     if (!storeResponse.ok) {
       throw new Response("Store Not Found", { status: 404 });

@@ -23,6 +23,8 @@ function ModifyStore() {
   const [homePagePath, setHomePagePath] = useState("");
   const [storeInfo, setStoreInfo] = useState("");
   const [storeImages, setStoreImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [storeAddress, setStoreAddress] = useState("");
   const fileInputRef = useRef(null);
 
   function base64EncodeForAPI(str) {
@@ -32,36 +34,83 @@ function ModifyStore() {
       })
     );
   }
-  const token = sessionStorage.getItem("token");
+
+  const generateBlockId = (buildingName, buildingDong, floor, storeAddress) => {
+    let buildingCode = "0";
+    if (buildingName === "힐스테이트") {
+      buildingCode = buildingDong === "A" ? "1" : "2";
+    } else if (buildingName === "롯데캐슬") {
+      buildingCode = "3";
+    }
+
+    let floorCode;
+    switch (floor) {
+      case "B1":
+        floorCode = "0";
+        break;
+      case "1":
+        floorCode = "1";
+        break;
+      case "2":
+        floorCode = "2";
+        break;
+      case "3":
+        floorCode = "3";
+        break;
+      default:
+        floorCode = "0";
+    }
+
+    const addressNumbers = storeAddress.replace(/\D/g, "");
+    return `${buildingCode}${floorCode}${addressNumbers}`;
+  };
+
   const fetchStoreData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // const response = await axios.get(
-      // `https://apig.misarodeo.com/api/stores/${decodedName}`,
-      // {
-      const response = await axios.get(`/api/stores/${decodedName}`, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      });
+      const encodedName = base64EncodeForAPI(name);
+
+      const response = await axios.get(
+        `https://apig.misarodeo.com/api/stores/${decodedName}`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
       const data = response.data;
+      console.log(response.data);
+      if (
+        !data.storeName ||
+        !data.buildingName ||
+        !data.floorNumber ||
+        !data.blockId
+      ) {
+        throw new Error("필수 필드가 누락되었습니다.");
+      }
+
+      // Set required fields
       setStoreName(data.storeName);
       setBuilding({ value: data.buildingName, label: data.buildingName });
-      setFloor({ value: data.floorNumber, label: data.floorNumber });
-      // setBlockId(data.blockId); //확인해봐야함!
-      setBlockId(data.blockId.slice(2));
-      setStoreHours(data.storeHours);
-      setStorePhone(data.storePhone);
-      console.log("store Phone: ", storePhone);
-      setStoreImages(data.storeImages);
+      setFloor({
+        value: data.floorNumber,
+        label: `${data.floorNumber}층`,
+      });
+      setBlockId(data.blockId);
+      setStoreAddress(data.storeAddress || "");
 
-      setInstaPath(data.instaPath);
-      setHomePagePath(data.homePagePath);
-      console.log("detailAddress:", data.blockId);
-      setStoreInfo(data.storeInfo);
+      // Set optional fields with default values
+      setStoreHours(data.storeHours || []);
+      setStorePhone(data.storePhone || "");
+      setStoreImages(data.storeImages || []);
+      setInstaPath(data.instaPath || "");
+      setHomePagePath(data.homePagePath || "");
+      setStoreInfo(data.storeInfo || "");
+
+      console.log("Received store data:", data);
     } catch (error) {
       console.error("Error fetching store data:", error);
       setError(`매장 정보를 불러오는 데 실패했습니다: ${error.message}`);
@@ -108,40 +157,136 @@ function ModifyStore() {
   };
 
   const buildingOptions = [
-    { value: "힐스테이트 12BL", label: "힐스테이트 12BL" },
-    { value: "힐스테이트 11BL", label: "힐스테이트 11BL" },
-    { value: "롯데캐슬", label: "롯데캐슬" },
+    { value: "힐스테이트 12BL", label: "힐스테이트 12BL", dong: "A" },
+    { value: "힐스테이트 11BL", label: "힐스테이트 11BL", dong: "B" },
+    { value: "롯데캐슬", label: "롯데캐슬", dong: "C" },
   ];
 
   const floorOptions = [
-    { value: "B1층", label: "B1층" },
-    { value: "1층", label: "1층" },
-    { value: "2층", label: "2층" },
-    { value: "3층", label: "3층" },
+    { value: "B1", label: "B1층" },
+    { value: "1", label: "1층" },
+    { value: "2", label: "2층" },
+    { value: "3", label: "3층" },
   ];
 
   const [selectedOption, setSelectedOption] = useState("모든 영업일이 같아요");
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    const newFiles = files.filter(
+      (file) =>
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/gif"
+    );
+
+    if (selectedFiles.length + newFiles.length > 5) {
+      alert("최대 5개의 파일만 업로드할 수 있습니다.");
+      return;
+    }
+
+    setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleRemoveFile = (index) => {
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      let buildingName, buildingDong;
+      if (
+        building.value === "힐스테이트 12BL" ||
+        building.value === "힐스테이트 11BL"
+      ) {
+        buildingName = "힐스테이트";
+        buildingDong = building.value === "힐스테이트 12BL" ? "A" : "B";
+      } else {
+        buildingName = "롯데캐슬";
+        buildingDong = "C";
+      }
+
+      const floorNumber = parseInt(floor.value, 10);
+
+      const generatedBlockId = generateBlockId(
+        buildingName,
+        buildingDong,
+        floor.value,
+        storeAddress
+      );
+
+      const updatedData = {
+        storeName,
+        buildingName,
+        buildingDong,
+        floor: floorNumber,
+        blockId: generatedBlockId,
+        storePhone,
+        instaPath,
+        homePagePath,
+        storeInfo,
+        storeHours,
+        storeAddress,
+      };
+
+      console.log(
+        "Sending data to server:",
+        JSON.stringify(updatedData, null, 2)
+      );
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("storeMemberForm", JSON.stringify(updatedData));
+
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach((file, index) => {
+          formDataToSend.append(`files`, file);
+        });
+      } else {
+        formDataToSend.append("files", new File([], "empty.txt"));
+      }
+
+      const encodedName = base64EncodeForAPI(name);
+
+      const response = await axios.put(
+        `https://apig.misarodeo.com/api/stores/${decodedName}`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("매장 정보가 성공적으로 수정되었습니다.");
+      } else {
+        throw new Error("Failed to update store information");
+      }
+    } catch (error) {
+      console.error("Error updating store data:", error);
+      setError(`매장 정보 수정에 실패했습니다: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setStoreImages((prevImages) => [...prevImages, ...newImages]);
-  };
-
-  const handleRemoveImage = (index) => {
-    if (window.confirm("정말로 이 이미지를 삭제하시겠습니까?")) {
-      setStoreImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    }
-  };
-
   const handleImageChange = async () => {
     try {
       await axios.put(
-        `/api/stores/${decodedName}/images`,
+        `https://apig.misarodeo.com//api/stores/${decodedName}/images`,
         { storeImages },
         {
           headers: {
@@ -256,12 +401,11 @@ function ModifyStore() {
                 onChange={setFloor}
               />
             </div>
-
             <input
               className="enroll-input"
               placeholder="상세 호실 주소를 입력해주세요"
-              value={blockId}
-              onChange={(e) => setBlockId(e.target.value)}
+              value={storeAddress}
+              onChange={(e) => setStoreAddress(e.target.value)}
             />
           </div>
           <div className="enroll-item">
@@ -309,7 +453,6 @@ function ModifyStore() {
               </div>
             )}
           </div>
-
           <div className="enroll-item">
             <h5 className="enroll-ask">매장 연락처</h5>
             <input
@@ -351,46 +494,49 @@ function ModifyStore() {
               매장 사진 업로드{" "}
               <span className="highlight-admin">*필수제출</span>
             </h5>
-
-            <div className="admin-images">
-              {storeImages.map((image, index) => (
-                <div key={index} className="admin-each-image">
-                  <img
-                    src={image}
-                    alt={`Store ${index + 1}`}
-                    className="admin-store-images"
-                  />
-                  <button
-                    onClick={() => handleRemoveImage(index)}
-                    className="remove-image"
-                  >
-                    삭제
-                  </button>
-                </div>
-              ))}
+            <div className="file-upload-container">
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+                accept="image/jpg,image/jpeg,image/png,image/gif"
+                multiple
+              />
+              <button
+                type="button"
+                className="upload-button"
+                onClick={handleUploadClick}
+              >
+                파일 선택 ({selectedFiles.length}/5)
+              </button>
+              <div className="file-list">
+                {selectedFiles.map((file, index) => (
+                  <div key={index} className="file-item">
+                    <span>{file.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleImageUpload}
-              accept="image/*"
-              multiple
-            />
           </div>
         </div>
-        <div className="admin-edit-photo-btn">
-          <button
-            onClick={() => fileInputRef.current.click()}
-            className="upload-button"
-          >
-            사진 추가 ({storeImages.length}/5)
-          </button>
-        </div>
       </div>
-      <button className="last-submit-button">최종수정하기</button>
+      <button className="last-submit-button" onClick={handleSubmit}>
+        최종수정하기
+      </button>
+      {isLoading && <div>수정 중...</div>}
+      {error && <div className="error-message">{error}</div>}
     </>
   );
 }
 
 export default ModifyStore;
+
+
+
