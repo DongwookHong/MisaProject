@@ -18,7 +18,9 @@ export async function modifyStoreLoader({ params }) {
   const { name } = params;
   try {
     const encodedName = base64EncodeForAPI(name);
-    // const response = await axios.get(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    // const response = await axios.get(
+    // `https://apig.misarodeo.com/api/stores/${encodedName}`,
+    // {
     const response = await axios.get(`/api/stores/${encodedName}`, {
       headers: {
         accept: "*/*",

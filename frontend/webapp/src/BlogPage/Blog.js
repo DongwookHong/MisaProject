@@ -23,10 +23,9 @@ export async function blogLoader({ params }) {
   try {
     const encodedName = base64EncodeForAPI(name);
 
-    // Fetch store data
     // const storeResponse = await fetch(
-    // `https://api.misarodeo.com/api/stores/${encodedName}`,
-    // const storeResponse = await fetch(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    //   `https://apig.misarodeo.com/api/stores/${encodedName}`,
+    //   {
     const storeResponse = await fetch(`/api/stores/${encodedName}`, {
       headers: {
         accept: "*/*",

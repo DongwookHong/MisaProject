@@ -38,16 +38,15 @@ function ModifyStore() {
     setError(null);
 
     try {
-      const response = await axios.get(
-        `https://apig.misarodeo.com/api/stores/${decodedName}`,
-        {
-          // const response = await axios.get(`/api/stores/${decodedName}`, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
-        }
-      );
+      // const response = await axios.get(
+      // `https://apig.misarodeo.com/api/stores/${decodedName}`,
+      // {
+      const response = await axios.get(`/api/stores/${decodedName}`, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      });
       const data = response.data;
       setStoreName(data.storeName);
       setBuilding({ value: data.buildingName, label: data.buildingName });
