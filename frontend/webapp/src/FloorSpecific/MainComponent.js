@@ -23,7 +23,9 @@ export async function mainComponentLoader({ params }) {
   try {
     const response = await fetch(
       // `https://api.misarodeo.com/api/building/${encodeURIComponent(
-      // `https://apig.misarodeo.com/api/building/${base64EncodeForAPI(building)}/${encodeURIComponent(
+      // `https://apig.misarodeo.com/api/building/${base64EncodeForAPI(
+      //   building
+      // )}/${encodeURIComponent(
       `/api/building/${base64EncodeForAPI(building)}/${encodeURIComponent(
         wing
       )}`,

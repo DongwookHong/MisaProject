@@ -18,7 +18,6 @@ function StoreList() {
     setIsLoading(true);
     setError(null);
     try {
-      // const response = await axios.get("https://api.misarodeo.com/api/menu", {
       // const response = await axios.get("https://apig.misarodeo.com/api/menu", {
       const response = await axios.get("/api/menu", {
         headers: {

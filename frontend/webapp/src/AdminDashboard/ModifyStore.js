@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './EnrollStore.css';
-import Select from 'react-select';
-import Operation_edit from './Operation_Edit.js';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import './renderTime.css';
+import React, { useState, useRef, useEffect } from "react";
+import "./EnrollStore.css";
+import Select from "react-select";
+import Operation_edit from "./Operation_Edit.js";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./renderTime.css";
 
 function ModifyStore() {
   const { name } = useParams();
@@ -14,35 +14,37 @@ function ModifyStore() {
   const [storeHours, setStoreHours] = useState([]);
   const [showEditOptions, setShowEditOptions] = useState(false);
 
-  const [storeName, setStoreName] = useState('');
+  const [storeName, setStoreName] = useState("");
   const [building, setBuilding] = useState(null);
   const [floor, setFloor] = useState(null);
-  const [blockId, setBlockId] = useState('');
-  const [storePhone, setStorePhone] = useState('');
-  const [instaPath, setInstaPath] = useState('');
-  const [homePagePath, setHomePagePath] = useState('');
-  const [storeInfo, setStoreInfo] = useState('');
+  const [blockId, setBlockId] = useState("");
+  const [storePhone, setStorePhone] = useState("");
+  const [instaPath, setInstaPath] = useState("");
+  const [homePagePath, setHomePagePath] = useState("");
+  const [storeInfo, setStoreInfo] = useState("");
   const [storeImages, setStoreImages] = useState([]);
   const fileInputRef = useRef(null);
 
   function base64EncodeForAPI(str) {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-        return String.fromCharCode('0x' + p1);
+        return String.fromCharCode("0x" + p1);
       })
     );
   }
-
+  const token = sessionStorage.getItem("token");
   const fetchStoreData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // const response = await axios.get(`https://apig.misarodeo.com/api/stores/${decodedName}`, {
+      // const response = await axios.get(
+      // `https://apig.misarodeo.com/api/stores/${decodedName}`,
+      // {
       const response = await axios.get(`/api/stores/${decodedName}`, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
       const data = response.data;
@@ -53,15 +55,15 @@ function ModifyStore() {
       setBlockId(data.blockId.slice(2));
       setStoreHours(data.storeHours);
       setStorePhone(data.storePhone);
-      console.log('store Phone: ', storePhone);
+      console.log("store Phone: ", storePhone);
       setStoreImages(data.storeImages);
 
       setInstaPath(data.instaPath);
       setHomePagePath(data.homePagePath);
-      console.log('detailAddress:', data.blockId);
+      console.log("detailAddress:", data.blockId);
       setStoreInfo(data.storeInfo);
     } catch (error) {
-      console.error('Error fetching store data:', error);
+      console.error("Error fetching store data:", error);
       setError(`매장 정보를 불러오는 데 실패했습니다: ${error.message}`);
     } finally {
       setIsLoading(false);
@@ -75,22 +77,22 @@ function ModifyStore() {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: 'white',
-      borderColor: '#f0f0ff',
-      boxShadow: 'none',
-      borderRadius: '5px',
-      height: '40px',
-      minHeight: '40px',
-      width: '20em',
+      backgroundColor: "white",
+      borderColor: "#f0f0ff",
+      boxShadow: "none",
+      borderRadius: "5px",
+      height: "40px",
+      minHeight: "40px",
+      width: "20em",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: 'white',
+      backgroundColor: "white",
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? '#bdafff' : 'white',
-      color: 'black',
+      backgroundColor: state.isSelected ? "#bdafff" : "white",
+      color: "black",
     }),
   };
 
@@ -99,26 +101,26 @@ function ModifyStore() {
     control: (provided) => ({
       ...provided,
       ...customStyles.control(provided),
-      width: '10em',
-      minHeight: '40px',
-      height: '40px',
+      width: "10em",
+      minHeight: "40px",
+      height: "40px",
     }),
   };
 
   const buildingOptions = [
-    { value: '힐스테이트 12BL', label: '힐스테이트 12BL' },
-    { value: '힐스테이트 11BL', label: '힐스테이트 11BL' },
-    { value: '롯데캐슬', label: '롯데캐슬' },
+    { value: "힐스테이트 12BL", label: "힐스테이트 12BL" },
+    { value: "힐스테이트 11BL", label: "힐스테이트 11BL" },
+    { value: "롯데캐슬", label: "롯데캐슬" },
   ];
 
   const floorOptions = [
-    { value: 'B1층', label: 'B1층' },
-    { value: '1층', label: '1층' },
-    { value: '2층', label: '2층' },
-    { value: '3층', label: '3층' },
+    { value: "B1층", label: "B1층" },
+    { value: "1층", label: "1층" },
+    { value: "2층", label: "2층" },
+    { value: "3층", label: "3층" },
   ];
 
-  const [selectedOption, setSelectedOption] = useState('모든 영업일이 같아요');
+  const [selectedOption, setSelectedOption] = useState("모든 영업일이 같아요");
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -131,7 +133,7 @@ function ModifyStore() {
   };
 
   const handleRemoveImage = (index) => {
-    if (window.confirm('정말로 이 이미지를 삭제하시겠습니까?')) {
+    if (window.confirm("정말로 이 이미지를 삭제하시겠습니까?")) {
       setStoreImages((prevImages) => prevImages.filter((_, i) => i !== index));
     }
   };
@@ -143,15 +145,15 @@ function ModifyStore() {
         { storeImages },
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
-      alert('이미지가 성공적으로 업데이트되었습니다.');
+      alert("이미지가 성공적으로 업데이트되었습니다.");
     } catch (error) {
-      console.error('Error updating store images:', error);
-      alert('이미지 업데이트에 실패했습니다.');
+      console.error("Error updating store images:", error);
+      alert("이미지 업데이트에 실패했습니다.");
     }
   };
 
@@ -234,7 +236,7 @@ function ModifyStore() {
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">
-              매장위치 <span className="highlight-admin">*필수제출</span>{' '}
+              매장위치 <span className="highlight-admin">*필수제출</span>{" "}
             </h5>
             <div className="enrollselect-container">
               <Select
@@ -273,25 +275,28 @@ function ModifyStore() {
                 <div className="enroll-operationdata-modi">
                   <div
                     className={`operation-data ${
-                      selectedOption === '모든 영업일이 같아요'
-                        ? 'selected'
-                        : ''
+                      selectedOption === "모든 영업일이 같아요"
+                        ? "selected"
+                        : ""
                     }`}
-                    onClick={() => handleOptionClick('모든 영업일이 같아요')}>
+                    onClick={() => handleOptionClick("모든 영업일이 같아요")}
+                  >
                     모든 영업일이 같아요
                   </div>
                   <div
                     className={`operation-data ${
-                      selectedOption === '평일/주말 달라요' ? 'selected' : ''
+                      selectedOption === "평일/주말 달라요" ? "selected" : ""
                     }`}
-                    onClick={() => handleOptionClick('평일/주말 달라요')}>
+                    onClick={() => handleOptionClick("평일/주말 달라요")}
+                  >
                     평일/주말 달라요
                   </div>
                   <div
                     className={`operation-data ${
-                      selectedOption === '요일별로 달라요' ? 'selected' : ''
+                      selectedOption === "요일별로 달라요" ? "selected" : ""
                     }`}
-                    onClick={() => handleOptionClick('요일별로 달라요')}>
+                    onClick={() => handleOptionClick("요일별로 달라요")}
+                  >
                     요일별로 달라요
                   </div>
                   {showEditOptions && (
@@ -343,7 +348,7 @@ function ModifyStore() {
           </div>
           <div className="enroll-item">
             <h5 className="enroll-ask">
-              매장 사진 업로드{' '}
+              매장 사진 업로드{" "}
               <span className="highlight-admin">*필수제출</span>
             </h5>
 
@@ -357,7 +362,8 @@ function ModifyStore() {
                   />
                   <button
                     onClick={() => handleRemoveImage(index)}
-                    className="remove-image">
+                    className="remove-image"
+                  >
                     삭제
                   </button>
                 </div>
@@ -366,7 +372,7 @@ function ModifyStore() {
             <input
               type="file"
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               onChange={handleImageUpload}
               accept="image/*"
               multiple
@@ -376,7 +382,8 @@ function ModifyStore() {
         <div className="admin-edit-photo-btn">
           <button
             onClick={() => fileInputRef.current.click()}
-            className="upload-button">
+            className="upload-button"
+          >
             사진 추가 ({storeImages.length}/5)
           </button>
         </div>
