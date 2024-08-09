@@ -250,7 +250,7 @@ function EnrollStore() {
       const response = await axios.post('/api/stores', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExMjk4MCwiZXhwIjoxNzIzMTE2NTgwfQ.KV7-2IswgZoUteYFrLHrMtxlw-WzkQnGtsLa1_oo9Bw`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
         },
       });
       console.log('Store registered successfully:', response.data);
