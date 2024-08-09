@@ -59,10 +59,10 @@ function FindSpot() {
     const fetchStoreData = async () => {
       try {
         const response = await axios.get(
-          `/api/find-spot/${base64EncodeForAPI(name)}`,
-          // `https://apig.misarodeo.com/api/find-spot/${base64EncodeForAPI(
-          // name
-          // )}`,
+          // `/api/find-spot/${base64EncodeForAPI(name)}`,
+          `https://apig.misarodeo.com/api/find-spot/${base64EncodeForAPI(
+            name
+          )}`,
           // const response = await axios.get(
           // `https://api.misarodeo.com/api/find-spot/${encodeURIComponent(name)}`,
           {

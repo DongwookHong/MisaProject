@@ -25,8 +25,8 @@ function EnterArcade() {
         const response = await axios.get(
           // "/api/qr-page",
           // const response = await axios.get(
-          // "https://apig.misarodeo.com/api/qr-page",
-          "/api/qr-page",
+          "https://apig.misarodeo.com/api/qr-page",
+          // "/api/qr-page",
           {
             headers: {
               accept: "*/*",

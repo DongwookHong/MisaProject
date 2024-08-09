@@ -41,8 +41,8 @@ export const AppProvider = ({ children }) => {
         const encodedBuildingName = base64Encode(buildingName);
 
         const response = await axios.get(
-          // `https://apig.misarodeo.com/api/building/${encodedBuildingName}/${buildingDong}`,
-          `/api/building/${encodedBuildingName}/${buildingDong}`,
+          `https://apig.misarodeo.com/api/building/${encodedBuildingName}/${buildingDong}`,
+          // `/api/building/${encodedBuildingName}/${buildingDong}`,
           {
             headers: {
               accept: "*/*",

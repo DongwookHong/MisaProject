@@ -24,7 +24,13 @@ const SelectShops = () => {
 
   // 고정된 건물 및 블록 목록
   const allBuildingBlocks = ["힐스테이트 11BL", "힐스테이트 12BL", "롯데캐슬"];
-
+  function base64EncodeForAPI(str) {
+    return btoa(
+      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+        return String.fromCharCode("0x" + p1);
+      })
+    );
+  }
   useEffect(() => {
     const storedToken = sessionStorage.getItem("token");
     if (storedToken) {
@@ -38,8 +44,8 @@ const SelectShops = () => {
       setLoading(true);
       // const response = await axios.get("/api/stores", {
       const response = await axios.get(
-        // "https://apig.misarodeo.com/api/stores",
-        "/api/stores",
+        "https://apig.misarodeo.com/api/stores",
+        // "/api/stores",
         {
           headers: {
             Authorization: `Bearer ${storedToken}`,
@@ -121,12 +127,16 @@ const SelectShops = () => {
 
     if (isConfirmed) {
       try {
-        await axios.delete(`/api/stores/${store.storeName}`, {
-          headers: {
-            "x-api-key": API_KEY,
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const aaencode = base64EncodeForAPI(store.storeName);
+        await axios.delete(
+          `https://apig.misarodeo.com/api/stores/${aaencode}`,
+          {
+            headers: {
+              "x-api-key": API_KEY,
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         // 성공적으로 삭제된 경우, 로컬 상태 업데이트
         setStores(stores.filter((s) => s.storeName !== store.storeName));

@@ -118,16 +118,16 @@ function EnrollStore() {
 
     if (selectedOption.value === "힐스테이트 12BL") {
       setFloorOptions([
-        { value: -1, label: "B1층" },
-        { value: 1, label: "1층" },
-        { value: 2, label: "2층" },
-        { value: 3, label: "3층" },
+        { value: "B1", label: "B1층" },
+        { value: "1", label: "1층" },
+        { value: "2", label: "2층" },
+        { value: "3", label: "3층" },
       ]);
     } else {
       setFloorOptions([
-        { value: 1, label: "1층" },
-        { value: 2, label: "2층" },
-        { value: 3, label: "3층" },
+        { value: "1", label: "1층" },
+        { value: "2", label: "2층" },
+        { value: "3", label: "3층" },
       ]);
     }
   };
@@ -161,16 +161,16 @@ function EnrollStore() {
 
     let floorCode;
     switch (floor) {
-      case -1:
+      case "B1":
         floorCode = "0";
         break;
-      case 1:
+      case "1":
         floorCode = "1";
         break;
-      case 2:
+      case "2":
         floorCode = "2";
         break;
-      case 3:
+      case "3":
         floorCode = "3";
         break;
       default:
@@ -227,7 +227,7 @@ function EnrollStore() {
       instaPath: formData.instaPath,
       blockId: blockId,
       storeNumber: formData.storeNumber,
-      floor: parseInt(formData.floor, 10), // 여기서 정수로 변환
+      floor: formData.floor,
       storeName: formData.storeName,
       info: formData.info,
       storeHours: storeHours,
@@ -249,12 +249,17 @@ function EnrollStore() {
     }
 
     try {
-      const response = await axios.post("/api/stores", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.post(
+        "https://apig.misarodeo.com/api/stores",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzE2Mjc1MSwiZXhwIjoxNzIzMTY2MzUxfQ.Zz3JlMvu5snxJdBvPWny-LTduSiZXayw2o0xcQZGW-o`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
       console.log("Store registered successfully:", response.data);
       setPopupMessage("성공적으로 등록되었습니다");
       setShowPopup(true);
@@ -284,9 +289,9 @@ function EnrollStore() {
 
   useEffect(() => {
     setFloorOptions([
-      { value: 1, label: "1층" },
-      { value: 2, label: "2층" },
-      { value: 3, label: "3층" },
+      { value: "1", label: "1층" },
+      { value: "2", label: "2층" },
+      { value: "3", label: "3층" },
     ]);
   }, []);
 
@@ -334,7 +339,7 @@ function EnrollStore() {
                     }))
                   }
                   value={floorOptions.find(
-                    (option) => option.value === parseInt(formData.floor, 10)
+                    (option) => option.value === formData.floor
                   )}
                 />
               </div>
@@ -418,7 +423,6 @@ function EnrollStore() {
                 onChange={handleInputChange}
                 placeholder="등록할 매장 상세 설명을 정확히 입력해주세요"
               />
-              Updated EnrollStore Component
             </div>
             <div className="enroll-item">
               <h5 className="enroll-ask">
