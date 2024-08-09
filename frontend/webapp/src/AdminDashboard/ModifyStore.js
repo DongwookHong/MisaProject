@@ -32,19 +32,22 @@ function ModifyStore() {
       })
     );
   }
-
+  const token = sessionStorage.getItem('token');
   const fetchStoreData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // const response = await axios.get(`https://apig.misarodeo.com/api/stores/${decodedName}`, {
-      const response = await axios.get(`/api/stores/${decodedName}`, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
-        },
-      });
+      const response = await axios.get(
+        `https://apig.misarodeo.com/api/stores/${decodedName}`,
+        {
+          // const response = await axios.get(`/api/stores/${decodedName}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          },
+        }
+      );
       const data = response.data;
       setStoreName(data.storeName);
       setBuilding({ value: data.buildingName, label: data.buildingName });
@@ -144,7 +147,7 @@ function ModifyStore() {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );

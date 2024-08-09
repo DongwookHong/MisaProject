@@ -5,9 +5,11 @@ import OperationModal from './OperationModal.js';
 import axios from 'axios';
 
 function base64Encode(str) {
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-    return String.fromCharCode('0x' + p1);
-  }));
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode('0x' + p1);
+    })
+  );
 }
 
 function EnrollStore() {
@@ -247,12 +249,17 @@ function EnrollStore() {
     }
 
     try {
-      const response = await axios.post('/api/stores', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzExNDM4MSwiZXhwIjoxNzIzMTE3OTgxfQ.mqmhDVqy9utWZXV39xE4yLAeM7osJtqMiip1r1ZQHL8`,
-        },
-      });
+      const response = await axios.post(
+        'https://apig.misarodeo.com/api/stores',
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1pc2FhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzE2Mjc1MSwiZXhwIjoxNzIzMTY2MzUxfQ.Zz3JlMvu5snxJdBvPWny-LTduSiZXayw2o0xcQZGW-o`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          },
+        }
+      );
       console.log('Store registered successfully:', response.data);
       setPopupMessage('성공적으로 등록되었습니다');
       setShowPopup(true);
