@@ -1,32 +1,34 @@
-import React, { useState, useRef } from 'react';
-import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
-import Select from 'react-select';
-import axios from 'axios';
-import './AdminModify.css'; // CSS 파일 경로를 적절히 조정하세요
+import React, { useState, useRef } from "react";
+import { useLoaderData, useParams, useNavigate } from "react-router-dom";
+import Select from "react-select";
+import axios from "axios";
+import "./AdminModify.css"; // CSS 파일 경로를 적절히 조정하세요
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 function base64EncodeForAPI(str) {
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-    return String.fromCharCode('0x' + p1);
-  }));
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode("0x" + p1);
+    })
+  );
 }
-
 
 export async function modifyStoreLoader({ params }) {
   const { name } = params;
   try {
     const encodedName = base64EncodeForAPI(name);
-    const response = await axios.get(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    // const response = await axios.get(`https://apig.misarodeo.com/api/stores/${encodedName}`, {
+    const response = await axios.get(`/api/stores/${encodedName}`, {
       headers: {
-        accept: '*/*',
-        'x-api-key': API_KEY,
+        accept: "*/*",
+        "x-api-key": API_KEY,
       },
     });
-    console.log('Loader data:', response.data);
+    console.log("Loader data:", response.data);
     return { storeData: response.data };
   } catch (error) {
-    console.error('Error fetching store data:', error);
+    console.error("Error fetching store data:", error);
     return { storeData: null };
   }
 }
@@ -36,26 +38,26 @@ function ModifyStore() {
   const { name } = useParams();
   const navigate = useNavigate();
 
-  console.log('Component received data:', storeData);
+  console.log("Component received data:", storeData);
 
-  const [storeName, setStoreName] = useState(storeData?.storeName || '');
+  const [storeName, setStoreName] = useState(storeData?.storeName || "");
   const [building, setBuilding] = useState({
-    value: storeData?.buildingName || '',
-    label: storeData?.buildingName || '',
+    value: storeData?.buildingName || "",
+    label: storeData?.buildingName || "",
   });
   const [floor, setFloor] = useState({
-    value: storeData?.floorNumber || '',
-    label: storeData?.floorNumber || '',
+    value: storeData?.floorNumber || "",
+    label: storeData?.floorNumber || "",
   });
   const [detailAddress, setDetailAddress] = useState(
-    storeData?.detailAddress || ''
+    storeData?.detailAddress || ""
   );
-  const [phone, setPhone] = useState(storeData?.phone || '');
-  const [instagram, setInstagram] = useState(storeData?.instagram || '');
-  const [website, setWebsite] = useState(storeData?.website || '');
-  const [description, setDescription] = useState(storeData?.description || '');
+  const [phone, setPhone] = useState(storeData?.phone || "");
+  const [instagram, setInstagram] = useState(storeData?.instagram || "");
+  const [website, setWebsite] = useState(storeData?.website || "");
+  const [description, setDescription] = useState(storeData?.description || "");
 
-  const [selectedOption, setSelectedOption] = useState('모든 영업일이 같아요');
+  const [selectedOption, setSelectedOption] = useState("모든 영업일이 같아요");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const fileInputRef = useRef(null);
 
@@ -66,22 +68,22 @@ function ModifyStore() {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: 'white',
-      borderColor: '#f0f0ff',
-      boxShadow: 'none',
-      borderRadius: '5px',
-      height: '40px',
-      minHeight: '40px',
-      width: '20em',
+      backgroundColor: "white",
+      borderColor: "#f0f0ff",
+      boxShadow: "none",
+      borderRadius: "5px",
+      height: "40px",
+      minHeight: "40px",
+      width: "20em",
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: 'white',
+      backgroundColor: "white",
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? '#bdafff' : 'white',
-      color: 'black',
+      backgroundColor: state.isSelected ? "#bdafff" : "white",
+      color: "black",
     }),
   };
 
@@ -90,23 +92,23 @@ function ModifyStore() {
     control: (provided) => ({
       ...provided,
       ...customStyles.control(provided),
-      width: '10em',
-      minHeight: '40px',
-      height: '40px',
+      width: "10em",
+      minHeight: "40px",
+      height: "40px",
     }),
   };
 
   const buildingOptions = [
-    { value: '힐스테이트 12BL', label: '힐스테이트 12BL' },
-    { value: '힐스테이트 11BL', label: '힐스테이트 11BL' },
-    { value: '롯데캐슬', label: '롯데캐슬' },
+    { value: "힐스테이트 12BL", label: "힐스테이트 12BL" },
+    { value: "힐스테이트 11BL", label: "힐스테이트 11BL" },
+    { value: "롯데캐슬", label: "롯데캐슬" },
   ];
 
   const floorOptions = [
-    { value: 'B1층', label: 'B1층' },
-    { value: '1층', label: '1층' },
-    { value: '2층', label: '2층' },
-    { value: '3층', label: '3층' },
+    { value: "B1층", label: "B1층" },
+    { value: "1층", label: "1층" },
+    { value: "2층", label: "2층" },
+    { value: "3층", label: "3층" },
   ];
 
   const handleOptionClick = (option) => {
@@ -116,7 +118,7 @@ function ModifyStore() {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (selectedFiles.length + files.length > 5) {
-      alert('최대 5개의 파일만 업로드할 수 있습니다.');
+      alert("최대 5개의 파일만 업로드할 수 있습니다.");
       return;
     }
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
@@ -133,7 +135,7 @@ function ModifyStore() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // 여기에 제출 로직을 구현하세요
-    console.log('Form submitted');
+    console.log("Form submitted");
     // 예: API 호출 후 리다이렉트
     // await updateStore();
     // navigate('/admin/select');
@@ -183,17 +185,18 @@ function ModifyStore() {
           <label className="modify-label">운영시간</label>
           <div className="operation-options">
             {[
-              '모든 영업일이 같아요',
-              '평일/주말 달라요',
-              '요일별로 달라요',
+              "모든 영업일이 같아요",
+              "평일/주말 달라요",
+              "요일별로 달라요",
             ].map((option) => (
               <button
                 key={option}
                 type="button"
                 className={`operation-option ${
-                  selectedOption === option ? 'selected' : ''
+                  selectedOption === option ? "selected" : ""
                 }`}
-                onClick={() => handleOptionClick(option)}>
+                onClick={() => handleOptionClick(option)}
+              >
                 {option}
               </button>
             ))}
@@ -242,7 +245,7 @@ function ModifyStore() {
             <input
               type="file"
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               onChange={handleFileChange}
               accept="image/*"
               multiple
@@ -250,7 +253,8 @@ function ModifyStore() {
             <button
               type="button"
               className="upload-button"
-              onClick={handleUploadClick}>
+              onClick={handleUploadClick}
+            >
               파일 선택 ({selectedFiles.length}/5)
             </button>
             <div className="file-list">

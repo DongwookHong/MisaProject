@@ -4,9 +4,11 @@ import "../style/QRpage/Guide_demo.css";
 import locpin from "../asset/tool/locpin.png";
 
 function base64EncodeForAPI(str) {
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-    return String.fromCharCode('0x' + p1);
-  }));
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode("0x" + p1);
+    })
+  );
 }
 function Guide_demo({
   onIconClick,
@@ -32,7 +34,10 @@ function Guide_demo({
   const handleItemClick = (item, type) => {
     if (type === "store") {
       navigate(`/storeinfo/${base64EncodeForAPI(item)}`);
-    } else if (type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item)) {
+    } else if (
+      type === "facility" &&
+      ["화장실", "에스컬레이터", "엘리베이터"].includes(item)
+    ) {
       handleIconClick(item, type);
     }
   };
@@ -56,12 +61,12 @@ function Guide_demo({
       if (indexA !== -1 && indexB !== -1) return indexA - indexB;
       if (indexA !== -1) return -1;
       if (indexB !== -1) return 1;
-      return a.localeCompare(b, 'ko');
+      return a.localeCompare(b, "ko");
     });
 
     return {
       facilityItems: sortedFacilities,
-      storeItems: [...new Set(stores)].sort((a, b) => a.localeCompare(b, 'ko')),
+      storeItems: [...new Set(stores)].sort((a, b) => a.localeCompare(b, "ko")),
     };
   }, [floorData]);
 
@@ -109,7 +114,13 @@ function Guide_demo({
   );
 }
 
-function FacilityContent({ items, onIconClick, onItemClick, selectedItem, type }) {
+function FacilityContent({
+  items,
+  onIconClick,
+  onItemClick,
+  selectedItem,
+  type,
+}) {
   const navigate = useNavigate();
 
   return (
@@ -118,23 +129,34 @@ function FacilityContent({ items, onIconClick, onItemClick, selectedItem, type }
         <div
           className={`facility-item ${item === selectedItem ? "selected" : ""}`}
           key={index}
-          onClick={() => type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item) ? onItemClick(item, type) : null}
-          style={{ cursor: type === "facility" && ["화장실", "에스컬레이터", "엘리베이터"].includes(item) ? "pointer" : "default" }}
+          onClick={() =>
+            type === "facility" &&
+            ["화장실", "에스컬레이터", "엘리베이터"].includes(item)
+              ? onItemClick(item, type)
+              : null
+          }
+          style={{
+            cursor:
+              type === "facility" &&
+              ["화장실", "에스컬레이터", "엘리베이터"].includes(item)
+                ? "pointer"
+                : "default",
+          }}
         >
-          <span 
+          <span
             className="item-name"
             onClick={(e) => {
               e.stopPropagation();
               if (type === "store") {
-                navigate(`/storeinfo/${base64EncodeForAPI(item)}`);
+                navigate(`/storeinfo/${item}`);
               }
             }}
             style={{ cursor: type === "store" ? "pointer" : "default" }}
           >
             {item}
           </span>
-          <span 
-            className="logospace" 
+          <span
+            className="logospace"
             onClick={(e) => {
               e.stopPropagation();
               onIconClick(item, type);

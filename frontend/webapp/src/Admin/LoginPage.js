@@ -13,7 +13,8 @@ const LoginPage = () => {
     e.preventDefault();
     if (username && password) {
       try {
-        const response = await fetch("https://apig.misarodeo.com/login", {
+        // const response = await fetch("https://apig.misarodeo.com/login", {
+        const response = await fetch("/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
