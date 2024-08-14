@@ -15,7 +15,7 @@ public final class ValidationUtils {
     @Autowired private StoreMemberRepository storeMemberRepository;
 
     public Floor validateExistFloorAndBuilding(String floorName, String buildingName, String buildingDong) {
-        Floor floor = floorRepository.findByFloorAndBuildingNameAndBuildingDong(floorName,buildingName, buildingDong);
+        Floor floor = floorRepository.findByFloorAndBuildingNameAndBuildingDong(floorName, buildingName, buildingDong);
 
         if (floor == null) {
             throw new IllegalStateException("해당 건물 혹은 층이 존재하지 않습니다.");
