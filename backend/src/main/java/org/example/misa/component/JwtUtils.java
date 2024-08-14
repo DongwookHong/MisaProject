@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.Date; // calendar or time 클래스로 변경 (Date는 레거시)
 
 @Slf4j
 @Component

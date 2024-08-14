@@ -33,7 +33,7 @@ public class MisaAdminController {
     @Operation(summary = "상점 수정", description = "관리자 권한으로 상점 수정시 해당 요청을 담당하는 API, floor 의 value 는 Int 로 넣어주세요. 허용되는 이미지 파일의 확장자는 jpg, jpeg, png, gif 입니다.")
     public String updateStore(@PathVariable("name") String name, @RequestPart("storeMemberForm") StoreMemberForm storeMemberForm, @RequestPart("files") List<MultipartFile> files) {
 
-//        name = DecodeURIUtils.decodeParamByBase64(name);
+        name = DecodeURIUtils.decodeParamByBase64(name);
         String storeName = adminService.update(name, storeMemberForm, files);
         return "update store: " + storeName;
     }
@@ -42,7 +42,7 @@ public class MisaAdminController {
     @Operation(summary = "상점 삭제", description = "관리자 권한으로 상점 삭제시 해당 요청을 담당하는 API")
     public String deleteStore(@PathVariable("name") String name) {
 
-//        name = DecodeURIUtils.decodeParamByBase64(name);
+        name = DecodeURIUtils.decodeParamByBase64(name);
         String storeName = adminService.delete(name);
         return "delete store: " + storeName;
     }
