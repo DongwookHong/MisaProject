@@ -34,11 +34,7 @@ import java.util.stream.Stream;
 @Tag(name = "유저 API", description = "조회(GET)를 담당하는 API")
 public class MisaUserController {
 
-    private final UserService userService;
-
-    public MisaUserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired private UserService userService;
 
     @GetMapping("/api/stores") //n + 1 수정
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
@@ -50,7 +46,7 @@ public class MisaUserController {
                     try {
                         return mapper.writeValueAsString(StoresDTO.from(floor, StoresDTO.Data.dataList(floor.getBlocks())));
                     } catch (IOException e) {
-                        throw new IllegalStateException("Failed to serialize building", e);
+                        throw new IllegalStateException("Failed to serialize StoresDTO", e);
                     }
                 })
                 .toList();

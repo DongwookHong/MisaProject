@@ -60,7 +60,8 @@ class AdminServiceTest {
         Floor floor = validationUtils.validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
         Block block = validationUtils.validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
 
-        StoreMember storeMember = storeMemberRepository.findByStoreName("test");
+        StoreMember storeMember = storeMemberRepository.findByStoreName("test")
+                .orElseThrow(()-> new IllegalStateException("Store does not exist"));
 
 //        storeMember.update(form);
 //        storeMember.setBlock(block);

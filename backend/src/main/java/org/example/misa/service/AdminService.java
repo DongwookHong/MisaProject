@@ -35,10 +35,7 @@ public class AdminService {
     @Autowired private ImgService imgService;
 
     public String login(LoginDTO loginDTO) {
-        Member member = memberRepository.findByUsername(loginDTO.getUsername());
-        if (member == null) {
-            throw new IllegalStateException("member not found");
-        }
+        Member member = memberRepository.findByUsername(loginDTO.getUsername()).orElseThrow(()-> new IllegalStateException("member not found"));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), member.getPassword())) {
             throw new IllegalStateException("wrong password");
@@ -51,19 +48,13 @@ public class AdminService {
         Floor floor = validationUtils.validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
         Block block = validationUtils.validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
 
-        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName);
-
-        if (storeMember == null) {
-            throw new IllegalStateException("Store does not exist");
-        }
+        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName)
+                .orElseThrow(()-> new IllegalStateException("Store does not exist"));
 
         storeMember.update(form);
         storeMember.setBlock(block);
-
-        if (!files.isEmpty()) {
-            imgService.deleteImg(imgUtils.convertToImagePaths(storeMember.getImgPaths()));
-            imgUtils.updateImgPaths(files, storeMember);
-        }
+        imgService.deleteImg(imgUtils.convertToImagePaths(storeMember.getImgPaths()));
+        imgUtils.updateImgPaths(files, storeMember);
 
         try {
             storeMember = storeMemberRepository.save(storeMember);
@@ -94,10 +85,10 @@ public class AdminService {
     }
 
     public String delete(String storeName) {
-        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName);
-        if (storeMember == null) {
-            throw new IllegalStateException("Store does not exist: " + storeName);
-        }
+
+        StoreMember storeMember = storeMemberRepository.findByStoreName(storeName)
+                .orElseThrow(()-> new IllegalStateException("Store does not exist"));
+
         imgService.deleteImg(imgUtils.convertToImagePaths(storeMember.getImgPaths()));
         storeMemberRepository.delete(storeMember);
         return storeName;

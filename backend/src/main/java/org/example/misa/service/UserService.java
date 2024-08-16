@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 //유저 서비스 (Read만 가능), DI 시 등록될 빈은 UserRepo, 비지니스 로직에 집중
 @Service
@@ -15,11 +16,9 @@ public class UserService {
     @Autowired private StoreMemberRepository storeMemberRepository;
     @Autowired private FloorRepository floorRepository;
 
-    public List<StoreMember> findStoreMembers() {
-        return storeMemberRepository.findAll();
-    }
     public StoreMember findStoreMember(String storeName) {
-        return storeMemberRepository.findByStoreName(storeName);
+        return storeMemberRepository.findByStoreName(storeName)
+                .orElseThrow(()-> new IllegalStateException("Store does not exist"));
     }
 
     public List<Floor> findFloors() {
