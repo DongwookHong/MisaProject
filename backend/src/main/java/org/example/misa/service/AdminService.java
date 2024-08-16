@@ -23,7 +23,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class AdminService {
 
     @Autowired private JwtUtils jwtUtils;
@@ -44,6 +43,7 @@ public class AdminService {
         return jwtUtils.generateAccessToken(member);
     }
 
+    @Transactional
     public String update(String storeName, StoreMemberForm form, List<MultipartFile> files) {
         Floor floor = validationUtils.validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
         Block block = validationUtils.validateDuplicateBlockId(Long.parseLong(form.getBlockId()), floor);
@@ -65,6 +65,7 @@ public class AdminService {
         return storeMember.getStoreName();
     }
 
+    @Transactional
     public String join(StoreMemberForm form, List<MultipartFile> files) {
         validationUtils.validateDuplicateStoreMember(form.getStoreName());
         Floor floor = validationUtils.validateExistFloorAndBuilding(form.getFloor(), form.getBuildingName(), form.getBuildingDong());
@@ -84,13 +85,14 @@ public class AdminService {
         return storeMember.getStoreName();
     }
 
+    @Transactional
     public String delete(String storeName) {
 
         StoreMember storeMember = storeMemberRepository.findByStoreName(storeName)
                 .orElseThrow(()-> new IllegalStateException("Store does not exist"));
 
         imgService.deleteImg(imgUtils.convertToImagePaths(storeMember.getImgPaths()));
-        storeMemberRepository.delete(storeMember);
+        storeMemberRepository.delete(storeMember); // delete 실패시 이미지 복원 필요한가?
         return storeName;
     }
 }

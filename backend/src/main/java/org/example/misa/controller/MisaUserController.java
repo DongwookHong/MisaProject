@@ -92,6 +92,7 @@ public class MisaUserController {
         return userService.findFloors().stream()
                 .map(floor -> {
                     try {
+                        System.out.println("지연로딩 전");
                         return mapper.writeValueAsString(QrDTO.from(floor, QrDTO.Data.dataList(floor.getBlocks())));
                     } catch (IOException e) {
                         throw new IllegalStateException("Failed to serialize QrDTO", e);

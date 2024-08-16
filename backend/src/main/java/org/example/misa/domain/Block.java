@@ -14,7 +14,7 @@ public class Block {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
 
@@ -24,10 +24,10 @@ public class Block {
     @Column(nullable = false)
     private String type;
 
-    @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private StoreMember storeMember;
 
-    @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Facility facility;
 
     public Block(Floor floor, Long area, String type) {

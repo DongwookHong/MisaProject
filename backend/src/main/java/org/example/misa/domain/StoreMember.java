@@ -7,14 +7,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.misa.DTO.StoreDTO;
 import org.example.misa.controller.StoreMemberForm;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.*;
 
 import static org.example.misa.domain.StoreHours.storeHoursList;
 
-@NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
-        @NamedAttributeNode("imgPaths")
-})
+//@NamedEntityGraph(name = "StoreMember.imgPaths", attributeNodes = {
+//        @NamedAttributeNode("imgPaths")
+//})
 
 @Entity
 @Table
@@ -28,15 +30,17 @@ public class StoreMember {
     private Long id;
 
     @Setter(AccessLevel.NONE)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "block_id", nullable = false)
     private Block block;
 
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private List<ImgPath> imgPaths = new ArrayList<>();
 
-    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "storeMember", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private List<StoreHours> storeHours = new ArrayList<>();
 
     @Column(name = "store_name", nullable = false ,unique = true, length = 20)
