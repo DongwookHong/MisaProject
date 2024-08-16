@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TimeDropdown({ value, onChange, name, options }) {
+function TimeDrop_Edit({ value, onChange, name, options }) {
   return (
     <div className="custom-dropdown">
       <select
@@ -19,4 +19,4 @@ function TimeDropdown({ value, onChange, name, options }) {
   );
 }
 
-export default TimeDropdown;
+export default TimeDrop_Edit;

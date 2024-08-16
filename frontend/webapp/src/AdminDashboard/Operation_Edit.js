@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './OperationModal.css';
 import TimeDropdown from './TimeDropdown';
 
@@ -17,34 +17,18 @@ const generateTimeOptions = () => {
 };
 
 const timeOptions = generateTimeOptions();
-const daysOfWeek = [
-  'MONDAY',
-  'TUESDAY',
-  'WEDNESDAY',
-  'THURSDAY',
-  'FRIDAY',
-  'SATURDAY',
-  'SUNDAY',
-];
-const daysOfWeekKorean = ['월', '화', '수', '목', '금', '토', '일'];
+const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
 
-// 영어 요일을 한글로 변환하는 함수
-const convertToKorean = (englishDay) => {
-  const index = daysOfWeek.indexOf(englishDay);
-  return daysOfWeekKorean[index];
-};
-
-// 한글 요일을 영어로 변환하는 함수
-const convertToEnglish = (koreanDay) => {
-  const index = daysOfWeekKorean.indexOf(koreanDay);
-  return daysOfWeek[index];
-};
-
-function OperationModal({ option, setStoreHours, initialStoreHours }) {
+function OperationModal({ option }) {
   const [weekdayHours, setWeekdayHours] = useState({ open: '', close: '' });
-  const [weekendHours, setWeekendHours] = useState({ open: '', close: '' });
-  const [breakTime, setBreakTime] = useState({ start: '' });
-  const [lastOrder, setLastOrder] = useState({ time: '' });
+  const [weekendHours, setWeekendHours] = useState({
+    openweekend: '',
+    closeweekend: '',
+  });
+  const [breakTime, setBreakTime] = useState({ start: '', end: '' });
+  const [lastOrder, setLastOrder] = useState({ first: '', last: '' });
+  const [dayOff, setDayOff] = useState([]);
+  // const [dayOff, setDayOff] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
 
   const [dailySchedule, setDailySchedule] = useState(
@@ -52,103 +36,18 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
       (acc, day) => ({
         ...acc,
         [day]: {
-          isOpen: true,
+          isOpen: false,
           openTime: '',
           closeTime: '',
-          breakStartTime: '',
-          lastOrderTime: '',
+          breakStart: '',
+          breakEnd: '',
+          lastOrderStart: '',
+          lastOrderEnd: '',
         },
       }),
       {}
     )
   );
-
-  useEffect(() => {
-    if (initialStoreHours) {
-      const weekdayData = initialStoreHours.find(
-        (day) => day.dayOfWeek === '월'
-      );
-      const weekendData = initialStoreHours.find(
-        (day) => day.dayOfWeek === '토'
-      );
-
-      setWeekdayHours({
-        open: weekdayData?.openTime || '',
-        close: weekdayData?.closeTime || '',
-      });
-      setWeekendHours({
-        open: weekendData?.openTime || '',
-        close: weekendData?.closeTime || '',
-      });
-      setBreakTime({ start: weekdayData?.breakStartTime || '' });
-      setLastOrder({ time: weekdayData?.lastOrder || '' });
-
-      const closedDays = initialStoreHours
-        .filter((day) => !day.isOpen)
-        .map((day) => day.dayOfWeek);
-      setSelectedDays(closedDays);
-
-      const newDailySchedule = initialStoreHours.reduce((acc, day) => {
-        acc[convertToEnglish(day.dayOfWeek)] = {
-          isOpen: day.isOpen,
-          openTime: day.openTime,
-          closeTime: day.closeTime,
-          breakStartTime: day.breakStartTime,
-          lastOrderTime: day.lastOrder,
-        };
-        return acc;
-      }, {});
-      setDailySchedule(newDailySchedule);
-    }
-  }, [initialStoreHours]);
-
-  useEffect(() => {
-    updateStoreHours();
-  }, [
-    weekdayHours,
-    weekendHours,
-    breakTime,
-    lastOrder,
-    selectedDays,
-    dailySchedule,
-    option,
-  ]);
-
-  const updateStoreHours = () => {
-    let updatedStoreHours = [];
-
-    if (option === '모든 영업일이 같아요') {
-      updatedStoreHours = daysOfWeek.map((day) => ({
-        dayOfWeek: convertToKorean(day),
-        isOpen: !selectedDays.includes(convertToKorean(day)),
-        openTime: weekdayHours.open,
-        closeTime: weekdayHours.close,
-        breakStartTime: breakTime.start,
-        breakEndTime: '',
-        lastOrder: lastOrder.time,
-      }));
-    } else if (option === '평일/주말 달라요') {
-      updatedStoreHours = daysOfWeek.map((day) => {
-        const isWeekend = day === 'SATURDAY' || day === 'SUNDAY';
-        return {
-          dayOfWeek: convertToKorean(day),
-          isOpen: !selectedDays.includes(convertToKorean(day)),
-          openTime: isWeekend ? weekendHours.open : weekdayHours.open,
-          closeTime: isWeekend ? weekendHours.close : weekdayHours.close,
-          breakStartTime: breakTime.start,
-          breakEndTime: '',
-          lastOrder: lastOrder.time,
-        };
-      });
-    } else if (option === '요일별로 달라요') {
-      updatedStoreHours = daysOfWeek.map((day) => ({
-        ...dailySchedule[day],
-        dayOfWeek: convertToKorean(day),
-      }));
-    }
-
-    setStoreHours(updatedStoreHours);
-  };
 
   const handleDayToggle = (day) => {
     setDailySchedule((prev) => ({
@@ -189,13 +88,19 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
     setLastOrder((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleDayOffChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setDayOff((prev) => [...prev, value]);
+    } else {
+      setDayOff((prev) => prev.filter((day) => day !== value));
+    }
+  };
+
   const handleDaySelect = (day) => {
-    setSelectedDays((prev) => {
-      const newSelectedDays = prev.includes(day)
-        ? prev.filter((d) => d !== day)
-        : [...prev, day];
-      return newSelectedDays;
-    });
+    setSelectedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
   };
 
   let content;
@@ -231,27 +136,40 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
                 name="start"
                 options={timeOptions}
               />
+              {/* <div className="operation-flew">~</div>
+              <TimeDropdown
+                value={breakTime.end}
+                onChange={handleBreakTimeChange}
+                name="end"
+                options={timeOptions}
+              /> */}
             </div>
           </div>
           <div className="operation-break">
             <div className="operation-subject">라스트오더 </div>
             <div className="operation-break-time">
               <TimeDropdown
-                value={lastOrder.time}
+                value={lastOrder.first}
                 onChange={handleLastOrderChange}
-                name="time"
+                name="first"
                 options={timeOptions}
               />
+              {/* <div className="operation-flew">~</div>
+              <TimeDropdown
+                value={lastOrder.last}
+                onChange={handleLastOrderChange}
+                name="last"
+                options={timeOptions}
+              /> */}
             </div>
           </div>
           <div className="operation-dayoff">
             <div className="operation-subject">휴무일</div>
             <div className="operation-dayoff-options">
               <div className="day-selector">
-                {daysOfWeekKorean.map((day) => (
+                {['월', '화', '수', '목', '금', '토', '일'].map((day) => (
                   <button
                     key={day}
-                    type="button"
                     className={`day-button ${
                       selectedDays.includes(day) ? 'selected' : ''
                     }`}
@@ -290,16 +208,16 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
             <div className="operation-subject">주말 영업시간</div>
             <div className="operation-break-time">
               <TimeDropdown
-                value={weekendHours.open}
+                value={weekendHours.openweekend}
                 onChange={(e) => handleInputChange(e, 'weekend')}
-                name="open"
+                name="openweekend"
                 options={timeOptions}
               />
               <div className="operation-flew">~</div>
               <TimeDropdown
-                value={weekendHours.close}
+                value={weekendHours.closeweekend}
                 onChange={(e) => handleInputChange(e, 'weekend')}
-                name="close"
+                name="closeweekend"
                 options={timeOptions}
               />
             </div>
@@ -313,27 +231,40 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
                 name="start"
                 options={timeOptions}
               />
+              {/* <div className="operation-flew">~</div>
+              <TimeDropdown
+                value={breakTime.end}
+                onChange={handleBreakTimeChange}
+                name="end"
+                options={timeOptions}
+              /> */}
             </div>
           </div>
           <div className="operation-break">
             <div className="operation-subject">라스트오더 </div>
             <div className="operation-break-time">
               <TimeDropdown
-                value={lastOrder.time}
+                value={lastOrder.first}
                 onChange={handleLastOrderChange}
-                name="time"
+                name="first"
                 options={timeOptions}
               />
+              {/* <div className="operation-flew">~</div>
+              <TimeDropdown
+                value={lastOrder.last}
+                onChange={handleLastOrderChange}
+                name="last"
+                options={timeOptions}
+              /> */}
             </div>
           </div>
           <div className="operation-dayoff">
             <div className="operation-subject">휴무일</div>
             <div className="operation-dayoff-options">
               <div className="day-selector">
-                {daysOfWeekKorean.map((day) => (
+                {['월', '화', '수', '목', '금', '토', '일'].map((day) => (
                   <button
                     key={day}
-                    type="button"
                     className={`day-button ${
                       selectedDays.includes(day) ? 'selected' : ''
                     }`}
@@ -350,7 +281,7 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
     case '요일별로 달라요':
       content = (
         <div className="daily-schedule">
-          {daysOfWeek.map((day, index) => (
+          {daysOfWeek.map((day) => (
             <div key={day} className="day-schedule">
               <div className="day-toggle">
                 <input
@@ -359,9 +290,7 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
                   checked={dailySchedule[day].isOpen}
                   onChange={() => handleDayToggle(day)}
                 />
-                <label htmlFor={`toggle-${day}`}>
-                  {daysOfWeekKorean[index]}
-                </label>
+                <label htmlFor={`toggle-${day}`}>{day}</label>
               </div>
               {dailySchedule[day].isOpen ? (
                 <div className="day-times">
@@ -386,22 +315,38 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
                   <div className="time-row">
                     <span>브레이크 타임:</span>
                     <TimeDropdown
-                      value={dailySchedule[day].breakStartTime}
+                      value={dailySchedule[day].breakStart}
                       onChange={(e) =>
-                        handleTimeChange(day, 'breakStartTime', e.target.value)
+                        handleTimeChange(day, 'breakStart', e.target.value)
                       }
                       options={timeOptions}
                     />
+                    {/* <span>~</span>
+                    <TimeDropdown
+                      value={dailySchedule[day].breakEnd}
+                      onChange={(e) =>
+                        handleTimeChange(day, 'breakEnd', e.target.value)
+                      }
+                      options={timeOptions}
+                    /> */}
                   </div>
                   <div className="time-row">
                     <span>라스트오더:</span>
                     <TimeDropdown
-                      value={dailySchedule[day].lastOrderTime}
+                      value={dailySchedule[day].lastOrderStart}
                       onChange={(e) =>
-                        handleTimeChange(day, 'lastOrderTime', e.target.value)
+                        handleTimeChange(day, 'lastOrderStart', e.target.value)
                       }
                       options={timeOptions}
                     />
+                    {/* <span>~</span>
+                    <TimeDropdown
+                      value={dailySchedule[day].lastOrderEnd}
+                      onChange={(e) =>
+                        handleTimeChange(day, 'lastOrderEnd', e.target.value)
+                      }
+                      options={timeOptions}
+                    /> */}
                   </div>
                 </div>
               ) : (
@@ -415,6 +360,8 @@ function OperationModal({ option, setStoreHours, initialStoreHours }) {
     default:
       content = null;
   }
+
+  if (!content) return null;
 
   return (
     <div className="operation-modal-container">

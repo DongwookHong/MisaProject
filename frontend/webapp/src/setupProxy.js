@@ -1,30 +1,29 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
-console.log('setupProxy.js is being loaded!');
+console.log("setupProxy.js is being loaded!");
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
-    '/api',
+    "/api",
     createProxyMiddleware({
-      target: 'https://api.misarodeo.com',
-      changeOrigin: true,
-    })
-  );
-
-  app.use(
-    '/login',
-    createProxyMiddleware({
-      target: 'https://api.misarodeo.com',
+      target: "https://apig.misarodeo.com",
       changeOrigin: true,
     })
   );
   app.use(
-    'd2uoi63j88ocg6.cloudfront.net',
+    "/login",
     createProxyMiddleware({
-      target: 'https://d2uoi63j88ocg6.cloudfront.net',
+      target: "https://apig.misarodeo.com",
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    "d2uoi63j88ocg6.cloudfront.net",
+    createProxyMiddleware({
+      target: "https://d2uoi63j88ocg6.cloudfront.net",
       changeOrigin: true,
       pathRewrite: {
-        '^/d2uoi63j88ocg6.cloudfront.net': '',
+        "^/d2uoi63j88ocg6.cloudfront.net": "",
       },
     })
   );

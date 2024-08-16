@@ -23,15 +23,19 @@ function TenantList() {
           setIsLoading(false);
           return;
         }
-        const response = await axios.get("/api/floor", {
-          // const response = await axios.get(
-          //   "https://api.misarodeo.com/api/floor",
-          // {
-          headers: {
-            accept: "*/*",
-            "x-api-key": API_KEY,
-          },
-        });
+        const response = await axios.get(
+          "https://apig.misarodeo.com/api/floor",
+          {
+            // const response = await axios.get("/api/floor", {
+            // const response = await axios.get(
+            //   "https://api.misarodeo.com/api/floor",
+            // {
+            headers: {
+              accept: "*/*",
+              "x-api-key": API_KEY,
+            },
+          }
+        );
 
         const floorData = response.data;
         const parsedData = floorData.map((item) => JSON.parse(item));
