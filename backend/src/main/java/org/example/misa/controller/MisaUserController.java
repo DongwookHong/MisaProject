@@ -34,11 +34,7 @@ import java.util.stream.Stream;
 @Tag(name = "유저 API", description = "조회(GET)를 담당하는 API")
 public class MisaUserController {
 
-    private final UserService userService;
-
-    public MisaUserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired private UserService userService;
 
     @GetMapping("/api/stores") //n + 1 수정
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
@@ -50,7 +46,7 @@ public class MisaUserController {
                     try {
                         return mapper.writeValueAsString(StoresDTO.from(floor, StoresDTO.Data.dataList(floor.getBlocks())));
                     } catch (IOException e) {
-                        throw new IllegalStateException("Failed to serialize building", e);
+                        throw new IllegalStateException("Failed to serialize StoresDTO", e);
                     }
                 })
                 .toList();
@@ -62,58 +58,46 @@ public class MisaUserController {
 
         name = DecodeURIUtils.decodeParamByBase64(name);
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
-        if (storeMember != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                json = mapper.writeValueAsString(StoreDTO.from(storeMember));
-                return json;
-            } catch (JsonProcessingException e) {
-                throw new IllegalStateException("Failed to serialize store", e);
-            }
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(StoreDTO.from(storeMember));
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to serialize StoreDTO", e);
         }
-        return json;
     }
 
     @GetMapping("/api/menu") //find-stores-sorted-by-building-name, n + 1 수정
     @Operation(summary = "storelist 에 필요한 정보 조회", description = "모든 상점에 대해 각 상점의 이미지 URL 과 일부 정보 조회")
     public List<String> menu() {
-        List<Floor> floors = userService.findFloors();
-        List<String> jsonSet = new ArrayList<>();
-        if (!floors.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            for (Floor floor : floors) {
-                try {
-                    String json = mapper.writeValueAsString(MenuDTO.from(floor, MenuDTO.Data.dataList(floor.getBlocks())));
-                    jsonSet.add(json);
-                } catch (JsonProcessingException e) {
-                    throw new IllegalStateException("Failed to serialize store", e);
-                }
-            }
-            return jsonSet;
-        }
-        return jsonSet;
+        ObjectMapper mapper = new ObjectMapper();
+
+        return userService.findFloors().stream()
+                .map(floor -> {
+                    try {
+                        return mapper.writeValueAsString(MenuDTO.from(floor, MenuDTO.Data.dataList(floor.getBlocks())));
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Failed to serialize MenuDTO", e);
+                    }
+                })
+                .toList();
+
     }
 
     @GetMapping("/api/qr-page") //n + 1 수정
     @Operation(summary = "qr-page 에 필요한 정보 조회", description = "층 별 이미지의 URL 및 상점 정보와 편의시설 정보 조회")
     public List<String> qrPage() {
-        List<Floor> floors = userService.findFloors();
-        List<String> jsonSet = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
 
-        if (!floors.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            for (Floor floor : floors) {
-                try {
-                    String json = mapper.writeValueAsString(QrDTO.from(floor, QrDTO.Data.dataList(floor.getBlocks())));
-                    jsonSet.add(json);
-                } catch (IOException e) {
-                    throw new IllegalStateException("Failed to serialize floor", e);
-                }
-            }
-            return jsonSet;
-        }
-        return jsonSet;
+        return userService.findFloors().stream()
+                .map(floor -> {
+                    try {
+                        return mapper.writeValueAsString(QrDTO.from(floor, QrDTO.Data.dataList(floor.getBlocks())));
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Failed to serialize QrDTO", e);
+                    }
+                })
+                .toList();
     }
 
     @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
@@ -121,64 +105,49 @@ public class MisaUserController {
     public String findSpot(@PathVariable("name") String name) {
         name = DecodeURIUtils.decodeParamByBase64(name);
         StoreMember storeMember = userService.findStoreMember(name);
-        String json = "상점 " + name + " 이(가) 존재하지 않습니다.";
-        if (storeMember != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                json = mapper.writeValueAsString(FindSpotDTO.from(storeMember));
-                return json;
-            } catch (JsonProcessingException e) {
-                throw new IllegalStateException("Failed to serialize store", e);
-            }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(FindSpotDTO.from(storeMember));
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to serialize FindSpotDTO", e);
         }
-        return json;
     }
 
     @GetMapping("/api/floor") //n + 1 수정
     @Operation(summary = "floor 에 필요한 정보 조회", description = "각 건물의 층을 기준으로 정렬괸 상점 정보 조회")
     public List<String> floor() {
-        List<Floor> floors = userService.findFloors();
-        List<String> jsonSet = new ArrayList<>();
-        if (!floors.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            for (Floor floor : floors) {
-                try {
-                    String json = mapper.writeValueAsString(FloorDTO.from(floor));
-                    jsonSet.add(json);
-                } catch (JsonProcessingException e) {
-                    throw new IllegalStateException("Failed to serialize store", e);
-                }
-            }
-            return jsonSet;
-        }
-        return jsonSet;
+        ObjectMapper mapper = new ObjectMapper();
+
+        return userService.findFloors().stream()
+                .map(floor -> {
+                    try {
+                        return mapper.writeValueAsString(FloorDTO.from(floor));
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Failed to serialize FloorDTO", e);
+                    }
+                })
+                .toList();
+
     }
 
     @GetMapping("/api/building/{buildingName}/{buildingDong}") //n + 1 수정
     @Operation(summary = "building 에 필요한 정보 조회", description = "PathValiable 로 전달된 정보에 속하는 모든 상점 조회")
     public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
-        buildingName = DecodeURIUtils.decodeParamByBase64(buildingName);
-        List<Floor> floors = userService.findFloors();
-        List<String> jsonSet = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
 
-        if (!floors.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            for (Floor floor : floors) {
-                try {
-
-                    if (!floor.getBuildingName().equals(buildingName) || !floor.getBuildingDong().equals(buildingDong)) {
-                        continue;
+        String finalBuildingName = DecodeURIUtils.decodeParamByBase64(buildingName);;
+        return userService.findFloors().stream()
+                .filter(floor -> floor.getBuildingName().equals(finalBuildingName) && floor.getBuildingDong().equals(buildingDong))
+                .map(floor -> {
+                    try {
+                        return mapper.writeValueAsString(BuildingDTO.from(floor, BuildingDTO.Data.dataList(floor.getBlocks())));
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Failed to serialize FloorDTO", e);
                     }
+                })
+                .toList();
 
-                    String json = mapper.writeValueAsString(BuildingDTO.from(floor, BuildingDTO.Data.dataList(floor.getBlocks())));
-                    jsonSet.add(json);
-
-                } catch (IOException e) {
-                    throw new IllegalStateException("Failed to serialize building", e);
-                }
-            }
-            return jsonSet;
-        }
-        return jsonSet;
     }
 }

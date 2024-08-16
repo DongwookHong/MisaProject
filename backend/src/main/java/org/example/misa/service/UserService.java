@@ -16,11 +16,9 @@ public class UserService {
     @Autowired private StoreMemberRepository storeMemberRepository;
     @Autowired private FloorRepository floorRepository;
 
-    public List<StoreMember> findStoreMembers() {
-        return storeMemberRepository.findAll();
-    }
     public StoreMember findStoreMember(String storeName) {
-        return storeMemberRepository.findByStoreName(storeName);
+        return storeMemberRepository.findByStoreName(storeName)
+                .orElseThrow(()-> new IllegalStateException("Store does not exist"));
     }
 
     public List<Floor> findFloors() {
