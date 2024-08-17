@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.misa.domain.Block;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.domain.StoreHours;
 import java.util.ArrayList;

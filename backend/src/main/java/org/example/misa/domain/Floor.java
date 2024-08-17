@@ -3,7 +3,10 @@ package org.example.misa.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.example.misa.controller.StoreMemberForm;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,8 +20,9 @@ public class Floor {
     private Long id;
 
     @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     @OrderBy("area asc")
-    private List<Block> blocks;
+    private List<Block> blocks = new ArrayList<>();
 
     @Column(nullable = false)
     private String buildingName;
