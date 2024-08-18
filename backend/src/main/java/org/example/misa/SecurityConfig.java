@@ -35,7 +35,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     public SecurityConfig(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;

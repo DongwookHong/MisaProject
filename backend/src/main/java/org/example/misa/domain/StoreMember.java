@@ -54,9 +54,6 @@ public class StoreMember {
     @Column(name = "insta_path")
     private String instaPath;
 
-    //getter && setter
-
-
     public StoreMember(String storeName,  List<StoreDTO.StoreHoursData> storeHoursData, String info, String storeNumber, String homePagePath, String instaPath) {
         this.storeName = storeName;
         this.setStoreHours(storeHoursData);
