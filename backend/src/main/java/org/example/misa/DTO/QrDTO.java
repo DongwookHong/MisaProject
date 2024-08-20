@@ -47,12 +47,10 @@ public class QrDTO {
         }
 
         public static List<Data> dataList(List<Block> blocks) {
-            List<Data> dataList = new ArrayList<>();
-            for (Block block : blocks) {
-                if (block.getStoreMember() != null || block.getFacility() != null)
-                    dataList.add(from(block));
-            }
-            return dataList;
+            return blocks.stream()
+                    .filter(block -> block.getStoreMember() != null || block.getFacility() != null)
+                    .map(Data::from)
+                    .toList();
         }
     }
 

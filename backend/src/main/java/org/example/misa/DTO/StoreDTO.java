@@ -88,11 +88,9 @@ public class StoreDTO {
         }
 
         public static List<StoreDTO.StoreHoursData> dataList(List<StoreHours> storeHours) {
-            List<StoreDTO.StoreHoursData> dataList = new ArrayList<>();
-            for (StoreHours storeHour : storeHours) {
-                dataList.add(from(storeHour));
-            }
-            return dataList;
+            return storeHours.stream()
+                    .map(StoreHoursData::from)
+                    .toList();
         }
     }
 

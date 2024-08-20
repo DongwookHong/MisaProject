@@ -43,20 +43,20 @@ public class MenuDTO {
         private static Data from(Block block) {
             List<ImgPath> storeImages = block.getStoreMember().getImgPaths();
             String imgPath = "";
+
             if (storeImages != null && !storeImages.isEmpty()) {
                 imgPath = storeImages.iterator().next().getImgPath();
             }
+
             return new Data(block.getStoreMember().getStoreName(), imgPath);
         }
 
         public static List<Data> dataList(List<Block> blocks) {
-            List<Data> dataList = new ArrayList<>();
-            for (Block block : blocks) {
-                if (block.getStoreMember() != null) {
-                    dataList.add(from(block));
-                }
-            }
-            return dataList;
+
+            return blocks.stream()
+                    .filter(block -> block.getStoreMember() != null)
+                    .map(Data::from)
+                    .toList();
         }
     }
 }

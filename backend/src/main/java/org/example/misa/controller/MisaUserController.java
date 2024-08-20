@@ -26,7 +26,7 @@ public class MisaUserController {
         this.mapper = objectMapper;
     }
 
-    @GetMapping("/api/stores") //n + 1 수정
+    @GetMapping("/api/stores")
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
     public List<String> getStores() {
 
@@ -55,7 +55,7 @@ public class MisaUserController {
         }
     }
 
-    @GetMapping("/api/menu") //find-stores-sorted-by-building-name, n + 1 수정
+    @GetMapping("/api/menu")
     @Operation(summary = "storelist 에 필요한 정보 조회", description = "모든 상점에 대해 각 상점의 이미지 URL 과 일부 정보 조회")
     public List<String> menu() {
 
@@ -68,10 +68,9 @@ public class MisaUserController {
                     }
                 })
                 .toList();
-
     }
 
-    @GetMapping("/api/qr-page") //n + 1 수정
+    @GetMapping("/api/qr-page")
     @Operation(summary = "qr-page 에 필요한 정보 조회", description = "층 별 이미지의 URL 및 상점 정보와 편의시설 정보 조회")
     public List<String> qrPage() {
 
@@ -86,7 +85,7 @@ public class MisaUserController {
                 .toList();
     }
 
-    @GetMapping("/api/find-spot/{name}") //상점 이름, 상점 위치, 블럭, 층 이미지
+    @GetMapping("/api/find-spot/{name}")
     @Operation(summary = "find-spot 에 필요한 정보 조회", description = "PathVariable로 전달된 상점의 위치 정보(건물 명, 층수 등) 조회")
     public String findSpot(@PathVariable("name") String name) {
         name = DecodeURIUtils.decodeParamByBase64(name);
@@ -99,7 +98,7 @@ public class MisaUserController {
         }
     }
 
-    @GetMapping("/api/floor") //n + 1 수정
+    @GetMapping("/api/floor")
     @Operation(summary = "floor 에 필요한 정보 조회", description = "각 건물의 층을 기준으로 정렬괸 상점 정보 조회")
     public List<String> floor() {
 
@@ -115,7 +114,7 @@ public class MisaUserController {
 
     }
 
-    @GetMapping("/api/building/{buildingName}/{buildingDong}") //n + 1 수정
+    @GetMapping("/api/building/{buildingName}/{buildingDong}")
     @Operation(summary = "building 에 필요한 정보 조회", description = "PathValiable 로 전달된 정보에 속하는 모든 상점 조회")
     public List<String> building(@PathVariable("buildingName") String buildingName, @PathVariable("buildingDong") String buildingDong) {
 
@@ -132,7 +131,4 @@ public class MisaUserController {
                 .toList();
 
     }
-
-
-
 }

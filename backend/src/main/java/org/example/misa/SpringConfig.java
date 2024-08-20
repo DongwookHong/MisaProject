@@ -22,7 +22,6 @@ public class SpringConfig {
 
     private final AmazonS3 s3Client;
 
-    @Autowired
     SpringConfig(AmazonS3 s3Client) {
         this.s3Client = s3Client;
     }

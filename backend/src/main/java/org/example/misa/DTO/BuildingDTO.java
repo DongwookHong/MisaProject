@@ -38,12 +38,10 @@ public class BuildingDTO {
         }
 
         public static List<BuildingDTO.Data> dataList(List<Block> blocks) {
-            List<BuildingDTO.Data> dataList = new ArrayList<>();
-            for (Block block : blocks) {
-                if (block.getFacility() != null || block.getStoreMember() != null)
-                    dataList.add(from(block));
-            }
-            return dataList;
+            return blocks.stream()
+                    .filter(block -> block.getFacility() != null || block.getStoreMember() != null) //optional 로 수정?
+                    .map(Data::from)
+                    .toList();
         }
     }
 }
