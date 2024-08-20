@@ -34,13 +34,10 @@ public class StoresDTO {
         }
 
         public static List<StoresDTO.Data> dataList(List<Block> blocks) {
-            List<StoresDTO.Data> dataList = new ArrayList<>();
-            for (Block block : blocks) {
-                if (block.getStoreMember() != null) {
-                    dataList.add(Data.from(block));
-                }
-            }
-            return dataList;
+            return blocks.stream()
+                    .filter(block -> block.getStoreMember() != null)
+                    .map(Data::from)
+                    .toList();
         }
     }
 }

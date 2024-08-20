@@ -23,14 +23,17 @@ public class FloorDTO {
     private List<String> storeNames;
 
     public static FloorDTO from(Floor floor) {
-        List<String> storeNames = new ArrayList<>();
-        List<Block> blocks = floor.getBlocks();
 
-        for (Block block : blocks) {
-            if (block.getStoreMember() != null) {
-                storeNames.add(block.getStoreMember().getStoreName());
-            }
-        }
+        List<String> storeNames = floor.getBlocks().stream()
+                .filter(block -> block.getStoreMember() != null)
+                .map(block -> block.getStoreMember().getStoreName())
+                .toList();
+
+//        for (Block block : blocks) {
+//            if (block.getStoreMember() != null) {
+//                storeNames.add(block.getStoreMember().getStoreName());
+//            }
+//        }
 
         return new FloorDTO(floor.getBuildingName(),
                 floor.getBuildingDong(),
