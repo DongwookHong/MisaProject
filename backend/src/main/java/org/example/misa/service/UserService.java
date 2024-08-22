@@ -1,5 +1,6 @@
 package org.example.misa.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.misa.domain.Floor;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.repository.FloorRepository;
@@ -10,9 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired private StoreMemberRepository storeMemberRepository;
-    @Autowired private FloorRepository floorRepository;
+    private final StoreMemberRepository storeMemberRepository;
+    private final FloorRepository floorRepository;
 
     public StoreMember findStoreMember(String storeName) {
         return storeMemberRepository.findByStoreName(storeName)

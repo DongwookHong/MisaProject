@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.misa.DTO.*;
 import org.example.misa.component.DecodeURIUtils;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "유저 API", description = "조회(GET)를 담당하는 API")
 public class MisaUserController {
@@ -21,15 +23,9 @@ public class MisaUserController {
     private final UserService userService;
     private final ObjectMapper mapper;
 
-    public MisaUserController(UserService userService, ObjectMapper objectMapper) {
-        this.userService = userService;
-        this.mapper = objectMapper;
-    }
-
     @GetMapping("/api/stores")
     @Operation(summary = "관리자 페이지 에 필요한 전체 상점 조회", description = "전체 상점 조회")
     public List<String> getStores() {
-
         return userService.findFloors().stream()
                 .map(floor -> {
                     try {

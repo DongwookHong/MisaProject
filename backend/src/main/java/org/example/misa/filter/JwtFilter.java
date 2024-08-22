@@ -14,7 +14,7 @@ import java.io.IOException;
 @Slf4j
 public final class JwtFilter implements Filter {
     private final String jwtHeader = "Authorization";
-    AuthenticationManager jwtAuthenticationManager;
+    private final AuthenticationManager jwtAuthenticationManager;
 
     public JwtFilter(AuthenticationManager jwtAuthenticationManager) {
         this.jwtAuthenticationManager = jwtAuthenticationManager;

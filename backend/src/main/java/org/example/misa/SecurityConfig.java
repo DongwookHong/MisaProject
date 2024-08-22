@@ -51,14 +51,26 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/stores/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().denyAll())
-                .addFilterBefore(new JwtFilter(jwtAuthenticationManager()), AuthorizationFilter.class)
-                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), JwtFilter.class)
+//                .addFilterBefore(new JwtFilter(jwtAuthenticationManager()), AuthorizationFilter.class)
+//                .addFilterBefore(new ApiKeyFilter(apiAuthenticationManager()), JwtFilter.class)
+                .addFilterBefore(jwtFilter(), AuthorizationFilter.class)
+                .addFilterBefore(apiKeyFilter(), JwtFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable) //disable 이 맞나?
                 .cors(Customizer.withDefaults()) //왜 사용하나?
                 .sessionManagement((customizer) -> customizer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //stateless 사용 이유는?
         return http.build();
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter(jwtAuthenticationManager());
+    }
+
+    @Bean
+    public ApiKeyFilter apiKeyFilter() {
+        return new ApiKeyFilter(apiAuthenticationManager());
     }
 
     @Bean

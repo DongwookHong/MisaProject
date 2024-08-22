@@ -29,7 +29,7 @@ public final class ApiKeyFilter implements Filter {
 
     private final boolean getOnly = true;
 
-    AuthenticationManager apiAuthenticationManager;
+    private final AuthenticationManager apiAuthenticationManager;
 
     public ApiKeyFilter(AuthenticationManager apiAuthenticationManager) {
         this.apiAuthenticationManager = apiAuthenticationManager;

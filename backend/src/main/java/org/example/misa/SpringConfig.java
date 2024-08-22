@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.example.misa.component.ImgUtils;
 import org.example.misa.component.JwtUtils;
 import org.example.misa.component.ValidationUtils;
+import org.example.misa.controller.MisaUserController;
 import org.example.misa.repository.*;
 import org.example.misa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,20 @@ public class SpringConfig {
         this.s3Client = s3Client;
     }
 
-    @Bean
-    public AdminService adminService() {
-        return new AdminService();
-    }
+//    @Bean
+//    public MisaUserController misaUserController() {
+//        return new MisaUserController(userService(), objectMapper());
+//    }
+//
+//    @Bean
+//    public UserService userService() {
+//        return new UserService();
+//    }
+
+//    @Bean
+//    public AdminService adminService() {
+//        return new AdminService();
+//    }
 
     @Bean
     public ImgService imgService() {

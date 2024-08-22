@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -21,7 +20,7 @@ public class S3ImgService implements ImgService {
     private final AmazonS3 S3Client;
 
     public S3ImgService(AmazonS3 s3Client) {
-        S3Client = s3Client;
+        this.S3Client = s3Client;
     }
 
     @Value("${cloud.aws.s3.bucketName}")
