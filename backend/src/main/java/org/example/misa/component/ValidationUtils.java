@@ -1,18 +1,19 @@
 package org.example.misa.component;
 
+import lombok.RequiredArgsConstructor;
 import org.example.misa.domain.Block;
 import org.example.misa.domain.Floor;
 import org.example.misa.repository.BlockRepository;
 import org.example.misa.repository.FloorRepository;
 import org.example.misa.repository.StoreMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public final class ValidationUtils {
-    @Autowired private FloorRepository floorRepository;
-    @Autowired private BlockRepository blockRepository;
-    @Autowired private StoreMemberRepository storeMemberRepository;
+    private final FloorRepository floorRepository;
+    private final BlockRepository blockRepository;
+    private final StoreMemberRepository storeMemberRepository;
 
     public Floor validateExistFloorAndBuilding(String floorName, String buildingName, String buildingDong) {
 
