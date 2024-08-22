@@ -1,5 +1,6 @@
 package org.example.misa.service;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.example.misa.DTO.LoginDTO;
 import org.example.misa.component.ImgUtils;
@@ -23,15 +24,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
 
-    @Autowired private JwtUtils jwtUtils;
-    @Autowired private ImgUtils imgUtils;
-    @Autowired private ValidationUtils validationUtils;
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private MemberRepository memberRepository;
-    @Autowired private StoreMemberRepository storeMemberRepository;
-    @Autowired private ImgService imgService;
+    private final JwtUtils jwtUtils;
+    private final ImgUtils imgUtils;
+    private final ValidationUtils validationUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final StoreMemberRepository storeMemberRepository;
+    private final ImgService imgService;
 
     public String login(LoginDTO loginDTO) {
         Member member = memberRepository.findByUsername(loginDTO.getUsername()).orElseThrow(()-> new IllegalStateException("member not found"));

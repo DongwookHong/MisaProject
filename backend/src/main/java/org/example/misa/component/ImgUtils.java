@@ -1,5 +1,6 @@
 package org.example.misa.component;
 
+import lombok.RequiredArgsConstructor;
 import org.example.misa.domain.ImgPath;
 import org.example.misa.domain.StoreMember;
 import org.example.misa.service.ImgService;
@@ -12,8 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public final class ImgUtils {
-    @Autowired private ImgService imgService;
+    private final ImgService imgService;
 
     public void updateImgPaths(List<MultipartFile> files, StoreMember storeMember) {
         List<String> urlList = imgService.upload(files);

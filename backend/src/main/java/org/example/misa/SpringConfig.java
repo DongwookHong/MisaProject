@@ -27,21 +27,6 @@ public class SpringConfig {
         this.s3Client = s3Client;
     }
 
-//    @Bean
-//    public MisaUserController misaUserController() {
-//        return new MisaUserController(userService(), objectMapper());
-//    }
-//
-//    @Bean
-//    public UserService userService() {
-//        return new UserService();
-//    }
-
-//    @Bean
-//    public AdminService adminService() {
-//        return new AdminService();
-//    }
-
     @Bean
     public ImgService imgService() {
         return new S3ImgService(s3Client);
